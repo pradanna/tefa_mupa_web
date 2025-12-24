@@ -1,0 +1,168 @@
+/* style.scss */
+/* _variables.scss */
+body {
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+a {
+  text-decoration: none;
+}
+
+#heroCarousel .hero-img {
+  height: 600px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  filter: brightness(0.8);
+}
+#heroCarousel .hero-caption {
+  background-color: rgba(14, 56, 122, 0.75);
+  bottom: 20%;
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+  max-width: 800px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+}
+#heroCarousel .animated-text {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease forwards;
+}
+#heroCarousel .delay-1 {
+  animation-delay: 0.3s;
+}
+#heroCarousel .delay-2 {
+  animation-delay: 0.6s;
+}
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  #heroCarousel .hero-img {
+    height: 400px;
+  }
+  #heroCarousel .carousel-caption {
+    display: block !important;
+    bottom: 10%;
+    padding: 1rem !important;
+  }
+  #heroCarousel .carousel-caption h1 {
+    font-size: 1.5rem;
+  }
+  #heroCarousel .carousel-caption p {
+    font-size: 0.9rem;
+  }
+  #heroCarousel .carousel-caption .btn {
+    padding: 5px 15px;
+    font-size: 0.8rem;
+  }
+}
+.breadcrumb-tefa .breadcrumb-item a {
+  color: #64748b;
+}
+.breadcrumb-tefa .breadcrumb-item a:hover {
+  color: #0e387a;
+}
+.breadcrumb-tefa .breadcrumb-item.active {
+  color: #0e387a;
+  font-weight: 600;
+}
+
+.product-gallery .main-image {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+.product-gallery .main-image img {
+  transition: transform 0.5s ease;
+}
+.product-gallery .main-image img:hover {
+  transform: scale(1.05);
+}
+.product-gallery .thumb-list {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+.product-gallery .thumb-list .thumb-item {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  overflow: hidden;
+  opacity: 0.7;
+  transition: all 0.3s;
+}
+.product-gallery .thumb-list .thumb-item.active, .product-gallery .thumb-list .thumb-item:hover {
+  border-color: #0e387a;
+  opacity: 1;
+}
+.product-gallery .thumb-list .thumb-item img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.product-info .badge-category {
+  background-color: #e0e7ff;
+  color: #0e387a;
+  padding: 5px 12px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.product-info h1 {
+  font-weight: 800;
+  color: #1e293b;
+  margin-top: 10px;
+}
+.product-info .price-tag {
+  font-size: 1.5rem;
+  color: #0e387a;
+  font-weight: 700;
+}
+.product-info .specs-box {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+}
+.product-info .specs-box li {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.product-info .specs-box li i {
+  color: #f59e0b;
+}
+
+.btn-wa {
+  background-color: #25d366;
+  color: white;
+  border: none;
+  font-weight: 600;
+}
+.btn-wa:hover {
+  background-color: rgb(29.3911290323, 167.6088709677, 81.0241935484);
+  color: white;
+}
+
+.btn-primary-tefa {
+  background-color: #0e387a;
+  color: white;
+  border: none;
+}
+.btn-primary-tefa:hover {
+  background-color: rgb(8.75, 35, 76.25);
+  color: white;
+}

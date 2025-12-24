@@ -1,0 +1,205 @@
+/* style.scss */
+@import "variables";
+
+// Override/Reset dasar
+body {
+    background-color: $bg-light;
+    color: $text-dark;
+}
+
+a {
+    text-decoration: none;
+}
+
+// --- HERO CAROUSEL ---
+#heroCarousel {
+    .hero-img {
+        height: 600px; // Tinggi fix
+        object-fit: cover; // Gambar tidak gepeng
+
+        // Filter gelap sedikit agar tulisan terbaca jelas
+        filter: brightness(0.8);
+    }
+
+    .hero-caption {
+        // Gunakan warna Primary kita + Transparansi
+        background-color: rgba($primary, 0.75);
+        bottom: 20%; // Posisi agak naik
+        backdrop-filter: blur(5px); // Efek blur kekinian (glassmorphism)
+        max-width: 800px;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+    }
+
+    // Animasi Teks Muncul (Bonus)
+    .animated-text {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease forwards;
+    }
+
+    .delay-1 {
+        animation-delay: 0.3s;
+    }
+    .delay-2 {
+        animation-delay: 0.6s;
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+// Responsif untuk HP
+@media (max-width: 768px) {
+    #heroCarousel .hero-img {
+        height: 400px;
+    }
+    // Tampilkan caption di HP tapi kecil
+    #heroCarousel .carousel-caption {
+        display: block !important;
+        bottom: 10%;
+        padding: 1rem !important;
+
+        h1 {
+            font-size: 1.5rem;
+        }
+        p {
+            font-size: 0.9rem;
+        }
+        .btn {
+            padding: 5px 15px;
+            font-size: 0.8rem;
+        }
+    }
+}
+
+// --- COMPONENT: PRODUCT DETAIL ---
+
+// 1. Breadcrumb Custom
+.breadcrumb-tefa {
+    .breadcrumb-item a {
+        color: $text-muted;
+        &:hover {
+            color: $primary;
+        }
+    }
+    .breadcrumb-item.active {
+        color: $primary;
+        font-weight: 600;
+    }
+}
+
+// 2. Product Gallery (Image)
+.product-gallery {
+    .main-image {
+        border-radius: $border-radius;
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+
+        img {
+            transition: transform 0.5s ease;
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
+    }
+
+    .thumb-list {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+
+        .thumb-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            overflow: hidden;
+            opacity: 0.7;
+            transition: all 0.3s;
+
+            &.active,
+            &:hover {
+                border-color: $primary;
+                opacity: 1;
+            }
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+}
+
+// 3. Product Info (Right Side)
+.product-info {
+    .badge-category {
+        background-color: $primary-light;
+        color: $primary;
+        padding: 5px 12px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+
+    h1 {
+        font-weight: 800;
+        color: $text-dark;
+        margin-top: 10px;
+    }
+
+    .price-tag {
+        font-size: 1.5rem;
+        color: $primary;
+        font-weight: 700;
+    }
+
+    .specs-box {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: $border-radius;
+        padding: 20px;
+        margin-top: 20px;
+
+        li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            i {
+                color: $secondary;
+            } // Icon warna secondary
+        }
+    }
+}
+
+// 4. Action Buttons
+.btn-wa {
+    background-color: #25d366; // Warna WA asli
+    color: white;
+    border: none;
+    font-weight: 600;
+    &:hover {
+        background-color: darken(#25d366, 10%);
+        color: white;
+    }
+}
+
+.btn-primary-tefa {
+    background-color: $primary;
+    color: white;
+    border: none;
+    &:hover {
+        background-color: darken($primary, 10%);
+        color: white;
+    }
+}
