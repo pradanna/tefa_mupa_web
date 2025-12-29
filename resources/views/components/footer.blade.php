@@ -5,7 +5,7 @@
             {{-- KOLOM 1: IDENTITAS --}}
             <div class="col-lg-4 col-md-6">
                 <h5 class="fw-bold text-white mb-3 d-flex align-items-center gap-2">
-                    <i class="bi bi-gear-wide-connected text-primary"></i> TEFA MUPA
+                    <img src="{{ asset('images/local/logo-tefa.png') }}" style="width: 50px" />TEFA MUPA
                 </h5>
                 <p class="text-white-50 small">
                     Teaching Factory SMK Muhammadiyah Pakem. Pusat keunggulan inovasi teknologi dan layanan jasa
@@ -20,15 +20,38 @@
                 </div>
             </div>
 
-            {{-- KOLOM 2: QUICK LINKS --}}
             <div class="col-lg-2 col-md-6">
                 <h6 class="text-white fw-bold mb-3">Tautan Cepat</h6>
                 <ul class="list-unstyled d-flex flex-column gap-2">
-                    <li><a href="{{ route('home') }}" class="footer-link">Beranda</a></li>
-                    <li><a href="#" class="footer-link">Tentang Kami</a></li>
-                    <li><a href="#" class="footer-link">Produk Unggulan</a></li>
-                    <li><a href="#" class="footer-link">Layanan Jasa</a></li>
-                    <li><a href="#" class="footer-link">Berita & Artikel</a></li>
+                    <li>
+                        <a href="{{ route('home') }}" class="footer-link text-decoration-none">Beranda</a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('profile') }}" class="footer-link text-decoration-none">Tentang Kami</a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('products.index', ['kategori' => 'Produk']) }}"
+                            class="footer-link text-decoration-none">Produk Unggulan</a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('products.index', ['kategori' => 'Jasa']) }}"
+                            class="footer-link text-decoration-none">Layanan Jasa</a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('news.index') }}" class="footer-link text-decoration-none">Berita &
+                            Artikel</a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('gallery.index') }}" class="footer-link text-decoration-none">Galeri</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('contact.index') }}" class="footer-link text-decoration-none">Hubungi Kami</a>
+                    </li>
                 </ul>
             </div>
 
@@ -37,21 +60,24 @@
                 <h6 class="text-white fw-bold mb-3">Hubungi Kami</h6>
                 <ul class="list-unstyled text-white-50 small d-flex flex-column gap-3">
                     <li class="d-flex gap-2">
-                        <i class="bi bi-geo-alt-fill text-primary mt-1"></i>
+                        <i class="bi bi-geo-alt-fill txt-primary mt-1"></i>
                         <span>Jl. Pakem - Turi, Pakembinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta
                             55582</span>
                     </li>
-                    <li class="d-flex gap-2">
-                        <i class="bi bi-telephone-fill text-primary"></i>
+                    {{-- <li class="d-flex gap-2">
+                        <i class="bi bi-telephone-fill txt-primary"></i>
                         <span>(0274) 895xxx (Kantor)</span>
+                    </li> --}}
+                    <li class="d-flex gap-2">
+                        {{-- Gunakan target="_blank" agar membuka tab baru --}}
+                        <a href="https://wa.me/6285865611145" target="_blank" class="footer-link ">
+                            <i class="bi bi-whatsapp txt-primary"></i>
+                            <span class="ms-1">0858-6561-1145</span>
+                        </a>
                     </li>
                     <li class="d-flex gap-2">
-                        <i class="bi bi-whatsapp text-primary"></i>
-                        <span>+62 812-xxxx-xxxx (Admin TEFA)</span>
-                    </li>
-                    <li class="d-flex gap-2">
-                        <i class="bi bi-envelope-fill text-primary"></i>
-                        <span>tefa@smkmuhmpakem.sch.id</span>
+                        <i class="bi bi-envelope-fill txt-primary"></i>
+                        <span>stm_muhpakem@yahoo.co.id</span>
                     </li>
                 </ul>
             </div>

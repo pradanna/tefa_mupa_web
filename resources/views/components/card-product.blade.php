@@ -14,7 +14,8 @@
 
     {{-- BAGIAN GAMBAR --}}
     <div class="ratio ratio-4x3 overflow-hidden rounded-top position-relative">
-        <img src="{{ $item['img'] }}" class="card-img-top object-fit-cover transition-img" alt="{{ $item['nama'] }}">
+        <img src="{{ asset($item['img']) }}" class="card-img-top object-fit-cover transition-img"
+            alt="{{ $item['nama'] }}">
 
     </div>
 

@@ -13,61 +13,143 @@ body {
     font-family: $font-body;
 }
 
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+}
+a {
+    &.card {
+        text-decoration: none;
+    }
+}
+.bg-about-glow {
+    background-color: #ffffff;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+        content: "";
+        position: absolute;
+
+        bottom: -200px;
+        right: -10%;
+
+        // Ukuran blob
+        width: 400px;
+        height: 400px;
+
+        background: color.scale($secondary, $lightness: 45%);
+        filter: blur(120px);
+        opacity: 0.4;
+        z-index: 0;
+        border-radius: 50%;
+    }
+}
+
+.bg-about-glow .container {
+    position: relative;
+    z-index: 1;
+}
+
+// Utility: Tech Grid Pattern
+.bg-tech-pattern {
+    background-color: #f8faff;
+
+    background-image: radial-gradient(rgba($primary, 0.15) 1.5px, transparent 1.5px);
+
+    background-size: 24px 24px;
+
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: -200px;
+        right: -10%;
+        width: 400px;
+        height: 400px;
+        background: color.scale($secondary, $lightness: 40%);
+        filter: blur(80px);
+        opacity: 0.3;
+        z-index: 0;
+        border-radius: 50%;
+    }
+}
+
+.bg-tech-pattern .container {
+    position: relative;
+    z-index: 1;
+}
+
 a {
     text-decoration: none;
 }
 
 //UTILS
+.b-primary {
+    background-color: $primary !important;
+}
+
+.b-secondary {
+    background-color: $secondary !important;
+}
+
+.b-light {
+    background-color: $bg-light !important;
+}
+
 .txt-primary {
-    color: $primary;
+    color: $primary !important;
 }
 
 .txt-secondary {
-    color: $secondary;
+    color: $secondary !important;
 }
 
 .bt-primary {
-    background-color: $primary;
-    color: white;
+    background-color: $primary !important;
+    color: white !important;
     border: none;
     transition: all 0.3s ease;
 
     &:hover {
-        background-color: $primary-light;
-        color: white;
+        background-color: $primary-light !important;
+        color: white !important;
     }
 }
 
 .bt-link-primary {
-    background-color: transparent;
+    background-color: transparent !important;
     color: $primary;
     border: none;
     transition: all 0.3s ease;
 
     &:hover {
-        background-color: transparent;
+        background-color: transparent !important;
         color: $primary;
     }
 }
 
 .bt-outline-primary {
-    border: 1px solid $primary;
-    color: $primary;
+    border: 1px solid $primary !important;
+    color: $primary !important;
+    background-color: transparent !important;
     transition: all 0.3s ease;
 
     &:hover {
-        background-color: $primary;
-        color: white;
+        background-color: $primary !important;
+        color: white !important;
     }
     &:active {
-        background-color: $primary;
-        color: white;
+        background-color: $primary !important;
+        color: white !important;
     }
 }
 // --- HERO CAROUSEL ---
 #heroCarousel {
     .hero-img {
-        height: 600px;
+        height: 800px;
         object-fit: cover;
         filter: brightness(0.5);
     }
@@ -94,10 +176,14 @@ a {
 
 // Custom Button menggunakan Variabel Primary
 .btn-tefa-primary {
+    all: unset;
     background-color: $primary;
     color: white;
     border: none;
     transition: all 0.3s ease;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 2rem !important;
 
     &:hover {
         background-color: color.adjust($primary, $lightness: -10%);
@@ -347,6 +433,25 @@ a {
     }
 }
 
+//GALLERY
+// Component: Gallery Zoom Effect
+.gallery-item {
+    cursor: pointer;
+    position: relative;
+
+    img {
+        transition: transform 2s ease;
+    }
+
+    &:hover {
+        img {
+            transform: scale(1.1);
+        }
+
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+    }
+}
+
 .btn-primary-tefa {
     background-color: $primary;
     color: white;
@@ -356,3 +461,237 @@ a {
         color: white;
     }
 }
+
+// HOME ANIMATION
+.hover-up {
+    transition: transform 0.3s;
+}
+
+.hover-up:hover {
+    transform: translateY(-5px);
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}
+
+/* Animasi Simpel saat ganti Tab */
+.animate-fade {
+    animation: fadeIn 0.5s;
+}
+
+.translate-y-100 {
+    transform: translateY(100%); // Sembunyi di bawah
+}
+
+.group-card:hover {
+    .hover-show {
+        transform: translateY(0); // Muncul ke atas saat hover
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// NEWS PAGE
+.mt-n5 {
+    margin-top: -3rem !important;
+}
+
+.input-group-text {
+    background-color: #fff;
+}
+.form-control:focus {
+    box-shadow: none;
+    border-color: $primary;
+}
+
+// OVERRIDE BOOTSTRAP
+// --- CUSTOM PAGINATION ---
+.pagination {
+    .page-link {
+        color: $primary;
+        background-color: white;
+        border: 1px solid #dee2e6;
+
+        &:focus {
+            box-shadow: none;
+            background-color: #f8f9fa;
+        }
+
+        &:hover {
+            color: color.scale($primary, $lightness: 90%);
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
+    }
+
+    .page-item.active {
+        .page-link {
+            background-color: $primary;
+            border-color: $primary;
+            color: white;
+
+            &:hover {
+                background-color: $primary;
+                border-color: $primary;
+            }
+        }
+    }
+}
+
+// --- ARTICLE DETAIL ---
+
+.article-content {
+    font-size: 1.1rem;
+
+    p {
+        margin-bottom: 1.5rem;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        color: $dark;
+        font-weight: 700;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    ul,
+    ol {
+        margin-bottom: 1.5rem;
+        padding-left: 1.5rem;
+    }
+}
+
+.group-card-sidebar {
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: #f8f9fa;
+
+        .text-dark {
+            color: $primary !important;
+        }
+
+        .transition-img {
+            transform: scale(1.1);
+        }
+    }
+
+    &:last-child {
+        border-bottom: none !important;
+    }
+}
+
+// --- PRODUCT DETAIL TABS ---
+#productTab {
+    .nav-link {
+        color: $dark;
+        background-color: white;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+
+        &:hover {
+            color: $primary;
+            background-color: white;
+            border-color: $primary;
+        }
+
+        &.active {
+            background-color: $primary;
+            color: white;
+            box-shadow: 0 4px 6px rgba($primary, 0.3);
+            border-color: $primary;
+        }
+    }
+}
+
+.breadcrumb-white {
+    // 1. Mengubah warna tanda '/'
+    --bs-breadcrumb-divider-color: #ffffff !important;
+
+    // 2. Mengubah warna teks item yang aktif (halaman sekarang)
+    .breadcrumb-item.active {
+        color: #ffffff;
+    }
+
+    // 3. Mengubah warna link (breadcrumb sebelumnya)
+    .breadcrumb-item a {
+        color: rgba(255, 255, 255, 0.75); // Putih agak transparan
+        text-decoration: none;
+
+        &:hover {
+            color: #ffffff; // Putih terang saat hover
+            text-decoration: underline;
+        }
+    }
+}
+
+// --- MASONRY GALLERY ---
+
+.masonry-grid {
+    column-count: 3;
+    column-gap: 1.5rem;
+
+    @media (max-width: 992px) {
+        column-count: 2;
+    }
+
+    @media (max-width: 576px) {
+        column-count: 1;
+    }
+}
+
+.masonry-item {
+    break-inside: avoid;
+
+    margin-bottom: 1.5rem;
+
+    .bg-gradient-to-top {
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    }
+
+    .group-card {
+        &:hover {
+            .hover-show {
+                opacity: 1;
+            }
+            .transition-img {
+                transform: scale(1.05);
+            }
+        }
+    }
+}
+
+// Tab Filter Style
+// .btn-tab {
+//     color: $secondary;
+//     border: none;
+//     transition: all 0.3s ease;
+
+//     &:hover {
+//         background-color: #f8f9fa;
+//         color: $primary;
+//     }
+
+//     &.active {
+//         background-color: $primary;
+//         color: white;
+//         box-shadow: 0 4px 10px rgba($primary, 0.3);
+//     }
+// }
+
+// Product Card Hover Effects

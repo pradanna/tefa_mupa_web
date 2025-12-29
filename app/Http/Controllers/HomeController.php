@@ -11,8 +11,33 @@ class HomeController extends Controller
         // Simulasi Data (Nanti diganti query Database)
         $data = [
             'hero' => [
-                ['title' => 'Inovasi Tanpa Batas', 'subtitle' => 'Mencetak Generasi Unggul di Era Teknologi', 'image' => 'images/slider/slider1.jpg'],
-                ['title' => 'TEFA Mupa', 'subtitle' => 'Solusi Kebutuhan Industri dan Jasa', 'image' => 'images/slider/slider2.jpg'],
+                // SLIDE 1: VISI UTAMA (General Branding)
+                [
+                    'title' => 'Inovasi Tanpa Batas',
+                    'subtitle' => 'Mencetak generasi unggul yang siap bersaing di era teknologi 4.0.',
+                    'image' => 'images/slider/slider1.jpg'
+                ],
+
+                // SLIDE 2: FOKUS PRODUK (Hardware & IoT)
+                [
+                    'title' => 'Produk Teknologi Terapan',
+                    'subtitle' => 'Menghadirkan karya siswa berkompeten.',
+                    'image' => 'images/slider/slider2.jpg'
+                ],
+
+                // SLIDE 3: FOKUS JASA (Servis & Desain)
+                [
+                    'title' => 'Layanan Jasa Profesional',
+                    'subtitle' => 'Percayakan perawatan kendaraan dan desain arsitektur pada kami.',
+                    'image' => 'images/slider/slider3.jpg'
+                ],
+
+                // SLIDE 4: KUALITAS & KEPERCAYAAN (Trust)
+                [
+                    'title' => 'Mitra Terpercaya Industri',
+                    'subtitle' => 'Sinergi pendidikan vokasi dan dunia industri untuk kualitas yang teruji.',
+                    'image' => 'images/slider/slider4.jpg'
+                ],
             ],
             'profil' => [
                 'title' => 'Tentang TEFA Mupa',
@@ -31,37 +56,47 @@ class HomeController extends Controller
             'jasa' => [
                 [
                     'nama' => 'Servis Motor',
-                    'slug' => 'servis-motor', // Slug added
+                    'slug' => 'servis-motor',
                     'kategori' => 'Teknisi',
-                    'img' => 'images/products/service-motor.png'
+                    'img' => 'images/products/service-motor.jpg',
+                    'deskripsi' => 'Layanan perawatan berkala, tune-up, dan perbaikan mesin sepeda motor berbagai merek dengan standar industri.'
                 ],
                 [
                     'nama' => 'Servis Mobil',
-                    'slug' => 'servis-mobil', // Slug added
+                    'slug' => 'servis-mobil',
                     'kategori' => 'Teknisi',
-                    'img' => 'images/products/service-mobil.jpg'
+                    'img' => 'images/products/service-mobil.jpg',
+                    'deskripsi' => 'Perbaikan umum, ganti oli, service kaki-kaki, hingga engine tune-up untuk performa kendaraan roda empat yang prima.'
                 ],
                 [
                     'nama' => 'Desain Arsitektur',
-                    'slug' => 'desain-arsitektur', // Slug added
+                    'slug' => 'desain-arsitektur',
                     'kategori' => 'Desain',
-                    'img' => 'images/products/arsitek.png'
+                    'img' => 'images/products/arsitek.jpg',
+                    'deskripsi' => 'Jasa rancang bangun hunian dan gedung komersial, mencakup denah 2D, visualisasi 3D, hingga perhitungan RAB.'
+                ],
+                [
+                    'nama' => 'Pembuatan Animasi',
+                    'slug' => 'animasi',
+                    'kategori' => 'Desain',
+                    'img' => 'images/products/animasi.jpg',
+                    'deskripsi' => 'Produksi video animasi 2D/3D, motion graphic untuk iklan, dan media pembelajaran interaktif yang kreatif.'
                 ],
             ],
             'berita' => [
-                ['judul' => 'Kunjungan Industri 2025', 'tanggal' => '24 Des 2025', 'excerpt' => 'Siswa melakukan kunjungan ke pabrik elektronik terkemuka...', 'img' => 'images/articles/kunjungan-industri.png'],
-                ['judul' => 'Juara 1 Lomba Robotik', 'tanggal' => '20 Des 2025', 'excerpt' => 'Tim robotik sekolah berhasil menyabet emas...', 'img' => 'images/articles/robotik.jpg'],
-                ['judul' => 'Workshop IoT Gratis', 'tanggal' => '15 Des 2025', 'excerpt' => 'Membuka wawasan masyarakat tentang teknologi...', 'img' => 'images/articles/wshop.png'],
+                ['judul' => 'Kunjungan Industri 2025', 'slug' => 'kunjungan-industri-panasonic', 'tanggal' => '2025-12-24', 'excerpt' => 'Siswa melakukan kunjungan ke pabrik elektronik terkemuka...', 'img' => 'images/articles/kunjungan-industri.png'],
+                ['judul' => 'Juara 1 Lomba Robotik', 'slug' => 'juara-robotik', 'tanggal' => '2025-12-20', 'excerpt' => 'Tim robotik sekolah berhasil menyabet emas...', 'img' => 'images/articles/robotik.jpg'],
+                ['judul' => 'Workshop IoT Gratis',  'slug' => 'workshop-iot', 'tanggal' => '2025-11-15', 'excerpt' => 'Membuka wawasan masyarakat tentang teknologi...', 'img' => 'images/articles/wshop.png'],
             ],
             'gallery' => [
-                'images/gallery/1.png',
+                'images/gallery/11.jpg',
                 'images/gallery/2.jpg',
-                'images/gallery/3.webp',
-                'images/gallery/4.webp',
-                'images/gallery/5.webp',
-                'images/gallery/6.webp',
-                'images/gallery/7.webp',
-                'images/gallery/8.webp',
+                'images/gallery/3.jpg',
+                'images/gallery/4.jpg',
+                'images/gallery/5.jpg',
+                'images/gallery/6.jpg',
+                'images/gallery/7.jpg',
+                'images/gallery/8.jpg',
 
             ]
         ];
