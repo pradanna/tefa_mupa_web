@@ -236,7 +236,7 @@
         <div class="container py-4">
             <div class="text-center mb-5">
                 <h2 class="fw-bold txt-primary " data-aos="fade-up" data-aos-delay="0">Berita Terkini</h2>
-                <p class="text-muted" data-aos="fade-up" data-aos-delay="100">Berita terkini tentang SMK Muhammadyah
+                <p class="text-muted" data-aos="fade-up" data-aos-delay="100">Berita terkini tentang SMK MUHAMMADIYAH
                     Pakem</p>
             </div>
 

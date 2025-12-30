@@ -2,7 +2,7 @@
     <div class="container">
         <a class="navbar-brand fw-bold d-flex align-items-center gap-2 text-black" href="{{ route('home') }}">
             <img src="{{ asset('images/local/logo-tefa.png') }}" class="logo-navbar" /> <span class="title-navbar">TEFA SMK
-                MUHAMMADYAH PAKEM</span>
+                MUHAMMADIYAH PAKEM</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
