@@ -105,8 +105,8 @@
                         </div>
                         <h4 class="fw-bold mb-3">Hardware & IoT</h4>
                         <p class="text-muted mb-0">
-                            Inovasi produk elektronik seperti Smart Lock RFID, Running Text, dan alat otomasi berbasis
-                            mikrokontroler terkini.
+                            Inovasi produk elektronik berbasis RFID seperti mesin absen otomatis, starter motor
+                            otomatis, smart door lock.
                         </p>
                     </div>
                 </div>
