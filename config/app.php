@@ -14,6 +14,10 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'full_name_uppercase' => env('APP_NAME_LONG_UPPERCASE', 'TEFA SMK Muhammadiyah Pakem'),
+    'short_name' => env('APP_SHORT_NAME', 'TEFA'),
+    'holding_name' => env('APP_HOLDING_NAME', 'SMK Muhammadiyah Pakem'),
+    'holding_short_name' => env('APP_HOLDING_SHORT_NAME', 'SMK MUPA'),
 
     /*
     |--------------------------------------------------------------------------

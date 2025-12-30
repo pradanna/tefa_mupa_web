@@ -9,7 +9,7 @@
 
         <div class="container position-relative py-5 text-center text-white">
             <h1 class="display-4 fw-bold" data-aos="fade-down">TENTANG TEFA </h1>
-            <h1 class="display-4 fw-bold" data-aos="fade-down">SMK MUHHAMADYA PAKEM</h1>
+            <h1 class="display-4 fw-bold" data-aos="fade-down">{{ config('app.holding_name') }}</h1>
 
         </div>
     </section>
@@ -38,7 +38,7 @@
                     <h6 class="txt-primary fw-bold text-uppercase ls-wide">Perjalanan Kami</h6>
                     <h2 class="fw-bold display-6 mb-4">Dedikasi untuk Pendidikan Vokasi Berkemajuan</h2>
                     <p class="text-muted mb-3">
-                        Teaching Factory (TEFA) SMK Muhammadiyah Pakem didirikan sebagai respon terhadap kebutuhan
+                        {{ config('app.full_name_uppercase') }} didirikan sebagai respon terhadap kebutuhan
                         industri akan lulusan yang siap kerja. Bermula dari unit produksi kecil, kini kami telah
                         berkembang menjadi pusat pelatihan dan layanan jasa profesional.
                     </p>
@@ -128,7 +128,7 @@
 
             <div class="text-center mb-5" data-aos="fade-up">
                 <h6 class="text-secondary fw-bold text-uppercase">Tim Manajemen</h6>
-                <h2 class="fw-bold">Struktur Organisasi TEFA</h2>
+                <h2 class="fw-bold">Struktur Organisasi {{ config('app.short_name') }}</h2>
             </div>
 
             <div class="row g-4 justify-content-center">

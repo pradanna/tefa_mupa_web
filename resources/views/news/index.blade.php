@@ -10,7 +10,7 @@
         <div class="container position-relative py-5 text-center text-white">
             <h1 class="display-4 fw-bold" data-aos="fade-down">Berita & Artikel</h1>
             <p class="lead text-white-80 mb-4" data-aos="fade-up" data-aos-delay="100">
-                Informasi terbaru seputar kegiatan, prestasi, dan teknologi di TEFA Mupa.
+                Informasi terbaru seputar kegiatan, prestasi, dan teknologi di {{ config('app.short_name') }}.
             </p>
 
 

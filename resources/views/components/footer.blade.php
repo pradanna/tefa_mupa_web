@@ -5,11 +5,11 @@
             {{-- KOLOM 1: IDENTITAS --}}
             <div class="col-lg-4 col-md-6">
                 <h5 class="fw-bold text-white mb-3 d-flex align-items-center gap-2">
-                    <img src="{{ asset('images/local/logo-tefa.png') }}" style="width: 50px" />TEFA SMK
-                    MUHAMMADIYAH PAKEM
+                    <img src="{{ asset('images/local/logo-tefa.png') }}" style="width: 50px" /> 
+                    {{ config('app.name') }}
                 </h5>
                 <p class="text-white-50 small">
-                    Teaching Factory SMK Muhammadiyah Pakem. Pusat keunggulan inovasi teknologi dan layanan jasa
+                    {{ config('app.full_name_uppercase') }}. Pusat keunggulan inovasi teknologi dan layanan jasa
                     profesional berbasis standar industri.
                 </p>
                 <div class="d-flex gap-3 mt-3">
@@ -90,8 +90,7 @@
         <div class="row align-items-center">
             <div class="col-md-6 text-center text-md-start">
                 <p class="small text-white-50 mb-0">
-                    &copy; {{ date('Y') }} <strong>TEFA SMK
-                        MUHAMMADIYAH PAKEM</strong>. All Rights Reserved.
+                    &copy; {{ date('Y') }} <strong>{{ config('app.name') }}</strong>. All Rights Reserved.
                 </p>
             </div>
             <div class="col-md-6 text-center text-md-end d-none d-md-block">

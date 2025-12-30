@@ -8,7 +8,7 @@
         <div class="container position-relative py-5 text-center text-white">
             <h1 class="display-4 fw-bold" data-aos="fade-down">Katalog Produk & Jasa</h1>
             <p class="lead text-white-80 mb-4" data-aos="fade-up" data-aos-delay="100">
-                Solusi teknologi tepat guna dan layanan profesional karya TEFA Mupa.
+                Solusi teknologi tepat guna dan layanan profesional karya {{ config('app.short_name') }}.
             </p>
         </div>
     </section>
