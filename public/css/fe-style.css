@@ -126,6 +126,18 @@ a {
   color: white !important;
 }
 
+.logo-navbar {
+  width: 50px;
+}
+
+@media (max-width: 768px) {
+  .title-navbar {
+    font-size: 0.8rem;
+  }
+  .logo-navbar {
+    width: 30px;
+  }
+}
 #heroCarousel .hero-img {
   height: 800px;
   -o-object-fit: cover;
@@ -149,6 +161,22 @@ a {
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
 }
 
+@media (max-width: 768px) {
+  #heroCarousel .hero-caption-clean h1 {
+    font-size: 1rem !important;
+  }
+  #heroCarousel .hero-caption-clean p {
+    font-size: 0.7rem !important;
+  }
+  #heroCarousel .hero-caption-clean .btn-tefa-primary {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    font-size: 0.7rem !important;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+}
 .btn-tefa-primary {
   all: unset;
   background-color: #ff383c;
@@ -561,5 +589,91 @@ a {
   opacity: 1;
 }
 .masonry-item .group-card:hover .transition-img {
+  transform: scale(1.05);
+}
+
+.floating-sidebar {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1050;
+  background-color: #fff;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  width: 80px;
+  overflow: hidden;
+}
+@media (max-width: 768px) {
+  .floating-sidebar {
+    display: none;
+  }
+}
+
+.sidebar-top-accent {
+  height: 6px;
+  background-color: #ff383c;
+  width: 100%;
+}
+
+.sidebar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 5px;
+  text-decoration: none;
+  color: #f59e0b;
+  transition: all 0.2s ease;
+}
+.sidebar-item span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-top: 2px;
+  text-align: center;
+  line-height: 1.2;
+}
+.sidebar-item:hover {
+  background-color: #f8f9fa;
+  color: #ff383c;
+}
+.sidebar-item:hover i {
+  transform: scale(1.1);
+  transition: transform 0.2s;
+}
+
+.sidebar-divider {
+  height: 1px;
+  background-color: #f1f1f1;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.partner-logo-wrapper {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 768px) {
+  .partner-logo-wrapper {
+    height: 60px;
+  }
+}
+
+.partner-logo {
+  max-height: 100%;
+  width: auto;
+  filter: grayscale(100%);
+  opacity: 0.6;
+  transition: all 0.4s ease-in-out;
+  cursor: pointer;
+}
+.partner-logo:hover {
+  filter: grayscale(0%);
+  opacity: 1;
   transform: scale(1.05);
 }

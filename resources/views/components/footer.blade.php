@@ -5,7 +5,8 @@
             {{-- KOLOM 1: IDENTITAS --}}
             <div class="col-lg-4 col-md-6">
                 <h5 class="fw-bold text-white mb-3 d-flex align-items-center gap-2">
-                    <img src="{{ asset('images/local/logo-tefa.png') }}" style="width: 50px" />TEFA MUPA
+                    <img src="{{ asset('images/local/logo-tefa.png') }}" style="width: 50px" />TEFA SMK
+                    MUHAMMADYAH PAKEM
                 </h5>
                 <p class="text-white-50 small">
                     Teaching Factory SMK Muhammadiyah Pakem. Pusat keunggulan inovasi teknologi dan layanan jasa
@@ -89,7 +90,8 @@
         <div class="row align-items-center">
             <div class="col-md-6 text-center text-md-start">
                 <p class="small text-white-50 mb-0">
-                    &copy; {{ date('Y') }} <strong>TEFA SMK Muhammadiyah Pakem</strong>. All Rights Reserved.
+                    &copy; {{ date('Y') }} <strong>TEFA SMK
+                        MUHAMMADYAH PAKEM</strong>. All Rights Reserved.
                 </p>
             </div>
             <div class="col-md-6 text-center text-md-end d-none d-md-block">

@@ -67,7 +67,7 @@
 
                     {{-- CTA BUTTONS --}}
                     <div class="d-grid gap-2 d-md-flex mb-5">
-                        <a href="https://wa.me/623820655083?text=Halo%20Admin,%20saya%20mau%20pesan/tanya%20produk:%20{{ urlencode($product['nama']) }}"
+                        <a href="https://wa.me/6283820655083?text=Halo%20Admin,%20saya%20mau%20pesan/tanya%20produk:%20{{ urlencode($product['nama']) }}"
                             target="_blank"
                             class="btn btn-success btn-lg rounded-pill px-5 py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2">
                             <i class="bi bi-whatsapp fs-5"></i>
@@ -79,30 +79,43 @@
                         </a>
                     </div>
 
-                    {{-- TAB INFORMASI (Deskripsi & Spesifikasi) --}}
                     <div class="card border-0 shadow-sm bg-light rounded-4">
                         <div class="card-header bg-transparent border-bottom-0 pt-4 px-4 pb-0">
                             <ul class="nav nav-pills card-header-pills gap-2" id="productTab" role="tablist">
+
+                                {{-- Tab 1: Deskripsi --}}
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link active rounded-pill fw-bold small px-4" id="desc-tab"
                                         data-bs-toggle="tab" data-bs-target="#desc" type="button"
                                         role="tab">Deskripsi</button>
                                 </li>
+
+                                {{-- Tab 2: Spesifikasi --}}
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link rounded-pill fw-bold small px-4" id="specs-tab"
                                         data-bs-toggle="tab" data-bs-target="#specs" type="button"
                                         role="tab">Spesifikasi</button>
                                 </li>
+
+                                {{-- Tab 3: Cara Pembayaran (BARU) --}}
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link rounded-pill fw-bold small px-4" id="payment-tab"
+                                        data-bs-toggle="tab" data-bs-target="#payment" type="button"
+                                        role="tab">Cara Pembayaran</button>
+                                </li>
+
                             </ul>
                         </div>
+
                         <div class="card-body p-4">
                             <div class="tab-content" id="productTabContent">
-                                {{-- Tab Deskripsi --}}
+
+                                {{-- Konten Tab Deskripsi --}}
                                 <div class="tab-pane fade show active text-muted" id="desc" role="tabpanel">
                                     {!! $product['deskripsi_lengkap'] !!}
                                 </div>
 
-                                {{-- Tab Spesifikasi --}}
+                                {{-- Konten Tab Spesifikasi --}}
                                 <div class="tab-pane fade" id="specs" role="tabpanel">
                                     <ul class="list-group list-group-flush bg-transparent">
                                         @foreach ($product['spesifikasi'] as $spec)
@@ -114,6 +127,52 @@
                                         @endforeach
                                     </ul>
                                 </div>
+
+                                {{-- Konten Tab Cara Pembayaran (BARU) --}}
+                                <div class="tab-pane fade" id="payment" role="tabpanel">
+                                    <div class="d-flex flex-column gap-3">
+
+                                        {{-- Metode 1: Transfer --}}
+                                        <div class="d-flex gap-3 align-items-start">
+                                            <div class="icon-box bg-white text-primary rounded-circle shadow-sm d-flex align-items-center justify-content-center flex-shrink-0"
+                                                style="width: 40px; height: 40px;">
+                                                <i class="bi bi-bank"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Transfer Bank</h6>
+                                                <p class="text-muted small mb-0">
+                                                    Bank BRI: <strong>1234-5678-9000</strong> (a.n SMK Muh Pakem)<br>
+                                                    Bank BPD DIY: <strong>001-223-445</strong> (a.n TEFA Mupa)
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {{-- Metode 2: Tunai --}}
+                                        <div class="d-flex gap-3 align-items-start">
+                                            <div class="icon-box bg-white text-success rounded-circle shadow-sm d-flex align-items-center justify-content-center flex-shrink-0"
+                                                style="width: 40px; height: 40px;">
+                                                <i class="bi bi-cash-stack"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Pembayaran Tunai (COD)</h6>
+                                                <p class="text-muted small mb-0">
+                                                    Pembayaran dapat dilakukan langsung di kasir Bengkel TEFA SMK
+                                                    Muhammadiyah Pakem saat pengambilan barang/jasa.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {{-- Alert Info --}}
+                                        <div class="alert alert-warning border-0 d-flex align-items-center gap-2 mt-2 mb-0"
+                                            role="alert">
+                                            <i class="bi bi-info-circle-fill"></i>
+                                            <small>Harap konfirmasi ke Admin via WhatsApp setelah melakukan
+                                                transfer.</small>
+                                        </div>
+
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

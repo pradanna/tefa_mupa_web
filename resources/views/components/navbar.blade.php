@@ -1,7 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm py-4">
     <div class="container">
         <a class="navbar-brand fw-bold d-flex align-items-center gap-2 text-black" href="{{ route('home') }}">
-            <img src="{{ asset('images/local/logo-tefa.png') }}" style="width: 50px" /> TEFA MUHAMMADYAH PAKEM
+            <img src="{{ asset('images/local/logo-tefa.png') }}" class="logo-navbar" /> <span class="title-navbar">TEFA SMK
+                MUHAMMADYAH PAKEM</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>

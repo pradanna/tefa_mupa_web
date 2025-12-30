@@ -65,7 +65,7 @@
                                 frameborder="0" class="object-fit-cover"></iframe>
                         </div>
 
-                        <div class="position-absolute top-0 start-0 w-100 h-100" style="z-index: 2;"></div>
+                        {{-- <div class="position-absolute top-0 start-0 w-100 h-100" style="z-index: 2;"></div> --}}
 
                     </div>
                 </div>
@@ -199,6 +199,35 @@
                 <a href="{{ route('products.index') }}" class="bt-link-primary text-decoration-none fw-bold">Lihat
                     Semua Produk dan Jasa <i class="bi bi-chevron-right"></i></a>
             </div>
+        </div>
+    </section>
+
+    {{-- SECTION: MITRA INDUSTRI --}}
+    <section class="py-5 bg-white border-bottom">
+        <div class="container">
+
+            {{-- Judul Section (Optional) --}}
+            <div class="text-center mb-4" data-aos="fade-up">
+                <h6 class="text-secondary fw-bold text-uppercase ls-wide">Kepercayaan</h6>
+                <h2 class="fw-bold">Mitra Industri Kami</h2>
+            </div>
+
+
+            <div class="row g-4 justify-content-center align-items-center">
+                @foreach ($partners as $item)
+                    <div class="col-4 col-sm-3 col-md-2" data-aos="zoom-in"
+                        data-aos-delay="{{ $loop->index * 50 }}">
+
+                        {{-- Wrapper untuk mengatur tinggi maksimal logo --}}
+                        <div class="partner-logo-wrapper text-center">
+                            <img src="{{ asset($item['img']) }}" class="img-fluid partner-logo transition-all"
+                                alt="{{ $item['name'] }}" title="{{ $item['name'] }}">
+                        </div>
+
+                    </div>
+                @endforeach
+            </div>
+
         </div>
     </section>
 
