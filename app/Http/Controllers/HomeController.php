@@ -48,8 +48,8 @@ class HomeController extends Controller
         ];
 
         $profil = [
-            'title' => 'Tentang TEFA Mupa',
-            'description' => 'Teaching Factory SMK Muhammadiyah Pakem adalah pusat pengembangan kompetensi siswa berbasis industri. Kami menghadirkan produk teknologi tepat guna dan layanan profesional.',
+            'title' => 'Tentang ' . config('app.short_name'),
+            'description' => config('app.full_name_uppercase') . ' adalah pusat pengembangan kompetensi siswa berbasis industri. Kami menghadirkan produk teknologi tepat guna dan layanan profesional.',
             'image' => 'https://placehold.co/600x400/gray/white?text=Foto+Gedung',
         ];
         // Data dipisah agar mudah dimapping di Tabs

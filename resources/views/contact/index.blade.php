@@ -46,8 +46,8 @@
                         </div>
                         <div>
                             <h6 class="fw-bold mb-1">Email & Telepon</h6>
-                            <p class="text-muted small mb-0">tefa@smkmuhpakem.sch.id</p>
-                            <p class="text-muted small mb-0">(0274) 123456</p>
+                            <p class="text-muted small mb-0">stm_muhpakem@yahoo.co.id</p>
+                            <p class="text-muted small mb-0">0858-6561-1145</p>
                         </div>
                     </div>
 
