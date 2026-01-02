@@ -17,11 +17,11 @@ Route::prefix('backoffice')->group(function () {
         return view('backoffice.pages.login.index');
     })->name('login-backoffice');
 
-    Route::middleware('auth')->group(function () {
+    // Route::middleware('auth')->group(function () {
         Route::get('dashboard', function () {
-            return response()->json('login succes');
+            return view('backoffice.pages.dashboard.index');
         })->name('dashboard');
-    });
+    // });
 });
 
 

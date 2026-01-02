@@ -1,0 +1,2 @@
+
+<x-backoffice.layout.main/>
