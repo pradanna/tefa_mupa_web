@@ -30,7 +30,7 @@ Route::get('/galeri/{slug}', [GalleryController::class, 'show'])->name('gallery.
 // Halaman Kontak
 Route::get('/kontak', [ContactController::class, 'index'])->name('contact.index');
 
-// backoffice tetap ada routenya
+// backoffice
 Route::prefix('backoffice')->group(function () {
     Route::post('authentication', [App\Http\Controllers\Backoffice\Auth\AutenticationController::class, 'login'])->name('auth');
     Route::get('login', function () {
