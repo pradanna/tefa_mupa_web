@@ -33,6 +33,7 @@ Route::get('/kontak', [ContactController::class, 'index'])->name('contact.index'
 // backoffice
 Route::prefix('backoffice')->group(function () {
     Route::post('authentication', [App\Http\Controllers\Backoffice\Auth\AutenticationController::class, 'login'])->name('auth');
+    Route::post('logout', [App\Http\Controllers\Backoffice\Auth\AutenticationController::class, 'logout'])->name('logout');
     Route::get('login', function () {
         return view('backoffice.pages.login.index');
     })->name('login-backoffice');
@@ -42,5 +43,6 @@ Route::prefix('backoffice')->group(function () {
             return view('backoffice.pages.dashboard.index');
         })->name('dashboard');
         Route::resource('sliders', App\Http\Controllers\Backoffice\SliderController::class);
+        Route::resource('categories', App\Http\Controllers\Backoffice\CategoryController::class);
     });
 });

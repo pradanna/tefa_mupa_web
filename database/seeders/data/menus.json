@@ -1,68 +1,100 @@
 [
-  {
-    "id": 1,
-    "title": "Manajemen Landing Page",
-    "icon": "fa-home",
-    "parent": null
-  },
-  {
-    "id": 2,
-    "title": "Manajemen Produk / Jasa",
-    "icon": "fa-box-open",
-    "parent": null
-  },
-  {
-    "id": 3,
-    "title": "Manajemen Diskon / Promo",
-    "icon": "fa-percentage",
-    "parent": null
-  },
-  {
-    "id": 4,
-    "title": "Manajemen Berita / Blog",
-    "icon": "fa-newspaper",
-    "parent": null
-  },
-  {
-    "id": 5,
-    "title": "Manajemen Galeri",
-    "icon": "fa-image",
-    "parent": null
-  },
-  {
-    "id": 6,
-    "title": "Manajemen Profil TEFA",
-    "icon": "fa-user-graduate",
-    "parent": null
-  },
-  {
-    "id": 7,
-    "title": "Manajemen Visi & Misi",
-    "icon": "fa-bullseye",
-    "parent": null
-  },
-  {
-    "id": 8,
-    "title": "Manajemen Struktur Organisasi",
-    "icon": "fa-sitemap",
-    "parent": null
-  },
-  {
-    "id": 9,
-    "title": "Manajemen Sertifikasi",
-    "icon": "fa-certificate",
-    "parent": null
-  },
-  {
-    "id": 10,
-    "title": "Manajemen Lisensi",
-    "icon": "fa-id-card",
-    "parent": null
-  },
-  {
-    "id": 11,
-    "title": "Manajemen Industri Mitra",
-    "icon": "fa-handshake",
-    "parent": null
-  }
+    {
+        "id": 0,
+        "title": "Dashboard",
+        "link": "dashboard",
+        "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-app-window\"><path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10\" /><path d=\"M6 8h.01\" /><path d=\"M9 8h.01\" /></svg>",
+        "parent": null
+    },
+    {
+        "id": 1,
+        "title": "Landing Page",
+        "link": "#",
+        "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-app-window\"><path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10\" /><path d=\"M6 8h.01\" /><path d=\"M9 8h.01\" /></svg>",
+        "parent": null
+    },
+    {
+        "id": 2,
+        "title": "Slider",
+        "link": "sliders",
+        "icon": "tabler-slideshow",
+        "parent": null
+    },
+    {
+        "id": 3,
+        "title": "Setting Kategori",
+        "link": "categories",
+        "icon": "tabler-category",
+        "parent": null
+    },
+    {
+        "id": 4,
+        "title": "Produk / Jasa",
+        "link": "#",
+        "icon": "tabler-box-multiple",
+        "parent": null
+    },
+    {
+        "id": 5,
+        "title": "Promo",
+        "link": "#",
+        "icon": "tabler-discount-2",
+        "parent": null
+    },
+    {
+        "id": 6,
+        "title": "Berita",
+        "link": "#",
+        "icon": "tabler-news",
+        "parent": null
+    },
+    {
+        "id": 7,
+        "title": "Galeri",
+        "link": "#",
+        "icon": "tabler-photo",
+        "parent": null
+    },
+    {
+        "id": 8,
+        "title": "Profil",
+        "link": "#",
+        "icon": "tabler-user",
+        "parent": null
+    },
+    {
+        "id": 9,
+        "title": "Visi Misi",
+        "link": "#",
+        "icon": "tabler-target-arrow",
+        "parent": null
+    },
+    {
+        "id": 10,
+        "title": "Struktur Organisasi",
+        "link": "#",
+        "icon": "tabler-hierarchy-3",
+        "parent": null
+    },
+    {
+        "id": 11,
+        "title": "Sertifikasi",
+        "link": "#",
+        "icon": "tabler-certificate-2",
+        "parent": null
+    },
+    {
+        "id": 12,
+        "title": "Lisensi",
+        "link": "#",
+        "icon": "tabler-id-badge-2",
+        "parent": null
+    },
+    {
+        "id": 13,
+        "title": "Industri Mitra",
+        "link": "#",
+        "icon": "tabler-handshake",
+        "parent": null
+    }
 ]

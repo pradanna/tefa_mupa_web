@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers\Backoffice;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\SliderRepository;
 use App\Commons\Controller\BaseController;
-use App\Schemas\SliderSchema;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Storage;
-use PhpParser\Node\Stmt\TryCatch;
+
 
 class SliderController extends BaseController
 {
@@ -43,26 +39,7 @@ class SliderController extends BaseController
     public function store(Request $request)
     {
         try {
-            if (!$request->hasFile('file')) {
-                return redirect()->back()->with('error', 'File is required');
-            }
-
-            $file = $request->file('file');
-            $extension = $file->getClientOriginalExtension();
-            $dateNow = now()->format('YmdHis');
-            $name = $dateNow . '.' . $extension;
-
-            $file->storeAs('images/slider', $name, 'public');
-            $path_url = asset('storage/images/slider');
-
-            $schema = new SliderSchema();
-            $requestData = array_merge($request->all(), [
-                'file' => $name,
-                'path' => $path_url
-            ]);
-            $schema->hydrateSchemaBody($requestData);
-
-            $slider = $this->sliderRepository->create($schema);
+            $slider = $this->sliderRepository->create($request);
             return redirect()->route('sliders.index')->with('success', 'Slider created successfully');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Slider created failed: ' . $th->getMessage());
@@ -85,6 +62,9 @@ class SliderController extends BaseController
         //
         try {
             $slider = $this->sliderRepository->show($id);
+            if (!$slider || $slider instanceof \Throwable) {
+                return redirect()->back()->with('error', 'Slider Not Found');
+            }
             return view('backoffice.pages.slider.edit', compact('slider'));
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Failed to retrieve slider: ' . $th->getMessage());
@@ -98,27 +78,10 @@ class SliderController extends BaseController
     {
         try {
             $slider = $this->sliderRepository->show($id);
-
-            $data = $request->all();
-            if ($request->hasFile('file')) {
-                $file = $request->file('file');
-                $extension = $file->getClientOriginalExtension();
-                $dateNow = now()->format('YmdHis');
-                $newName = $dateNow . '.' . $extension;
-
-                $file->storeAs('images/slider', $newName, 'public');
-                if ($slider->file && Storage::disk('public')->exists('images/slider/' . $slider->file)) {
-                    Storage::disk('public')->delete('images/slider/' . $slider->file);
-                }
-                $data['file'] = $newName;
-            } else {
-                $data['file'] = $slider->file;
+            if(!$slider || $slider instanceof \Throwable){
+                return redirect()->back()->with('error','Slider not found');
             }
-
-            $schema = new \App\Schemas\SliderSchema();
-            $schema->hydrateSchemaBody($data);
-
-            $this->sliderRepository->update($id, $schema);
+            $this->sliderRepository->update($id, $request);
             return redirect()->route('sliders.index')->with('success', 'Slider updated successfully');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Failed to update slider: ' . $th->getMessage());
@@ -133,7 +96,7 @@ class SliderController extends BaseController
         try {
 
             $find_data = $this->sliderRepository->show($id);
-            if(!$find_data){
+            if(!$find_data || $find_data instanceof \Throwable){
                 return redirect()->back()->with('error', 'Slider not found');
             }
             $this->sliderRepository->delete($id);

@@ -28,4 +28,15 @@ class AutenticationController extends BaseController
             return redirect()->route('login-backoffice')->withErrors($e->errors());
         }
     }
+    public function logout(){
+        try {
+            Auth::logout();
+            $request = request();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect()->route('login-backoffice');
+        } catch (\Throwable $th) {
+            return redirect()->route('dashboard')->withErrors(['logout' => 'Failed to logout.']);
+        }
+    }
 }

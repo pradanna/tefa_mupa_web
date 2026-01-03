@@ -56,7 +56,7 @@ class AppRepository{
         $data = NULL;
         DB::beginTransaction();
         try {
-            $data = $this->model->orderBy('created_at','DESC')->paginate($request->input('limit', 15));
+            $data = $this->model->orderBy('created_at','DESC')->paginate($request->input('limit', 5));
             Cache::flush();
             DB::commit();
         } catch (\Throwable $th) {

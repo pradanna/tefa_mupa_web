@@ -1,6 +1,6 @@
 <x-backoffice.layout.main>
-    <x-backoffice.partials.breadcrumb title="Slider" pretitle="Slider" createUrl="{{ route('sliders.create') }}"
-        createLabel="Tambah Slider" />
+    <x-backoffice.partials.breadcrumb title="Kategori" pretitle="Kategori" createUrl="{{ route('categories.create') }}"
+        createLabel="Tambah Kategori" />
     <div class="col-12">
         <div class="card">
             <div class="card-body border-bottom py-3">
@@ -33,8 +33,10 @@
                                     <path d="M6 15l6 -6l6 6" />
                                 </svg>
                             </th>
-                            <th>Title</th>
-                            <th>Image</th>
+                            <th>Nama</th>
+                            <th>Type</th>
+                            <th>Slug</th>
+                            <th>Deskripsi</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -44,38 +46,35 @@
                         @endphp
                         @php
                             // Ambil nomor pertama pada halaman ini (untuk penomoran tabel yang konsisten dengan pagination)
-                            $no = ($sliders->currentPage() - 1) * $sliders->perPage() + 1;
+                            $no = ($categorys->currentPage() - 1) * $categorys->perPage() + 1;
                         @endphp
-                        @forelse ($sliders as $slider)
+                        @forelse ($categorys as $category)
                             <tr>
                                 <td><span class="text-muted">{{ $no++ }}</span></td>
-                                <td class="text-muted">{{ $slider->title ?? '-' }}</td>
-                                <td class="text-muted">
-                                    @if ($slider->file)
-                                        <img src="{{ $slider->path.'/'.$slider->file }}"
-                                            alt="{{ $slider->title ?? 'Slider Image' }}"
-                                            style="max-width: 120px; max-height: 80px; object-fit:cover; display:block; border-radius: 5px; border: 1px solid #eee;">
-                                    @endif
-                                </td>
-                                <td class="text-end">
+                                <td class="text-muted">{{ $category->name ?? '-' }}</td>
+                                <td class="text-muted">{{ $category->type ?? '-' }}</td>
+                                <td class="text-muted">{{ $category->slug ?? '-' }}</td>
+                                <td class="text-muted">{{ $category->description ?? '-' }}</td>
+                                <td class="text-muted position-relative">
                                     <span class="dropdown">
-                                        <button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport"
-                                            data-bs-toggle="dropdown">Actions</button>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item" href="{{ route('sliders.edit', $slider) }}">Edit</a>
-                                            <form action="{{ route('sliders.destroy', $slider->id) }}" method="POST" style="display:inline;">
+                                        <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
+                                            data-bs-boundary="viewport">Actions</button>
+                                        <div class="dropdown-menu dropdown-menu-start"
+                                            style="margin-top: 30px;">
+                                            <a class="dropdown-item" href="{{ route('categories.edit', $category->id) }}">Edit</a>
+                                            <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this slider?')">Delete</button>
+                                                <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this category?')">Delete</button>
                                             </form>
                                         </div>
                                     </span>
                                 </td>
                             </tr>
                         @empty
-                        <x-backoffice.table.empty
-                        colspan="5"
-                        />
+                            <x-backoffice.table.empty
+                            colspan="6"
+                            />
                         @endforelse
                     </tbody>
                 </table>
@@ -84,20 +83,20 @@
                 <p class="m-0 text-muted">
                     Showing
                     <span>
-                        {{ ($sliders->currentPage() - 1) * $sliders->perPage() + 1 }}
+                        {{ ($categorys->currentPage() - 1) * $categorys->perPage() + 1 }}
                     </span>
                     to
                     <span>
-                        {{ ($sliders->currentPage() - 1) * $sliders->perPage() + $sliders->count() }}
+                        {{ ($categorys->currentPage() - 1) * $categorys->perPage() + $categorys->count() }}
                     </span>
                     of
                     <span>
-                        {{ $sliders->total() }}
+                        {{ $categorys->total() }}
                     </span>
                     entries
                 </p>
                 <div class="ms-auto m-0">
-                    {{ $sliders->links('vendor.pagination.custom') }}
+                    {{ $categorys->links('vendor.pagination.custom') }}
                 </div>
             </div>
         </div>
