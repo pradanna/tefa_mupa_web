@@ -44,5 +44,6 @@ Route::prefix('backoffice')->group(function () {
         })->name('dashboard');
         Route::resource('sliders', App\Http\Controllers\Backoffice\SliderController::class);
         Route::resource('categories', App\Http\Controllers\Backoffice\CategoryController::class);
+        Route::resource('news',App\Http\Controllers\backoffice\NewsController::class);
     });
 });

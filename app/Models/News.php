@@ -8,7 +8,7 @@ class News extends Model
 {
     //
     protected $table = 'news';
-    protected $fillable = ['title','slug','id_category','image','content','date','status','id_user'];
+    protected $fillable = ['title','slug','path','id_category','image','content','date','status','id_user'];
 
 
     public function category()

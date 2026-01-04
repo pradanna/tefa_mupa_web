@@ -11,6 +11,7 @@ class NewsSchema extends BaseSchema
     private $id_category;
     private $content;
     private $image;
+    private $path;   // Added path property
     private $date;
     private $status;
     private $id_user;
@@ -22,9 +23,11 @@ class NewsSchema extends BaseSchema
             'slug' => 'required|string|max:255|unique:news,slug',
             'id_category' => 'required|integer|exists:categories,id',
             'content' => 'required|string',
+            'image' => 'nullable|string|max:255',
+            'path'  => 'nullable|string',
             'date' => 'required|date',
             'status' => 'required|in:publis,unpublis',
-            'id_user' => 'required|integer|exists:users,id',
+            'id_user' => 'nullable|integer|exists:users,id',
         ];
     }
 
@@ -34,6 +37,8 @@ class NewsSchema extends BaseSchema
             ->setSlug($this->body['slug'] ?? null)
             ->setIdCategory($this->body['id_category'] ?? null)
             ->setContent($this->body['content'] ?? null)
+            ->setImage($this->body['image'] ?? null)
+            ->setPath($this->body['path'] ?? null) // Hydrate path
             ->setDate($this->body['date'] ?? null)
             ->setStatus($this->body['status'] ?? null)
             ->setIdUser($this->body['id_user'] ?? null);
@@ -80,6 +85,28 @@ class NewsSchema extends BaseSchema
     public function setContent($content)
     {
         $this->content = $content;
+        return $this;
+    }
+
+    // Image
+    public function getImage()
+    {
+        return $this->image;
+    }
+    public function setImage($image)
+    {
+        $this->image = $image;
+        return $this;
+    }
+
+    // Path
+    public function getPath()
+    {
+        return $this->path;
+    }
+    public function setPath($path)
+    {
+        $this->path = $path;
         return $this;
     }
 

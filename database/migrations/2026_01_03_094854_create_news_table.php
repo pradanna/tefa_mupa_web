@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->unsignedBigInteger('id_category');
             $table->text('image');
+            $table->text('path');
             $table->text('content');
             $table->date('date');
             $table->enum('status', ['publis', 'unpublis'])->default('publis');

@@ -28,9 +28,48 @@ class SliderController extends BaseController
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('backoffice.pages.slider.created');
+        try {
+            if (!$request->hasFile('file')) {
+                return redirect()->back()->with('error', 'File is required')->withInput();
+            }
+
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            $dateNow = now()->format('YmdHis');
+            $fileName = $dateNow . '.' . $extension;
+
+            $file->storeAs('images/slider', $fileName, 'public');
+
+            $pathUrl = asset('storage/images/slider');
+
+            $formattedData = array_merge($request->all(), [
+                'file' => $fileName,
+                'path' => $pathUrl
+            ]);
+
+            $schema = new \App\Schemas\SliderSchema();
+            $schema->hydrateSchemaBody($formattedData);
+
+            $validator = $schema->validate();
+
+            if ($validator->fails()) {
+                // Jika validasi gagal, hapus file yang sudah diupload
+                if (\Illuminate\Support\Facades\Storage::disk('public')->exists('images/slider/' . $fileName)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete('images/slider/' . $fileName);
+                }
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $schema->hydrateBody();
+
+            $this->sliderRepository->createNews($schema);
+
+            return redirect()->route('sliders.index')->with('success', 'Slider created successfully');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Failed to create slider: ' . $th->getMessage());
+        }
     }
 
     /**
@@ -38,12 +77,7 @@ class SliderController extends BaseController
      */
     public function store(Request $request)
     {
-        try {
-            $slider = $this->sliderRepository->create($request);
-            return redirect()->route('sliders.index')->with('success', 'Slider created successfully');
-        } catch (\Throwable $th) {
-            return redirect()->back()->with('error', 'Slider created failed: ' . $th->getMessage());
-        }
+        //
     }
 
     /**

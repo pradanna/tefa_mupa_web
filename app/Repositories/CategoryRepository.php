@@ -8,6 +8,7 @@ use App\Schemas\CategorySchema;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
 
 class CategoryRepository extends AppRepository
 {
@@ -16,39 +17,53 @@ class CategoryRepository extends AppRepository
         parent::__construct($model);
     }
 
-    public function create(Request $request)
+    public function createNews($schema): CategorySchema
     {
+        $data = NULL;
+        DB::beginTransaction();
         try {
-            $slugInput = $request->input('slug');
-            $slug = $slugInput ? Str::slug($slugInput) : Str::slug($request->input('name'));
-
-            $formattedData = $request->all();
-            $formattedData['slug'] = $slug;
-
-            $schema = new CategorySchema();
-            $schema->hydrateSchemaBody($formattedData);
-
-            $validator = $schema->validate();
-            if ($validator->fails()) {
-                throw ValidationException::withMessages(
-                    $validator->errors()->toArray()
-                );
-            }
-
-            $schema->hydrateBody();
-
-            $category = $this->model->create([
+            $data = [
                 'type' => $schema->getType(),
                 'name' => $schema->getName(),
                 'slug' => $schema->getSlug(),
                 'icon' => $schema->getIcon(),
                 'description' => $schema->getDescription(),
-            ]);
-
-            return $category;
-        } catch (\Throwable $e) {
-            throw $e;
+            ];
+            $this->model->create($data);
+            DB::commit();
+            return $schema;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
         }
+    }
+
+    public function getCategoryNews()
+    {
+        $data = null;
+        DB::beginTransaction();
+        try {
+            $data = $this->model->where('type', 'content')->get();
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $data = $th;
+        }
+        return $data;
+    }
+
+    public function getCategoryCataloge()
+    {
+        $data = null;
+        DB::beginTransaction();
+        try {
+            $data = $this->model->where('type', 'catalog')->get();
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $data = $th;
+        }
+        return $data;
     }
 
     public function update($id, $data)

@@ -8,6 +8,7 @@ use App\Schemas\SliderSchema;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class SliderRepository extends AppRepository {
 
@@ -16,55 +17,22 @@ class SliderRepository extends AppRepository {
         parent::__construct($model);
     }
 
-    public function create(Request $request){
+    public function createNews($schema): SliderSchema
+    {
+        $data = NULL;
+        DB::beginTransaction();
         try {
-            if (!$request->hasFile('file')) {
-                throw ValidationException::withMessages([
-                    'file' => ['File is required']
-                ]);
-            }
-
-            $file = $request->file('file');
-            $extension = $file->getClientOriginalExtension();
-            $dateNow = now()->format('YmdHis');
-            $fileName = $dateNow . '.' . $extension;
-
-            $file->storeAs('images/slider', $fileName, 'public');
-
-            $pathUrl = asset('storage/images/slider');
-
-            $formattedData = array_merge($request->all(), [
-                'file' => $fileName,
-                'path' => $pathUrl
-            ]);
-
-            $schema = new SliderSchema();
-            $schema->hydrateSchemaBody($formattedData);
-
-            $validator = $schema->validate();
-            if ($validator->fails()) {
-                // Jika validasi gagal, hapus file yang sudah diupload
-                if (Storage::disk('public')->exists('images/slider/' . $fileName)) {
-                    Storage::disk('public')->delete('images/slider/' . $fileName);
-                }
-                throw ValidationException::withMessages(
-                    $validator->errors()->toArray()
-                );
-            }
-
-            // Hydrate body schema
-            $schema->hydrateBody();
-
-            // Simpan data yang sudah diformat
-            $slider = $this->model->create([
+            $data = [
                 'title' => $schema->getTitle(),
                 'file' => $schema->getFile(),
                 'path' => $schema->getPath()
-            ]);
-
-            return $slider;
-        } catch (\Throwable $e) {
-            throw $e;
+            ];
+            $this->model->create($data);
+            DB::commit();
+            return $schema;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
         }
     }
 

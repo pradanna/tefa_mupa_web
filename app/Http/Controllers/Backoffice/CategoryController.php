@@ -25,20 +25,37 @@ class CategoryController extends BaseController
         }
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('backoffice.pages.category.create');
+        try {
+            $slugInput = $request->input('slug');
+            $slug = $slugInput ? \Illuminate\Support\Str::slug($slugInput) : \Illuminate\Support\Str::slug($request->input('name'));
+
+            $formattedData = $request->all();
+            $formattedData['slug'] = $slug;
+
+            $schema = new \App\Schemas\CategorySchema();
+            $schema->hydrateSchemaBody($formattedData);
+
+            $validator = $schema->validate();
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $schema->hydrateBody();
+
+            $this->categoryRepository->createNews($schema);
+
+            return redirect()->route('categories.index')->with('success', 'Category created successfully');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Failed to create category: ' . $th->getMessage());
+        }
     }
 
     public function store(Request $request)
     {
-        try {
-            $category = $this->categoryRepository->create($request);
-            return redirect()->route('categories.index')->with('success','Category created success');
-        } catch (\Throwable $th) {
-            dd($th);
-           return redirect()->back()->with('error','Category Created Faild'. $th->getMessage());
-        }
+        //
     }
 
     public function show(string $id)
