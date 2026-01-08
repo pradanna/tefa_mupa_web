@@ -1,0 +1,28 @@
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Dashboard - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
+    <!-- CSS files -->
+    <link href="{{ asset('assets/backoffice/css/tabler.min.css?1684106062') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/backoffice/css/tabler-flags.min.css?1684106062') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/backoffice/css/tabler-payments.min.css?1684106062') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/backoffice/css/tabler-vendors.min.css?1684106062') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/backoffice/css/demo.min.css?1684106062') }}" rel="stylesheet" />
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <style>
+        @import url('https://rsms.me/inter/inter.css');
+
+        :root {
+            --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+        }
+
+        body {
+            font-feature-settings: "cv03", "cv04", "cv11";
+        }
+    </style>
+    {{ $slot ?? '' }}
+</head>

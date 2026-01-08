@@ -6,7 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GalleryController;
-
+use DeepCopy\f013\A;
 use Illuminate\Support\Facades\Route;
 
 // Halaman Utama
@@ -29,3 +29,22 @@ Route::get('/galeri/{slug}', [GalleryController::class, 'show'])->name('gallery.
 
 // Halaman Kontak
 Route::get('/kontak', [ContactController::class, 'index'])->name('contact.index');
+
+// backoffice
+Route::prefix('backoffice')->group(function () {
+    Route::post('authentication', [App\Http\Controllers\Backoffice\Auth\AutenticationController::class, 'login'])->name('auth');
+    Route::post('logout', [App\Http\Controllers\Backoffice\Auth\AutenticationController::class, 'logout'])->name('logout');
+    Route::get('login', function () {
+        return view('backoffice.pages.login.index');
+    })->name('login-backoffice');
+
+    Route::middleware('auth')->group(function () {
+        Route::get('dashboard', function () {
+            return view('backoffice.pages.dashboard.index');
+        })->name('dashboard');
+        Route::resource('sliders', App\Http\Controllers\Backoffice\SliderController::class);
+        Route::resource('categories', App\Http\Controllers\Backoffice\CategoryController::class);
+        Route::resource('articles', App\Http\Controllers\Backoffice\NewsController::class);
+        Route::resource('album', App\Http\Controllers\Backoffice\GalleriController::class);
+    });
+});
