@@ -6,7 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GalleryController;
-
+use DeepCopy\f013\A;
 use Illuminate\Support\Facades\Route;
 
 // Halaman Utama
@@ -44,6 +44,7 @@ Route::prefix('backoffice')->group(function () {
         })->name('dashboard');
         Route::resource('sliders', App\Http\Controllers\Backoffice\SliderController::class);
         Route::resource('categories', App\Http\Controllers\Backoffice\CategoryController::class);
-        Route::resource('news',App\Http\Controllers\backoffice\NewsController::class);
+        Route::resource('articles', App\Http\Controllers\Backoffice\NewsController::class);
+        Route::resource('album', App\Http\Controllers\Backoffice\GalleriController::class);
     });
 });

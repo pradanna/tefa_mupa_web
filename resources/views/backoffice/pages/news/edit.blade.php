@@ -2,7 +2,7 @@
     <x-backoffice.partials.breadcrumb title="Berita" pretitle="Edit Berita" />
     <div class="col-12">
         <div class="card">
-            <form action="{{ route('backoffice.news.update', $news->id) }}" method="POST" class="card" enctype="multipart/form-data">
+            <form action="{{ route('articles.update', $news) }}" method="POST" class="card" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="card-header">
@@ -93,7 +93,7 @@
                 </div>
                 <div class="card-footer text-end">
                     <div class="d-flex">
-                        <a href="{{ route('backoffice.news.index') }}" class="btn btn-link">Batal</a>
+                        <a href="{{ route('articles.index') }}" class="btn btn-link">Batal</a>
                         <button type="submit" class="btn btn-primary ms-auto">Simpan</button>
                     </div>
                 </div>

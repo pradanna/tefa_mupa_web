@@ -1,5 +1,5 @@
 <x-backoffice.layout.main>
-    <x-backoffice.partials.breadcrumb title="Berita" pretitle="Berita" createUrl="{{ route('news.create') }}"
+    <x-backoffice.partials.breadcrumb title="Berita" pretitle="Berita" createUrl="{{ route('articles.create') }}"
         createLabel="Tambah Berita" />
     <div class="col-12">
         <div class="card">
@@ -56,8 +56,8 @@
                                             data-bs-boundary="viewport">Actions</button>
                                         <div class="dropdown-menu dropdown-menu-start"
                                             style="margin-top: 30px;">
-                                            <a class="dropdown-item" href="{{ route('news.edit', $n->id) }}">Edit</a>
-                                            <form action="{{ route('news.destroy', $n->id) }}" method="POST" style="display:inline;">
+                                            <a class="dropdown-item" href="{{ route('articles.edit', $n->id) }}">Edit</a>
+                                            <form action="{{ route('articles.destroy', $n->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this news?')">Delete</button>

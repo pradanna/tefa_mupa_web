@@ -9,6 +9,10 @@
     <link href="{{ asset('assets/backoffice/css/tabler-payments.min.css?1684106062') }}" rel="stylesheet" />
     <link href="{{ asset('assets/backoffice/css/tabler-vendors.min.css?1684106062') }}" rel="stylesheet" />
     <link href="{{ asset('assets/backoffice/css/demo.min.css?1684106062') }}" rel="stylesheet" />
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <style>
         @import url('https://rsms.me/inter/inter.css');
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\backoffice;
+namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,6 +8,7 @@ use App\Commons\Controller\BaseController;
 use App\Repositories\NewsRepository;
 use App\Repositories\CategoryRepository;
 use Illuminate\Support\Facades\Log;
+use Psy\Util\Str;
 
 class NewsController extends BaseController
 {
@@ -82,7 +83,7 @@ class NewsController extends BaseController
 
             $this->newsRepository->createNews($schema);
 
-            return redirect()->route('backoffice.news.index')->with('success', 'News created successfully');
+            return redirect()->route('articles.index')->with('success', 'News created successfully');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Failed to create news: ' . $th->getMessage());
         }
@@ -119,22 +120,82 @@ class NewsController extends BaseController
      */
     public function update(Request $request, string $id)
     {
+        \Illuminate\Support\Facades\DB::beginTransaction();
         try {
             $news = $this->newsRepository->show($id);
             if (!$news || $news instanceof \Throwable) {
+                \Illuminate\Support\Facades\DB::rollBack();
                 return redirect()->back()->with('error', 'News not found');
             }
-            if(!$request->hasFile('file')){
-                return redirect()->back()->with('error', 'Image is required')->withInput();
+
+            $data = [
+                'id'           => $news->id,
+                'title'        => $request->input('title', $news->title),
+                'slug'         => $request->input('slug', $news->slug),
+                'id_category'  => $request->input('id_category', $news->id_category),
+                'image'        => $news->image,
+                'path'         => $news->path,
+                'content'      => $request->input('content', $news->content),
+                'date'         => $request->input('date', $news->date),
+                'status'       => $request->input('status', $news->status),
+                'id_user'      => \Illuminate\Support\Facades\Auth::user()->id,
+            ];
+
+            $newImageName = null;
+            $newImagePath = null;
+            if ($request->hasFile('file')) {
+                $extension = $request->file('file')->getClientOriginalExtension();
+                $newImageName = now()->format('YmdHis') . '.' . $extension;
+                $request->file('file')->storeAs('images/news', $newImageName, 'public');
+                $newImagePath = asset('storage/images/news');
+                $data['image'] = $newImageName;
+                $data['path']  = $newImagePath;
             }
 
             $schema = new \App\Schemas\NewsSchema();
-            $schema->hydrateSchemaBody($request->all());
+            $schema->hydrateSchemaBody($data);
+            $validator = $schema->validate();
+            if ($validator->fails()) {
+                // Jika upload file baru tapi validasi gagal, hapus file baru tersebut
+                if ($newImageName) {
+                    $filePath = 'images/news/' . $newImageName;
+                    if (\Illuminate\Support\Facades\Storage::disk('public')->exists($filePath)) {
+                        \Illuminate\Support\Facades\Storage::disk('public')->delete($filePath);
+                    }
+                }
+                \Illuminate\Support\Facades\DB::rollBack();
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+            $schema->hydrateBody();
 
+            // Setelah validasi, baru hapus gambar lama kalau ada upload gambar baru
+            if ($newImageName) {
+                $oldFilePath = 'images/news/' . $news->image;
+                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($oldFilePath)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($oldFilePath);
+                }
+            }
 
+            $updateData = [
+                'title'        => $schema->getTitle(),
+                'slug'         => $schema->getSlug(),
+                'id_category'  => $schema->getIdCategory(),
+                'image'        => $schema->getImage(),
+                'path'         => $schema->getPath(),
+                'content'      => $schema->getContent(),
+                'date'         => $schema->getDate(),
+                'status'       => $schema->getStatus(),
+                'id_user'      => $schema->getIdUser(),
+            ];
+
+            $this->newsRepository->update($id, $updateData);
+
+            \Illuminate\Support\Facades\DB::commit();
+            return redirect()->route('articles.index')->with('success', 'News updated successfully');
 
         } catch (\Throwable $th) {
-            //throw $th;
+            \Illuminate\Support\Facades\DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to update news: ' . $th->getMessage());
         }
     }
 
@@ -149,7 +210,7 @@ class NewsController extends BaseController
                 return redirect()->back()->with('error', 'News not found');
             }
             $this->newsRepository->delete($id);
-            return redirect()->route('backoffice.news.index')->with('success', 'News deleted successfully');
+            return redirect()->route('articles.index')->with('success', 'News deleted successfully');
         } catch (\Throwable $th) {
             \Illuminate\Support\Facades\Log::error($th);
             return redirect()->back()->with('error', 'Failed to delete news: ' . $th->getMessage());

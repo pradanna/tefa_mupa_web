@@ -3,6 +3,7 @@
 namespace App\Schemas;
 
 use App\Commons\Schema\BaseSchema;
+use Illuminate\Validation\Rule;
 
 class NewsSchema extends BaseSchema
 {
@@ -20,7 +21,12 @@ class NewsSchema extends BaseSchema
     {
         return [
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:news,slug',
+            'slug' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('news', 'slug')->ignore($this->body['id'] ?? null),
+            ],
             'id_category' => 'required|integer|exists:categories,id',
             'content' => 'required|string',
             'image' => 'nullable|string|max:255',

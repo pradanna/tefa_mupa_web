@@ -25,7 +25,12 @@ class CategoryController extends BaseController
         }
     }
 
-    public function create(Request $request)
+    public function create()
+    {
+        return view('backoffice.pages.category.create');
+    }
+
+    public function store(Request $request)
     {
         try {
             $slugInput = $request->input('slug');
@@ -51,11 +56,6 @@ class CategoryController extends BaseController
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Failed to create category: ' . $th->getMessage());
         }
-    }
-
-    public function store(Request $request)
-    {
-        //
     }
 
     public function show(string $id)

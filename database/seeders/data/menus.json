@@ -44,14 +44,14 @@
     {
         "id": 6,
         "title": "Berita",
-        "link": "#",
+        "link": "articles",
         "icon": "tabler-news",
         "parent": null
     },
     {
         "id": 7,
         "title": "Galeri",
-        "link": "#",
+        "link": "album",
         "icon": "tabler-photo",
         "parent": null
     },

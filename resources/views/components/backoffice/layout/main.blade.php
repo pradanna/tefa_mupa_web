@@ -31,8 +31,26 @@
             </div>
           </div>
         </div>
+
         <x-backoffice.partials.footer/>
       </div>
+    </div>
+
+    <!-- Toast untuk Error/Success/Informasi -->
+    <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 1.5rem; right: 1.5rem; min-width: 300px; z-index: 1055;">
+      @if(session('error'))
+        <x-backoffice.toast.error :message="session('error')" />
+      @endif
+
+      @if(session('success'))
+        <x-backoffice.badge.success :message="session('success')"/>
+      @endif
+
+      @if($errors->any())
+        @foreach ($errors->all() as $error)
+          <x-backoffice.toast.error :message="$error" />
+        @endforeach
+      @endif
     </div>
     <!-- Libs JS -->
     <x-backoffice.partials.scripts/>

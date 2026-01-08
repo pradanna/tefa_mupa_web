@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backoffice;
 use Illuminate\Http\Request;
 use App\Repositories\SliderRepository;
 use App\Commons\Controller\BaseController;
+use Illuminate\Support\Facades\Storage;
 
 
 class SliderController extends BaseController
@@ -30,6 +31,15 @@ class SliderController extends BaseController
      */
     public function create(Request $request)
     {
+        return  view('backoffice.pages.slider.created');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
         try {
             if (!$request->hasFile('file')) {
                 return redirect()->back()->with('error', 'File is required')->withInput();
@@ -73,14 +83,6 @@ class SliderController extends BaseController
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(string $id)
@@ -115,7 +117,41 @@ class SliderController extends BaseController
             if(!$slider || $slider instanceof \Throwable){
                 return redirect()->back()->with('error','Slider not found');
             }
-            $this->sliderRepository->update($id, $request);
+
+            $data = [
+                'title' => $request->input('title', $slider->title),
+                'file'  => $slider->file,
+                'path'  => $slider->path,
+            ];
+
+            if ($request->hasFile('file')) {
+                // Delete old file if exists
+                $filePath = 'images/slider/' . $slider->file;
+                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($filePath)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($filePath);
+                }
+                // Store new file
+                $extension = $request->file('file')->getClientOriginalExtension();
+                $name = now()->format('YmdHis') . '.' . $extension;
+                $request->file('file')->storeAs('images/slider', $name, 'public');
+                $data['file'] = $name;
+                $data['path'] = asset('storage/images/slider');
+            }
+
+            $schema = new \App\Schemas\SliderSchema();
+            $schema->hydrateSchemaBody($data);
+            $validator = $schema->validate();
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+            $schema->hydrateBody();
+
+            $updateData = [
+                'title' => $schema->getTitle(),
+                'file'  => $schema->getFile(),
+                'path'  => $schema->getPath()
+            ];
+            $this->sliderRepository->update($id, $updateData);
             return redirect()->route('sliders.index')->with('success', 'Slider updated successfully');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Failed to update slider: ' . $th->getMessage());
