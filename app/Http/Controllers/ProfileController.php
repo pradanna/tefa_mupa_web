@@ -17,17 +17,17 @@ class ProfileController extends Controller
             [
                 'nama' => 'Nama Ketua TEFA',
                 'jabatan' => 'Direktur TEFA',
-                'foto' => 'images/team/ketua.jpg',
+                'foto' => 'images/team/ketua.jpg', // Ganti dengan foto asli
             ],
             [
                 'nama' => 'Nama Kabeng',
                 'jabatan' => 'Manajer Operasional',
-                'foto' => 'images/team/kabeng.jpg',
+                'foto' => 'images/team/kabeng.jpg', // Ganti dengan foto asli
             ],
             [
                 'nama' => 'Nama Bendahara',
                 'jabatan' => 'Keuangan',
-                'foto' => 'images/team/bendahara.jpg',
+                'foto' => 'images/team/bendahara.jpg', // Ganti dengan foto asli
             ],
         ];
 
