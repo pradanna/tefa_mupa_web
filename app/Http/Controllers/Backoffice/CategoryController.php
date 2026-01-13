@@ -49,8 +49,14 @@ class CategoryController extends BaseController
             return redirect()->route('categories.index')->with('success', 'Category created successfully');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            throw $e;
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error', 'Failed to create category: ' . $th->getMessage());
+            Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
+            return redirect()
+                ->back()
+                ->withInput($request->except('file'))
+                ->with('error', 'Terjadi kesalahan sistem');
         }
     }
 

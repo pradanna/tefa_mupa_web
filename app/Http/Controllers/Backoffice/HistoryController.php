@@ -100,9 +100,14 @@ class HistoryController extends BaseController
             $this->historyRepository->updateData($id, $schema);
 
             return redirect()->route('history.index')->with('success', 'History updated successfully');
+        } catch (\Exception $e) {
+            throw $e;
         } catch (\Throwable $th) {
-            \Illuminate\Support\Facades\Log::error($th);
-            return redirect()->back()->with('error', 'Failed to update history: ' . $th->getMessage());
+            \Illuminate\Support\Facades\Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
+            return redirect()
+                ->back()
+                ->withInput($request->except('file'))
+                ->with('error', 'Terjadi kesalahan sistem');
         }
     }
 

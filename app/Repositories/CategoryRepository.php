@@ -40,30 +40,40 @@ class CategoryRepository extends AppRepository
 
     public function getCategoryNews()
     {
-        $data = null;
         DB::beginTransaction();
         try {
             $data = $this->model->where('type', 'content')->get();
             DB::commit();
+            return $data;
         } catch (\Throwable $th) {
             DB::rollBack();
-            $data = $th;
+            throw $th;
         }
-        return $data;
     }
 
     public function getCategoryCataloge()
     {
-        $data = null;
         DB::beginTransaction();
         try {
             $data = $this->model->where('type', 'catalog')->get();
             DB::commit();
+            return $data;
         } catch (\Throwable $th) {
             DB::rollBack();
-            $data = $th;
+            throw $th;
         }
-        return $data;
+    }
+
+    public function getSubCategoryCataloge(){
+        DB::beginTransaction();
+        try {
+            $data = $this->model->where('type', 'sub_catalog')->get();
+            DB::commit();
+            return $data;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
     }
 
     public function update($id, $data)

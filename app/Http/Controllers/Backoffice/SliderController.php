@@ -139,8 +139,14 @@ class SliderController extends BaseController
             ];
             $this->sliderRepository->update($id, $updateData);
             return redirect()->route('sliders.index')->with('success', 'Slider updated successfully');
+        } catch (\Exception $e) {
+            throw $e;
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error', 'Failed to update slider: ' . $th->getMessage());
+            \Illuminate\Support\Facades\Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
+            return redirect()
+                ->back()
+                ->withInput($request->except('file'))
+                ->with('error', 'Terjadi kesalahan sistem');
         }
     }
 

@@ -73,13 +73,20 @@ class NewsController extends BaseController
             $requestData['id_user'] = \Illuminate\Support\Facades\Auth::user()->id;
 
             $schema->hydrateSchemaBody($requestData);
+            $schema->validate();
             $schema->hydrate();
 
             $this->newsRepository->createNews($schema);
 
             return redirect()->route('articles.index')->with('success', 'News created successfully');
+        } catch (\Exception $e) {
+            throw $e;
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error', 'Failed to create news: ' . $th->getMessage());
+            Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
+            return redirect()
+                ->back()
+                ->withInput($request->except('file'))
+                ->with('error', 'Terjadi kesalahan sistem');
         }
     }
 
@@ -148,10 +155,10 @@ class NewsController extends BaseController
 
             $schema = new \App\Schemas\NewsSchema();
             $schema->hydrateSchemaBody($data);
+
             try {
                 $schema->validate();
             } catch (\Illuminate\Validation\ValidationException $e) {
-                // Jika upload file baru tapi validasi gagal, hapus file baru tersebut
                 if ($newImageName) {
                     $filePath = 'images/news/' . $newImageName;
                     if (\Illuminate\Support\Facades\Storage::disk('public')->exists($filePath)) {

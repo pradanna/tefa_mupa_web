@@ -20,9 +20,9 @@ class CatalogSchema extends BaseSchema
             'title' => 'required|string|max:255',
             'id_sub_category' => 'required|integer',
             'id_category' => 'required|integer',
-            'image' => 'nullable|string|max:255',
-            'path' => 'nullable|string|max:255',
-            'desc' => 'nullable|string',
+            'image' => 'required|string|max:255',
+            'path' => 'required|string|max:255',
+            'desc' => 'required|string',
             'specification' => 'nullable|string',
             'id_user' => 'required|integer',
         ];

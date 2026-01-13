@@ -39,6 +39,7 @@ abstract class BaseSchema
 
         if ($validator->fails()) {
             throw new ValidationException($validator);
+
         }
 
         return $this; // 🔥 KUNCI

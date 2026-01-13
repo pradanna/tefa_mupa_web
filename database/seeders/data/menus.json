@@ -30,7 +30,7 @@
     {
         "id": 4,
         "title": "Produk / Jasa",
-        "link": "#",
+        "link": "catalog",
         "icon": "tabler-box-multiple",
         "parent": null
     },

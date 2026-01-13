@@ -32,18 +32,16 @@ class AppRepository{
      */
     public function getAll()
     {
-        $data = NULL;
         DB::beginTransaction();
         try {
             $data = $this->model->get();
-
             Cache::flush();
             DB::commit();
+            return $data;
         } catch (\Throwable $th) {
             DB::rollBack();
-            $data = $th;
+            throw $th;
         }
-        return $data;
     }
 
     /**
@@ -53,17 +51,16 @@ class AppRepository{
      */
     public function paginate(Request $request)
     {
-        $data = NULL;
         DB::beginTransaction();
         try {
             $data = $this->model->orderBy('created_at','DESC')->paginate($request->input('limit', 5));
             Cache::flush();
             DB::commit();
+            return $data;
         } catch (\Throwable $th) {
             DB::rollBack();
-            $data = $th;
+            throw $th;
         }
-        return $data;
     }
 
     /**
@@ -74,7 +71,6 @@ class AppRepository{
      */
     public function store($data)
     {
-        $result = NULL;
         DB::beginTransaction();
         try {
             $dataToSave = $this->extractData($data);
@@ -84,11 +80,11 @@ class AppRepository{
 
             Cache::flush();
             DB::commit();
+            return $result;
         } catch (\Throwable $th) {
             DB::rollBack();
-            $result = $th;
+            throw $th;
         }
-        return $result;
     }
 
     /**
@@ -100,7 +96,6 @@ class AppRepository{
      */
     public function update($id, $data)
     {
-        $result = NULL;
         DB::beginTransaction();
         try {
             $dataToSave = $this->extractData($data);
@@ -110,11 +105,11 @@ class AppRepository{
 
             Cache::flush();
             DB::commit();
+            return $result;
         } catch (\Throwable $th) {
             DB::rollBack();
-            $result = $th;
+            throw $th;
         }
-        return $result;
     }
 
     /**
@@ -125,18 +120,17 @@ class AppRepository{
      */
     public function show($id)
     {
-        $data = NULL;
         DB::beginTransaction();
         try {
             $data = $this->model->findOrFail($id);
 
             Cache::flush();
             DB::commit();
+            return $data;
         } catch (\Throwable $th) {
             DB::rollBack();
-            $data = $th;
+            throw $th;
         }
-        return $data;
     }
 
     /**
@@ -147,18 +141,17 @@ class AppRepository{
      */
     public function delete($id)
     {
-        $data = NULL;
         DB::beginTransaction();
         try {
             $data = $this->model->destroy($id);
 
             Cache::flush();
             DB::commit();
+            return $data;
         } catch (\Throwable $th) {
             DB::rollBack();
-            $data = $th;
+            throw $th;
         }
-        return $data;
     }
 
     /**
@@ -193,7 +186,6 @@ class AppRepository{
 
     public function activeNonActive($id, $status)
     {
-        $data = NULL;
         DB::beginTransaction();
         try {
             //$data = $this->show($id);
@@ -205,10 +197,10 @@ class AppRepository{
 				]);
             Cache::flush();
             DB::commit();
+            return $data;
         } catch (\Throwable $th) {
             DB::rollBack();
-            $data = $th;
+            throw $th;
         }
-        return $data;
     }
 }
