@@ -5,6 +5,10 @@
         createUrl="{{ route('catalog.create') }}"
         createLabel="Tambah Produk/Jasa"
     />
+
+
+
+
     <div class="col-12">
         <div class="card">
             <div class="card-body border-bottom py-3">
