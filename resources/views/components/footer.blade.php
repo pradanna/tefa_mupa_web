@@ -5,7 +5,7 @@
             {{-- KOLOM 1: IDENTITAS --}}
             <div class="col-lg-4 col-md-6">
                 <h5 class="fw-bold text-white mb-3 d-flex align-items-center gap-2">
-                    <img src="{{ asset('images/local/logo-tefa.png') }}" style="width: 50px" /> 
+                    <img src="{{ asset('images/local/logo-tefa.png') }}" style="width: 50px" />
                     {{ config('app.name') }}
                 </h5>
                 <p class="text-white-50 small">
@@ -62,8 +62,9 @@
                 <ul class="list-unstyled text-white-50 small d-flex flex-column gap-3">
                     <li class="d-flex gap-2">
                         <i class="bi bi-geo-alt-fill txt-primary mt-1"></i>
-                        <span>Jl. Pakem - Turi, Pakembinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta
-                            55582</span>
+                        <a href="https://maps.app.goo.gl/mMuCE3xkViSun2qh6" class="footer-link ">Jl. Pakem - Turi,
+                            Pakembinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta
+                            55582</a>
                     </li>
                     {{-- <li class="d-flex gap-2">
                         <i class="bi bi-telephone-fill txt-primary"></i>
@@ -78,7 +79,11 @@
                     </li>
                     <li class="d-flex gap-2">
                         <i class="bi bi-envelope-fill txt-primary"></i>
-                        <span>stm_muhpakem@yahoo.co.id</span>
+                        <a href="mailto:stm_muhpakem@yahoo.co.id" class="footer-link ">stm_muhpakem@yahoo.co.id</a>
+                    </li>
+                    <li class="d-flex gap-2">
+                        <i class="bi bi-globe txt-primary"></i>
+                        <a href="https://smkmuhpakem.sch.id/" class="footer-link ">smkmuhpakem.sch.id</a>
                     </li>
                 </ul>
             </div>
@@ -101,30 +106,3 @@
         </div>
     </div>
 </footer>
-
-{{-- STYLE TAMBAHAN KHUSUS FOOTER (Bisa dipindah ke style.css) --}}
-<style>
-    /* Efek hover pada link footer agar tidak kaku */
-    .footer-link {
-        color: rgba(255, 255, 255, 0.6);
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-
-    .footer-link:hover {
-        color: #0d6efd;
-        /* Warna Primary Bootstrap */
-        padding-left: 5px;
-        /* Efek geser sedikit saat dihover */
-    }
-
-    /* Efek hover icon sosmed */
-    .social-icon {
-        opacity: 0.7;
-        transition: opacity 0.3s;
-    }
-
-    .social-icon:hover {
-        opacity: 1;
-    }
-</style>
