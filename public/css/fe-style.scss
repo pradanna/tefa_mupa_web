@@ -810,6 +810,29 @@ a {
     }
 }
 
+.footer-link {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+    color: $primary;
+    /* Warna Primary Bootstrap */
+    padding-left: 5px;
+    /* Efek geser sedikit saat dihover */
+}
+
+/* Efek hover icon sosmed */
+.social-icon {
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.social-icon:hover {
+    opacity: 1;
+}
+
 // Tab Filter Style
 // .btn-tab {
 //     color: $secondary;

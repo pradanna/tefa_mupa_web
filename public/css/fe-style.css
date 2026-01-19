@@ -677,3 +677,26 @@ a {
   opacity: 1;
   transform: scale(1.05);
 }
+
+.footer-link {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #ff383c;
+  /* Warna Primary Bootstrap */
+  padding-left: 5px;
+  /* Efek geser sedikit saat dihover */
+}
+
+/* Efek hover icon sosmed */
+.social-icon {
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.social-icon:hover {
+  opacity: 1;
+}
