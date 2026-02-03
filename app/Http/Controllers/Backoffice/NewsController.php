@@ -15,7 +15,7 @@ class NewsController extends BaseController
 
     public function __construct( protected NewsRepository $newsRepository,protected CategoryRepository $categoryRepository)
     {
-
+        parent::__construct($newsRepository,$categoryRepository);
     }
     /**
      * Display a listing of the resource.
@@ -211,6 +211,15 @@ class NewsController extends BaseController
             if (!$news || $news instanceof \Throwable) {
                 return redirect()->back()->with('error', 'News not found');
             }
+
+            // Hapus file gambar jika ada
+            if (!empty($news->image)) {
+                $filePath = 'images/news/' . $news->image;
+                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($filePath)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($filePath);
+                }
+            }
+
             $this->newsRepository->delete($id);
             return redirect()->route('articles.index')->with('success', 'News deleted successfully');
         } catch (\Throwable $th) {

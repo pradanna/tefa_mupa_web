@@ -156,11 +156,19 @@ class SliderController extends BaseController
     public function destroy(string $id)
     {
         try {
-
             $find_data = $this->sliderRepository->show($id);
             if(!$find_data || $find_data instanceof \Throwable){
                 return redirect()->back()->with('error', 'Slider not found');
             }
+
+            // Hapus file gambar jika ada
+            if (!empty($find_data->file)) {
+                $filePath = 'images/slider/' . $find_data->file;
+                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($filePath)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($filePath);
+                }
+            }
+
             $this->sliderRepository->delete($id);
             return redirect()->route('sliders.index')->with('success', 'Slider deleted successfully');
         } catch (\Throwable $th) {

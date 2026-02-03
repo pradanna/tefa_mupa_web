@@ -23,6 +23,11 @@
                                             placeholder="Judul">
                                     </div>
                                     <div class="mb-3">
+                                        <label class="form-label">Sub Judul</label>
+                                        <input type="text" class="form-control" name="subtitle"
+                                            placeholder="Sub Judul (optional)">
+                                    </div>
+                                    <div class="mb-3">
                                         <div class="form-label">Gambar</div>
                                         <input type="file" class="form-control" name="file" accept=".jpg,.jpeg,.png" />
                                     </div>

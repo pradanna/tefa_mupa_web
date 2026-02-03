@@ -16,4 +16,15 @@ class CatalogRepository extends AppRepository
         parent::__construct($catalog);
     }
 
+    /**
+     * Ambil semua data catalog (beserta relasi kategori jika dibutuhkan di homepage).
+     */
+    public function getCategoryCataloge()
+    {
+        // Ambil semua record catalog + relasi kategori (jika diperlukan di view)
+        return $this->model
+            ->with('hasCategory:id,name,type,slug,icon,description')
+            ->get();
+    }
+
 }

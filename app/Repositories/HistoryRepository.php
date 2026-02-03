@@ -10,13 +10,15 @@ use Illuminate\Http\Request;
 
 class HistoryRepository extends AppRepository
 {
+    protected $schema;
+
     /**
      * Create a new class instance.
      */
-    public function __construct(History $model,HistorySchema $schema)
+    public function __construct(History $model, HistorySchema $schema)
     {
-        //
-        parent::__construct($model,$schema);
+        parent::__construct($model);
+        $this->schema = $schema;
     }
 
     public function findFirst(){

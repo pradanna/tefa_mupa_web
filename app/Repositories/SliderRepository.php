@@ -19,11 +19,16 @@ class SliderRepository extends AppRepository {
 
     public function createNews($schema): SliderSchema
     {
-        $data = NULL;
+        $sliderCount = $this->model->count();
+        if ($sliderCount >= 3) {
+            throw new \Exception('Jumlah slider sudah melebihi batas maksimum (3).');
+        }
+
         DB::beginTransaction();
         try {
             $data = [
                 'title' => $schema->getTitle(),
+                'subtitle' => $schema->getSubtitle(),
                 'file' => $schema->getFile(),
                 'path' => $schema->getPath()
             ];
@@ -35,6 +40,7 @@ class SliderRepository extends AppRepository {
             throw $th;
         }
     }
+
 
     /**
      * Update slider dengan formatting data dari Request
@@ -84,6 +90,7 @@ class SliderRepository extends AppRepository {
 
                 $slider->update([
                     'title' => $schema->getTitle(),
+                    'subtitle' => $schema->getSubtitle(),
                     'file' => $schema->getFile(),
                     'path' => $schema->getPath()
                 ]);

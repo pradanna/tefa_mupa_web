@@ -9,7 +9,7 @@ class Slider extends Model
 {
     //
     protected $table = 'sliders';
-    protected $fillable = ['title', 'file', 'path'];
+    protected $fillable = ['title', 'subtitle', 'file', 'path'];
 
     public function getImageUrlAttribute()
     {

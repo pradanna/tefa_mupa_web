@@ -2,112 +2,110 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\SliderRepository;
+use App\Repositories\PatnersRepository;
+use App\Repositories\HistoryRepository;
+use App\Repositories\CategoryRepository;
+use App\Repositories\CatalogRepository;
+use App\Repositories\NewsRepository;
+use App\Repositories\GalleriRepository;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+
+    public function __construct(
+        protected SliderRepository $sliderRepository,
+        protected PatnersRepository $patnersRepository,
+        protected HistoryRepository $historyRepository,
+        protected CategoryRepository $categoryRepository,
+        protected CatalogRepository $catalogRepository,
+        protected NewsRepository $newsRepository,
+        protected GalleriRepository $galleriRepository,
+    )
+    {
+        // Tidak perlu memanggil parent::__construct() karena Controller dasar Laravel tidak punya konstruktor
+    }
     public function index()
     {
-        // Simulasi Data (Nanti diganti query Database)
 
-        $partners = [
-            ['name' => 'Astra International', 'img' => 'images/mitra/astra.png'],
-            ['name' => 'Bank BRI', 'img' => 'images/mitra/bri.png'],
-            ['name' => 'Daihatsu', 'img' => 'images/mitra/daihatsu.png'],
-            ['name' => 'AHM Honda', 'img' => 'images/mitra/ahm.png'],
-        ];
+        // Ambil data mitra dari database via PatnersRepository
+        $partnerRecords = $this->patnersRepository->getAll();
+        $pathUrl = asset('storage/images/partners');
+        $partners = $partnerRecords->map(function ($partner) use ($pathUrl) {
+            return [
+                'name' => $partner->name,
+                // path url penuh: base path + nama file
+                'img' => $pathUrl . '/' . $partner->image,
+            ];
+        })->toArray();
 
-        $hero = [
-            // SLIDE 1: VISI UTAMA (General Branding)
-            [
-                'title' => 'Inovasi Tanpa Batas',
-                'subtitle' => 'Mencetak generasi unggul yang siap bersaing di era teknologi 4.0.',
-                'image' => 'images/slider/slider1.jpg'
-            ],
+        // Ambil data slider dari database via SliderRepository
+        $sliders = $this->sliderRepository->getAll();
+        $hero = $sliders->map(function ($slider) {
+            return [
+                'title' => $slider->title,
+                'subtitle' => $slider->subtitle,
+                // path di-backoffice sudah berupa URL penuh, aman dipakai langsung di view (dibungkus asset() tidak akan double base-url)
+                'image' => $slider->path . '/' . $slider->file,
+            ];
+        })->toArray();
 
-            // SLIDE 2: FOKUS PRODUK (Hardware & IoT)
-            [
-                'title' => 'Produk Teknologi Terapan',
-                'subtitle' => 'Menghadirkan karya siswa berkompeten.',
-                'image' => 'images/slider/slider2.jpg'
-            ],
-
-            // SLIDE 3: FOKUS JASA (Servis & Desain)
-            [
-                'title' => 'Layanan Jasa Profesional',
-                'subtitle' => 'Percayakan perawatan kendaraan dan desain arsitektur pada kami.',
-                'image' => 'images/slider/slider3.jpg'
-            ],
-
-            // SLIDE 4: KUALITAS & KEPERCAYAAN (Trust)
-            [
-                'title' => 'Mitra Terpercaya Industri',
-                'subtitle' => 'Sinergi pendidikan vokasi dan dunia industri untuk kualitas yang teruji.',
-                'image' => 'images/slider/slider4.jpg'
-            ],
-        ];
-
+        // Ambil data profil (history) dari HistoryRepository
+        $history = $this->historyRepository->findFirst();
         $profil = [
-            'title' => 'Tentang ' . config('app.short_name'),
-            'description' => config('app.full_name_uppercase') . ' adalah pusat pengembangan kompetensi siswa berbasis industri. Kami menghadirkan produk teknologi tepat guna dan layanan profesional.',
-            'image' => 'https://placehold.co/600x400/gray/white?text=Foto+Gedung',
+            'title' => $history?->title ?? ('Tentang ' . config('app.short_name')),
+            'description' => $history?->body ?? (config('app.full_name_uppercase') . ' adalah pusat pengembangan kompetensi siswa berbasis industri. Kami menghadirkan produk teknologi tepat guna dan layanan profesional.'),
+            'image' => $history && $history->image
+                ? ($history->path . '/' . $history->image)
+                : 'https://placehold.co/600x400/gray/white?text=Foto+Gedung',
         ];
-        // Data dipisah agar mudah dimapping di Tabs
-        $produk = [
-            [
-                'nama' => 'Smart RFID Lock',
-                'slug' => 'smart-rfid-lock', // Slug added
-                'kategori' => 'IoT',
-                'img' => 'images/products/rfid.webp'
-            ],
-        ];
-        $jasa = [
-            [
-                'nama' => 'Servis Motor',
-                'slug' => 'servis-motor',
-                'kategori' => 'Teknisi',
-                'img' => 'images/products/service-motor.jpg',
-                'deskripsi' => 'Layanan perawatan berkala, tune-up, dan perbaikan mesin sepeda motor berbagai merek dengan standar industri.'
-            ],
-            [
-                'nama' => 'Servis Mobil',
-                'slug' => 'servis-mobil',
-                'kategori' => 'Teknisi',
-                'img' => 'images/products/service-mobil.jpg',
-                'deskripsi' => 'Perbaikan umum, ganti oli, service kaki-kaki, hingga engine tune-up untuk performa kendaraan roda empat yang prima.'
-            ],
-            [
-                'nama' => 'Desain Arsitektur',
-                'slug' => 'desain-arsitektur',
-                'kategori' => 'Desain',
-                'img' => 'images/products/arsitek.jpg',
-                'deskripsi' => 'Jasa rancang bangun hunian dan gedung komersial, mencakup denah 2D, visualisasi 3D, hingga perhitungan RAB.'
-            ],
-            [
-                'nama' => 'Pembuatan Animasi',
-                'slug' => 'animasi',
-                'kategori' => 'Desain',
-                'img' => 'images/products/animasi.jpg',
-                'deskripsi' => 'Produksi video animasi 2D/3D, motion graphic untuk iklan, dan media pembelajaran interaktif yang kreatif.'
-            ],
-        ];
-        $berita = [
-            ['judul' => 'Kunjungan Industri 2025', 'slug' => 'kunjungan-industri-panasonic', 'tanggal' => '2025-12-24', 'excerpt' => 'Siswa melakukan kunjungan ke pabrik elektronik terkemuka...', 'img' => 'images/articles/kunjungan-industri.png'],
-            ['judul' => 'Juara 1 Lomba Robotik', 'slug' => 'juara-robotik', 'tanggal' => '2025-12-20', 'excerpt' => 'Tim robotik sekolah berhasil menyabet emas...', 'img' => 'images/articles/robotik.jpg'],
-            ['judul' => 'Workshop IoT Gratis',  'slug' => 'workshop-iot', 'tanggal' => '2025-11-15', 'excerpt' => 'Membuka wawasan masyarakat tentang teknologi...', 'img' => 'images/articles/wshop.png'],
-        ];
-        $gallery = [
-            'images/gallery/11.jpg',
-            'images/gallery/2.jpg',
-            'images/gallery/3.jpg',
-            'images/gallery/4.jpg',
-            'images/gallery/5.jpg',
-            'images/gallery/6.jpg',
-            'images/gallery/7.jpg',
-            'images/gallery/8.jpg',
+        // Data Produk diambil dari CatalogRepository
+        $catalogs = $this->catalogRepository->getCategoryCataloge();
+        $produk = $catalogs->map(function ($catalog) {
+            $imagePath = $catalog->path
+                ? $catalog->path . '/' . $catalog->image
+                : $catalog->image;
 
-        ];
+            return [
+                'nama' => $catalog->title,
+                'slug' => $catalog->slug ?? $catalog->id, // fallback id jika slug tidak ada
+                'kategori' => optional($catalog->hasCategory)->name ?? 'Lainnya',
+                'category_id' => $catalog->id_category,
+                'img' => $imagePath,
+                'deskripsi' => $catalog->desc,
+            ];
+        })->toArray();
 
-        return view('home', compact('hero', 'profil', 'produk', 'jasa', 'berita', 'gallery',  'partners'));
+        // Data kategori untuk filter (hanya type = catalog)
+        $kategoti = $this->categoryRepository->getCategoryCataloge();
+
+        // Ambil 3 berita terbaru dari NewsRepository
+        $latestNews = $this->newsRepository->getLatestNews(3);
+        $berita = $latestNews->map(function ($news) {
+            $imagePath = $news->path
+                ? $news->path . '/' . $news->image
+                : $news->image;
+
+            return [
+                'judul' => $news->title,
+                'slug' => $news->slug,
+                'tanggal' => $news->date,
+                // gunakan konten penuh sebagai sumber excerpt, dibatasi lagi di component
+                'excerpt' => $news->content,
+                'img' => $imagePath,
+            ];
+        })->toArray();
+        // Ambil data galeri dari GalleriRepository
+        $galleries = $this->galleriRepository->getAll();
+        $gallery = $galleries->map(function ($item) {
+            // path di DB sudah menyimpan base URL folder, tinggal gabung dengan nama file
+            $imagePath = $item->path
+                ? $item->path . '/' . $item->image
+                : $item->image;
+            return $imagePath;
+        })->toArray();
+
+        return view('home', compact('hero', 'profil', 'produk', 'berita', 'gallery',  'partners', 'kategoti'));
     }
 }

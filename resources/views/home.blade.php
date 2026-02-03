@@ -149,46 +149,44 @@
                     profesional untuk masyarakat</p>
             </div>
 
-            <div class="row g-4" x-data="{ activeTab: 'produk' }" data-aos="fade-up" data-aos-delay="200">
+            <div class="row g-4" x-data="{ activeTab: 'produk', activeCategory: 'all' }"
+                data-aos="fade-up" data-aos-delay="200">
 
-                {{-- Tombol Tab --}}
-                <div class="d-flex justify-content-center gap-2 mt-4">
-                    <button @click="activeTab = 'produk'"
-                        :class="activeTab === 'produk' ? 'bt-primary' : 'bt-outline-primary'"
-                        class="btn px-4 rounded-pill">
-                        <i class="bi bi-box-seam me-1"></i> Produk
-                    </button>
-                    <button @click="activeTab = 'jasa'"
-                        :class="activeTab === 'jasa' ? 'bt-primary' : 'bt-outline-primary'"
-                        class="btn px-4 rounded-pill">
-                        <i class="bi bi-tools me-1"></i> Jasa & Servis
-                    </button>
-                </div>
 
+                {{-- Tombol Kategori (data dari $kategoti di HomeController) --}}
+                @if(!empty($kategoti) && count($kategoti) > 0)
+                    <div class="d-flex justify-content-center flex-wrap gap-2 mt-3">
+                        {{-- Tombol Semua --}}
+                        <button type="button"
+                            class="btn rounded-pill px-3 py-1"
+                            :class="activeCategory === 'all' ? 'bt-primary' : 'bt-outline-primary'"
+                            @click="activeCategory = 'all'">
+                            Semua
+                        </button>
+
+                        {{-- Tombol per Kategori (berdasarkan ID kategori catalog) --}}
+                        @foreach ($kategoti as $kategori)
+                            <button type="button"
+                                class="btn rounded-pill px-3 py-1"
+                                :class="activeCategory === '{{ $kategori->id }}' ? 'bt-primary' : 'bt-outline-primary'"
+                                @click="activeCategory = '{{ $kategori->id }}'">
+                                {{ $kategori->name ?? '-' }}
+                            </button>
+                        @endforeach
+                    </div>
+                @endif
 
                 {{-- LOOP PRODUK --}}
                 @foreach ($produk as $item)
                     {{-- Gunakan x-show langsung di sini --}}
-                    <div class="col-md-3 col-sm-6" x-show="activeTab === 'produk'"
+                    <div class="col-md-3 col-sm-6"
+                        x-show="activeTab === 'produk' && (activeCategory === 'all' || activeCategory === '{{ $item['category_id'] }}')"
                         x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 transform scale-95"
                         x-transition:enter-end="opacity-100 transform scale-100">
 
                         {{-- Panggil Component --}}
                         <x-card-product :item="$item" type="produk" />
-
-                    </div>
-                @endforeach
-
-                {{-- LOOP JASA --}}
-                @foreach ($jasa as $item)
-                    <div class="col-md-3 col-sm-6" x-show="activeTab === 'jasa'"
-                        x-transition:enter="transition ease-out duration-300"
-                        x-transition:enter-start="opacity-0 transform scale-95"
-                        x-transition:enter-end="opacity-100 transform scale-100">
-
-                        {{-- Panggil Component --}}
-                        <x-card-product :item="$item" type="jasa" />
 
                     </div>
                 @endforeach
@@ -214,18 +212,26 @@
 
 
             <div class="row g-4 justify-content-center align-items-center">
-                @foreach ($partners as $item)
-                    <div class="col-4 col-sm-3 col-md-2" data-aos="zoom-in"
-                        data-aos-delay="{{ $loop->index * 50 }}">
+                @if(!empty($partners) && is_iterable($partners))
+                    @foreach ($partners as $item)
+                        @if(isset($item['img']) && isset($item['name']))
+                            <div class="col-4 col-sm-3 col-md-2" data-aos="zoom-in"
+                                data-aos-delay="{{ $loop->index * 50 }}">
 
-                        {{-- Wrapper untuk mengatur tinggi maksimal logo --}}
-                        <div class="partner-logo-wrapper text-center">
-                            <img src="{{ asset($item['img']) }}" class="img-fluid partner-logo transition-all"
-                                alt="{{ $item['name'] }}" title="{{ $item['name'] }}">
-                        </div>
+                                {{-- Wrapper untuk mengatur tinggi maksimal logo --}}
+                                <div class="partner-logo-wrapper text-center">
+                                    <img src="{{ asset($item['img']) }}" class="img-fluid partner-logo transition-all"
+                                        alt="{{ $item['name'] }}" title="{{ $item['name'] }}">
+                                </div>
 
+                            </div>
+                        @endif
+                    @endforeach
+                @else
+                    <div class="col-12 text-center">
+                        <p class="text-muted">Belum ada mitra industri terdaftar.</p>
                     </div>
-                @endforeach
+                @endif
             </div>
 
         </div>

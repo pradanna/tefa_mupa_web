@@ -11,15 +11,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Commons\Libs\Datetime;
 use App\Schemas\CatalogSchema;
+
 class CatalogController extends BaseController
 {
-
     public function __construct(
         protected CategoryRepository $categoryRepository,
         protected CatalogRepository $catalogRepository)
-    {
+    {}
 
-    }
     /**
      * Display a listing of the resource.
      */
@@ -60,21 +59,21 @@ class CatalogController extends BaseController
                 'slug' => Str::slug($request->input('title')),
                 'id_category' => $request->input('id_category'),
                 'id_sub_category' => $request->input('id_sub_category'),
-                'content' => $request->input('content'),
-                'date' => $request->input('date'),
-                'status' => $request->input('status'),
+                // gunakan field "desc" agar sesuai dengan schema & kolom tabel
+                'desc' => $request->input('desc'),
                 'id_user' => Auth::user()->id,
             ];
+
             if($request->hasFile('file')){
                 $file      = $request->file('file');
                 $extension = $file->getClientOriginalExtension();
                 $name      = Datetime::getNowYmdHis();
                 $fileName  = $name .'.'. $extension;
                 $file->storeAs('images/catalog',$fileName,'public');
-                $path = asset('storage/images/catalog');
+                $path      = asset('storage/images/catalog');
                 $payload['path'] = $path;
                 $payload['image'] = $fileName;
-            };
+            }
 
             $schema = new CatalogSchema();
             $schema->hydrateSchemaBody($payload);
@@ -82,12 +81,10 @@ class CatalogController extends BaseController
 
             $data = $this->catalogRepository->store($payload);
 
-            return redirect()->route('catalog.index')->with('message','success create catalog');
-
+            return redirect()->route('catalog.index')->with('message', 'success create catalog');
         } catch (\Exception $e) {
             throw $e;
-        }
-        catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
             return redirect()
                 ->back()
@@ -148,7 +145,10 @@ class CatalogController extends BaseController
             ];
 
             $newImageName = null;
+            $oldFilePath = null;
             if ($request->hasFile('file')) {
+                // Simpan info gambar lama untuk dihapus setelah validasi sukses
+                $oldFilePath = $catalog->image ? 'images/catalog/' . $catalog->image : null;
                 $file = $request->file('file');
                 $extension = $file->getClientOriginalExtension();
                 $name = Datetime::getNowYmdHis();
@@ -164,6 +164,7 @@ class CatalogController extends BaseController
             try {
                 $schema->validate();
             } catch (\Illuminate\Validation\ValidationException $e) {
+                // Jika upload gambar baru dan validasi gagal, hapus gambar yang tadi di-upload
                 if ($newImageName) {
                     $filePath = 'images/catalog/' . $newImageName;
                     if (\Illuminate\Support\Facades\Storage::disk('public')->exists($filePath)) {
@@ -175,12 +176,9 @@ class CatalogController extends BaseController
 
             $schema->hydrate();
 
-            // Hapus gambar lama jika ada upload gambar baru
-            if ($newImageName && $catalog->image) {
-                $oldFilePath = 'images/catalog/' . $catalog->image;
-                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($oldFilePath)) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($oldFilePath);
-                }
+            // Hapus gambar lama jika upload gambar baru DAN gambar lama memang ada
+            if ($newImageName && $oldFilePath && \Illuminate\Support\Facades\Storage::disk('public')->exists($oldFilePath)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldFilePath);
             }
 
             $updateData = [

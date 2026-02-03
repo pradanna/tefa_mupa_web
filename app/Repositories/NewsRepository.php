@@ -11,14 +11,14 @@ use App\Schemas\NewsSchema;
 
 class NewsRepository extends AppRepository
 {
+    protected $schema;
     /**
      * Create a new class instance.
      */
-    public function __construct(News $model,NewsSchema $schema)
+    public function __construct(News $model, NewsSchema $schema)
     {
-        //
-        parent::__construct($model,$schema);
-
+        parent::__construct($model);
+        $this->schema = $schema;
     }
 
     public function findAllWithRelation(Request $request){
@@ -77,6 +77,17 @@ class NewsRepository extends AppRepository
             $data = $th;
             throw $data;
         }
+    }
+
+    /**
+     * Ambil berita terbaru (default 3) untuk ditampilkan di homepage.
+     */
+    public function getLatestNews(int $limit = 3)
+    {
+        return $this->model
+            ->orderBy('date', 'DESC')
+            ->take($limit)
+            ->get();
     }
 
 public function updateNews($id, $schema)

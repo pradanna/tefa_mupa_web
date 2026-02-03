@@ -1,6 +1,6 @@
 <x-backoffice.layout.main>
-    <x-backoffice.partials.breadcrumb title="Slider" pretitle="Slider" createUrl="{{ route('sliders.create') }}"
-        createLabel="Tambah Slider" />
+    <x-backoffice.partials.breadcrumb title="Lisensi" pretitle="Lisensi" createUrl="{{ route('licenses.create') }}"
+        createLabel="Tambah Lisensi" />
     <div class="col-12">
         <div class="card">
             <div class="card-body border-bottom py-3">
@@ -8,15 +8,15 @@
                     <div class="text-muted">
                         Show
                         <div class="mx-2 d-inline-block">
-                            <input type="text" class="form-control form-control-sm" value="8" size="3"
-                                aria-label="Slider count">
+                            <input type="text" class="form-control form-control-sm" value="{{ $licenses->perPage() }}" size="3"
+                                aria-label="Licenses count">
                         </div>
                         entries
                     </div>
                     <div class="ms-auto text-muted">
                         Search:
                         <div class="ms-2 d-inline-block">
-                            <input type="text" class="form-control form-control-sm" aria-label="Search slider">
+                            <input type="text" class="form-control form-control-sm" aria-label="Search licenses">
                         </div>
                     </div>
                 </div>
@@ -33,51 +33,41 @@
                                     <path d="M6 15l6 -6l6 6" />
                                 </svg>
                             </th>
-                            <th>Title</th>
-                            <th>Subtitle</th>
-                            <th>Image</th>
+                            <th>Nama</th>
+                            <th>Kode</th>
+                            <th>Tipe</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php
-                            $no = 1;
-                        @endphp
-                        @php
                             // Ambil nomor pertama pada halaman ini (untuk penomoran tabel yang konsisten dengan pagination)
-                            $no = ($sliders->currentPage() - 1) * $sliders->perPage() + 1;
+                            $no = ($licenses->currentPage() - 1) * $licenses->perPage() + 1;
                         @endphp
-                        @forelse ($sliders as $slider)
+                        @forelse ($licenses as $license)
                             <tr>
                                 <td><span class="text-muted">{{ $no++ }}</span></td>
-                                <td class="text-muted">{{ $slider->title ?? '-' }}</td>
-                                <td class="text-muted">{{ $slider->subtitle ?? '-' }}</td>
-                                <td class="text-muted">
-                                    @if ($slider->file)
-                                        <img src="{{ $slider->path.'/'.$slider->file }}"
-                                            alt="{{ $slider->title ?? 'Slider Image' }}"
-                                            style="max-width: 120px; max-height: 80px; object-fit:cover; display:block; border-radius: 5px; border: 1px solid #eee;">
-                                    @endif
-                                </td>
-                                <td class="text-end">
+                                <td class="text-muted">{{ $license->name ?? '-' }}</td>
+                                <td class="text-muted">{{ $license->code ?? '-' }}</td>
+                                <td class="text-muted">{{ $license->type ?? '-' }}</td>
+                                <td class="text-muted position-relative">
                                     <span class="dropdown">
-                                        <button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport"
-                                            data-bs-toggle="dropdown">Actions</button>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item" href="{{ route('sliders.edit', $slider) }}">Edit</a>
-                                            <form action="{{ route('sliders.destroy', $slider->id) }}" method="POST" style="display:inline;">
+                                        <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
+                                            data-bs-boundary="viewport">Actions</button>
+                                        <div class="dropdown-menu dropdown-menu-start"
+                                            style="margin-top: 30px;">
+                                            <a class="dropdown-item" href="{{ route('licenses.edit', $license->id) }}">Edit</a>
+                                            <form action="{{ route('licenses.destroy', $license->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this slider?')">Delete</button>
+                                                <button type="submit" class="dropdown-item" onclick="return confirm('Apakah Anda yakin ingin menghapus lisensi ini?')">Hapus</button>
                                             </form>
                                         </div>
                                     </span>
                                 </td>
                             </tr>
                         @empty
-                        <x-backoffice.table.empty
-                        colspan="5"
-                        />
+                            <x-backoffice.table.empty colspan="5" />
                         @endforelse
                     </tbody>
                 </table>
@@ -86,22 +76,23 @@
                 <p class="m-0 text-muted">
                     Showing
                     <span>
-                        {{ ($sliders->currentPage() - 1) * $sliders->perPage() + 1 }}
+                        {{ ($licenses->currentPage() - 1) * $licenses->perPage() + 1 }}
                     </span>
                     to
                     <span>
-                        {{ ($sliders->currentPage() - 1) * $sliders->perPage() + $sliders->count() }}
+                        {{ ($licenses->currentPage() - 1) * $licenses->perPage() + $licenses->count() }}
                     </span>
                     of
                     <span>
-                        {{ $sliders->total() }}
+                        {{ $licenses->total() }}
                     </span>
                     entries
                 </p>
                 <div class="ms-auto m-0">
-                    {{ $sliders->links('vendor.pagination.custom') }}
+                    {{ $licenses->links('vendor.pagination.custom') }}
                 </div>
             </div>
         </div>
     </div>
 </x-backoffice.layout.main>
+
