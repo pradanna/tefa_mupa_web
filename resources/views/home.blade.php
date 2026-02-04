@@ -57,8 +57,7 @@
                     <div class="position-relative rounded-4 overflow-hidden shadow-lg">
 
                         <div class="ratio ratio-16x9">
-                            <iframe
-                                src="https://www.youtube.com/embed/cuBw8140hrE?si=a_8z38ComAZA_ST3?autoplay=1&mute=1"
+                            <iframe src="https://drive.google.com/file/d/1b9ORrJ8v2g5W-WNC5qOAhcn0T4KYdhhJ/preview"
                                 frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="Profile Video"
@@ -87,7 +86,8 @@
             <div class="text-center mb-5 mw-800 mx-auto">
                 <h6 class="text-secondary fw-bold text-uppercase ls-wide" data-aos="fade-up" data-aos-delay="0">Lingkup
                     Layanan</h6>
-                <h2 class="fw-bold display-6 mb-3" data-aos="fade-up" data-aos-delay="100">Solusi Komprehensif {{ config('app.short_name') }}</h2>
+                <h2 class="fw-bold display-6 mb-3" data-aos="fade-up" data-aos-delay="100">Solusi Komprehensif
+                    {{ config('app.short_name') }}</h2>
                 <p class="text-muted" data-aos="fade-up" data-aos-delay="200">
                     Kami menyediakan produk teknologi tepat guna dan layanan jasa profesional yang dikerjakan oleh siswa
                     berkompeten dengan standar industri.
@@ -242,7 +242,8 @@
         <div class="container py-4">
             <div class="text-center mb-5">
                 <h2 class="fw-bold txt-primary " data-aos="fade-up" data-aos-delay="0">Berita Terkini</h2>
-                <p class="text-muted" data-aos="fade-up" data-aos-delay="100">Berita terkini tentang {{ config('app.holding_name') }}</p>
+                <p class="text-muted" data-aos="fade-up" data-aos-delay="100">Berita terkini tentang
+                    {{ config('app.holding_name') }}</p>
             </div>
 
             <div class="row g-4" data-aos="fade-up" data-aos-delay="200">
@@ -264,7 +265,8 @@
         <div class="container py-4">
             <div class="text-center mb-5">
                 <h2 class="fw-bold txt-primary " data-aos="fade-up" data-aos-delay="0">Gallery Kegiatan</h2>
-                <p class="text-muted" data-aos="fade-up" data-aos-delay="100">Gallery kegiatan {{ config('app.short_name') }}</p>
+                <p class="text-muted" data-aos="fade-up" data-aos-delay="100">Gallery kegiatan
+                    {{ config('app.short_name') }}</p>
             </div>
             <div class="row g-2" data-aos="fade-up" data-aos-delay="200">
                 @foreach ($gallery as $foto)
@@ -290,7 +292,8 @@
         </div>
 
         <div class="container position-relative text-center py-5">
-            <h2 class="fw-bold display-6 mb-3" data-aos="fade-up">Siap Berkolaborasi dengan {{ config('app.short_name') }}</h2>
+            <h2 class="fw-bold display-6 mb-3" data-aos="fade-up">Siap Berkolaborasi dengan
+                {{ config('app.short_name') }}</h2>
             <p class="lead mb-4 mw-600 mx-auto text-white-80" data-aos="fade-up" data-aos-delay="100">
                 Dapatkan layanan jasa profesional dan produk inovatif karya anak bangsa. Hubungi kami sekarang untuk
                 konsultasi gratis.
