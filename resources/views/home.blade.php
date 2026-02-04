@@ -249,9 +249,7 @@
             <div class="row g-4" data-aos="fade-up" data-aos-delay="200">
                 @foreach ($berita as $news)
                     <div class="col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
-
                         <x-card-news :item="$news" />
-
                     </div>
                 @endforeach
             </div>
