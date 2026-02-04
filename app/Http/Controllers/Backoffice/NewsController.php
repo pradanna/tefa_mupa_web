@@ -15,7 +15,7 @@ class NewsController extends BaseController
 
     public function __construct( protected NewsRepository $newsRepository,protected CategoryRepository $categoryRepository)
     {
-        parent::__construct($newsRepository,$categoryRepository);
+
     }
     /**
      * Display a listing of the resource.
