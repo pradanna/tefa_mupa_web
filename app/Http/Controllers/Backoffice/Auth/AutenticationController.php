@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Backoffice\Auth;
 use App\Commons\Controller\BaseController;
 use Illuminate\Http\Request;
 use App\Repositories\LoginRepository;
-use App\Schemas\auth\LoginSchema;
+use App\Schemas\Auth\LoginSchema;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 

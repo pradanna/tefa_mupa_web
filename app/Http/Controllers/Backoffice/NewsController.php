@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use App\Commons\Controller\BaseController;
 use App\Repositories\NewsRepository;
 use App\Repositories\CategoryRepository;
-use Illuminate\Support\Facades\Log;
-use Psy\Util\Str;
+use Illuminate\Support\Facades\Log;;
 
 class NewsController extends BaseController
 {
