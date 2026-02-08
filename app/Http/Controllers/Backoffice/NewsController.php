@@ -62,8 +62,12 @@ class NewsController extends BaseController
             $image = $request->file('file');
             $extension = $image->getClientOriginalExtension();
             $name = now()->format('YmdHis') . '.' . $extension;
-            $image->storeAs('images/news', $name, 'public');
-            $pathUrl = asset('storage/images/news');
+            $destinationPath = public_path('images/news');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $image->move($destinationPath, $name);
+            $pathUrl = asset('images/news');
 
             // Data untuk field pada model News (see app/Models/News.php)
             $requestData = $request->all();
@@ -146,8 +150,12 @@ class NewsController extends BaseController
             if ($request->hasFile('file')) {
                 $extension = $request->file('file')->getClientOriginalExtension();
                 $newImageName = now()->format('YmdHis') . '.' . $extension;
-                $request->file('file')->storeAs('images/news', $newImageName, 'public');
-                $newImagePath = asset('storage/images/news');
+                $destinationPath = public_path('images/news');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+                $request->file('file')->move($destinationPath, $newImageName);
+                $newImagePath = asset('images/news');
                 $data['image'] = $newImageName;
                 $data['path']  = $newImagePath;
             }
@@ -159,9 +167,9 @@ class NewsController extends BaseController
                 $schema->validate();
             } catch (\Illuminate\Validation\ValidationException $e) {
                 if ($newImageName) {
-                    $filePath = 'images/news/' . $newImageName;
-                    if (\Illuminate\Support\Facades\Storage::disk('public')->exists($filePath)) {
-                        \Illuminate\Support\Facades\Storage::disk('public')->delete($filePath);
+                    $filePath = public_path('images/news/' . $newImageName);
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
                     }
                 }
                 \Illuminate\Support\Facades\DB::rollBack();
@@ -171,9 +179,9 @@ class NewsController extends BaseController
 
             // Setelah validasi, baru hapus gambar lama kalau ada upload gambar baru
             if ($newImageName) {
-                $oldFilePath = 'images/news/' . $news->image;
-                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($oldFilePath)) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($oldFilePath);
+                $oldFilePath = public_path('images/news/' . $news->image);
+                if (file_exists($oldFilePath)) {
+                    unlink($oldFilePath);
                 }
             }
 
@@ -213,9 +221,9 @@ class NewsController extends BaseController
 
             // Hapus file gambar jika ada
             if (!empty($news->image)) {
-                $filePath = 'images/news/' . $news->image;
-                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($filePath)) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($filePath);
+                $filePath = public_path('images/news/' . $news->image);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
                 }
             }
 

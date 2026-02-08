@@ -7,7 +7,6 @@ use App\Models\Slider;
 use App\Schemas\SliderSchema;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
 class SliderRepository extends AppRepository {
@@ -63,16 +62,23 @@ class SliderRepository extends AppRepository {
                     $extension = $file->getClientOriginalExtension();
                     $dateNow = now()->format('YmdHis');
                     $newFileName = $dateNow . '.' . $extension;
-                    $file->storeAs('images/slider', $newFileName, 'public');
-                    if ($slider->file && Storage::disk('public')->exists('images/slider/' . $slider->file)) {
-                        Storage::disk('public')->delete('images/slider/' . $slider->file);
+                    $destinationPath = public_path('images/slider');
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 0755, true);
+                    }
+                    $file->move($destinationPath, $newFileName);
+                    if ($slider->file) {
+                        $oldFilePath = public_path('images/slider/' . $slider->file);
+                        if (file_exists($oldFilePath)) {
+                            unlink($oldFilePath);
+                        }
                     }
                     $formattedData['file'] = $newFileName;
                 } else {
                     $formattedData['file'] = $slider->file;
                 }
 
-                $formattedData['path'] = asset('storage/images/slider');
+                $formattedData['path'] = asset('images/slider');
 
                 $schema = new SliderSchema();
                 $schema->hydrateSchemaBody($formattedData);
@@ -80,8 +86,11 @@ class SliderRepository extends AppRepository {
                 try {
                     $schema->validate();
                 } catch (ValidationException $e) {
-                    if ($request->hasFile('file') && isset($newFileName) && Storage::disk('public')->exists('images/slider/' . $newFileName)) {
-                        Storage::disk('public')->delete('images/slider/' . $newFileName);
+                    if ($request->hasFile('file') && isset($newFileName)) {
+                        $filePath = public_path('images/slider/' . $newFileName);
+                        if (file_exists($filePath)) {
+                            unlink($filePath);
+                        }
                     }
                     throw $e;
                 }

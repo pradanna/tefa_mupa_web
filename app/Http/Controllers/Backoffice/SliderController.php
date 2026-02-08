@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Backoffice;
 use Illuminate\Http\Request;
 use App\Repositories\SliderRepository;
 use App\Commons\Controller\BaseController;
-use Illuminate\Support\Facades\Storage;
 
 
 class SliderController extends BaseController
@@ -50,9 +49,13 @@ class SliderController extends BaseController
             $dateNow = now()->format('YmdHis');
             $fileName = $dateNow . '.' . $extension;
 
-            $file->storeAs('images/slider', $fileName, 'public');
+            $destinationPath = public_path('images/slider');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $file->move($destinationPath, $fileName);
 
-            $pathUrl = asset('storage/images/slider');
+            $pathUrl = asset('images/slider');
 
             $formattedData = array_merge($request->all(), [
                 'file' => $fileName,
@@ -115,16 +118,20 @@ class SliderController extends BaseController
 
             if ($request->hasFile('file')) {
                 // Delete old file if exists
-                $filePath = 'images/slider/' . $slider->file;
-                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($filePath)) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($filePath);
+                $oldFilePath = public_path('images/slider/' . $slider->file);
+                if (file_exists($oldFilePath)) {
+                    unlink($oldFilePath);
                 }
                 // Store new file
                 $extension = $request->file('file')->getClientOriginalExtension();
                 $name = now()->format('YmdHis') . '.' . $extension;
-                $request->file('file')->storeAs('images/slider', $name, 'public');
+                $destinationPath = public_path('images/slider');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+                $request->file('file')->move($destinationPath, $name);
                 $data['file'] = $name;
-                $data['path'] = asset('storage/images/slider');
+                $data['path'] = asset('images/slider');
             }
 
             $schema = new \App\Schemas\SliderSchema();
@@ -163,9 +170,9 @@ class SliderController extends BaseController
 
             // Hapus file gambar jika ada
             if (!empty($find_data->file)) {
-                $filePath = 'images/slider/' . $find_data->file;
-                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($filePath)) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($filePath);
+                $filePath = public_path('images/slider/' . $find_data->file);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
                 }
             }
 

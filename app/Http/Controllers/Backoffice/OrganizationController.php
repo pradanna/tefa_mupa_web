@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Backoffice;
 use Illuminate\Http\Request;
 use App\Repositories\OrganizationRepository;
 use App\Commons\Controller\BaseController;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class OrganizationController extends BaseController
@@ -50,9 +49,13 @@ class OrganizationController extends BaseController
             $dateNow = now()->format('YmdHis');
             $fileName = $dateNow . '.' . $extension;
 
-            $file->storeAs('images/organization', $fileName, 'public');
+            $destinationPath = public_path('images/organization');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $file->move($destinationPath, $fileName);
 
-            $pathUrl = asset('storage/images/organization');
+            $pathUrl = asset('images/organization');
 
             $formattedData = array_merge($request->all(), [
                 'image' => $fileName,

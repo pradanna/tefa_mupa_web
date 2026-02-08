@@ -81,9 +81,13 @@ class HistoryController extends BaseController
                 $name = now()->format('YmdHis');
                 $filename = $name . '.' . $extension;
 
-                $file->storeAs('image/history', $filename, 'public');
+                $destinationPath = public_path('images/history');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+                $file->move($destinationPath, $filename);
                 $payload['image'] = $filename;
-                $payload['path'] = asset('storage/image/history/');
+                $payload['path'] = asset('images/history');
             } else {
                 $payload['image'] = $findContent->image;
                 $payload['path'] = $findContent->path;
