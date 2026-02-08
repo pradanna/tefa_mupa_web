@@ -56,7 +56,7 @@
                                         <div>
                                             <img
                                                 id="image-preview"
-                                                src="{{ $promotion->image ? asset('storage/images/promotions/' . $promotion->image) : '' }}"
+                                                src="{{ $promotion->image ? asset('images/promotions/' . $promotion->image) : '' }}"
                                                 alt="Preview Gambar"
                                                 class="img-fluid rounded"
                                                 style="max-width: 300px; max-height: 200px;@if(!$promotion->image) display:none;@endif"
@@ -102,7 +102,7 @@
                             previewImg.style.display = 'none';
                             previewWrapper.style.display = 'none';
                         @else
-                            previewImg.src = "{{ $promotion->image ? asset('storage/images/promotions/' . $promotion->image) : '' }}";
+                            previewImg.src = "{{ $promotion->image ? asset('images/promotions/' . $promotion->image) : '' }}";
                             previewImg.style.display = 'block';
                             previewWrapper.style.display = '';
                         @endif

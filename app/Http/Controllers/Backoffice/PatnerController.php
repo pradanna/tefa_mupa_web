@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Commons\Controller\BaseController;
 use App\Repositories\PatnersRepository;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class PatnerController extends BaseController
 {
@@ -57,7 +56,11 @@ class PatnerController extends BaseController
             $image = $request->file('file');
             $extension = $image->getClientOriginalExtension();
             $imageName = now()->format('YmdHis') . '.' . $extension;
-            $image->storeAs('images/partners', $imageName, 'public');
+            $destinationPath = public_path('images/partners');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $image->move($destinationPath, $imageName);
 
             // Prepare data untuk schema (exclude file dari request)
             $requestData = $request->except('file');
@@ -74,14 +77,20 @@ class PatnerController extends BaseController
             return redirect()->route('partners.index')->with('success', 'Partner berhasil dibuat');
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Jika validasi gagal, hapus file yang sudah di-upload
-            if (isset($imageName) && Storage::disk('public')->exists('images/partners/' . $imageName)) {
-                Storage::disk('public')->delete('images/partners/' . $imageName);
+            if (isset($imageName)) {
+                $filePath = public_path('images/partners/' . $imageName);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
             }
             return redirect()->back()->withErrors($e->errors())->withInput($request->except('file'));
         } catch (\Throwable $th) {
             // Jika error lain, hapus file yang sudah di-upload
-            if (isset($imageName) && Storage::disk('public')->exists('images/partners/' . $imageName)) {
-                Storage::disk('public')->delete('images/partners/' . $imageName);
+            if (isset($imageName)) {
+                $filePath = public_path('images/partners/' . $imageName);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
             }
             Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
             return redirect()
@@ -139,11 +148,15 @@ class PatnerController extends BaseController
             $oldFilePath = null;
             if ($request->hasFile('file')) {
                 // Simpan info gambar lama untuk dihapus setelah validasi sukses
-                $oldFilePath = $partner->image ? 'images/partners/' . $partner->image : null;
+                $oldFilePath = $partner->image ? public_path('images/partners/' . $partner->image) : null;
                 $file = $request->file('file');
                 $extension = $file->getClientOriginalExtension();
                 $newImageName = now()->format('YmdHis') . '.' . $extension;
-                $file->storeAs('images/partners', $newImageName, 'public');
+                $destinationPath = public_path('images/partners');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+                $file->move($destinationPath, $newImageName);
                 $data['image'] = $newImageName;
             }
 
@@ -155,8 +168,11 @@ class PatnerController extends BaseController
                 $schema->validate();
             } catch (\Illuminate\Validation\ValidationException $e) {
                 // Jika validasi gagal, hapus file baru yang sudah di-upload
-                if ($newImageName && Storage::disk('public')->exists('images/partners/' . $newImageName)) {
-                    Storage::disk('public')->delete('images/partners/' . $newImageName);
+                if ($newImageName) {
+                    $filePath = public_path('images/partners/' . $newImageName);
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
                 }
                 \Illuminate\Support\Facades\DB::rollBack();
                 return redirect()->back()->withErrors($e->errors())->withInput();
@@ -166,8 +182,8 @@ class PatnerController extends BaseController
             $this->patnersRepository->updatePartner($id, $schema);
 
             // Setelah update sukses, hapus gambar lama jika ada gambar baru
-            if ($newImageName && $oldFilePath && Storage::disk('public')->exists($oldFilePath)) {
-                Storage::disk('public')->delete($oldFilePath);
+            if ($newImageName && $oldFilePath && file_exists($oldFilePath)) {
+                unlink($oldFilePath);
             }
 
             \Illuminate\Support\Facades\DB::commit();
@@ -176,8 +192,11 @@ class PatnerController extends BaseController
         } catch (\Throwable $th) {
             \Illuminate\Support\Facades\DB::rollBack();
             // Jika error, hapus file baru yang sudah di-upload
-            if (isset($newImageName) && Storage::disk('public')->exists('images/partners/' . $newImageName)) {
-                Storage::disk('public')->delete('images/partners/' . $newImageName);
+            if (isset($newImageName)) {
+                $filePath = public_path('images/partners/' . $newImageName);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
             }
             Log::error($th);
             return redirect()->back()->with('error', 'Gagal memperbarui partner: ' . $th->getMessage());
@@ -197,9 +216,9 @@ class PatnerController extends BaseController
 
             // Hapus gambar dari storage
             if ($partner->image) {
-                $filePath = 'images/partners/' . $partner->image;
-                if (Storage::disk('public')->exists($filePath)) {
-                    Storage::disk('public')->delete($filePath);
+                $filePath = public_path('images/partners/' . $partner->image);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
                 }
             }
 

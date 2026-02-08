@@ -25,7 +25,7 @@
                                         <label class="form-label">Gambar Partner</label>
                                         @if($partner->image)
                                             <div class="mb-2">
-                                                <img src="{{ asset('storage/images/partners/' . $partner->image) }}" 
+                                                <img src="{{ asset('images/partners/' . $partner->image) }}" 
                                                      alt="{{ $partner->name }}" 
                                                      style="max-width: 200px; max-height: 200px; object-fit: cover; border: 1px solid #ddd; border-radius: 4px;">
                                                 <p class="text-muted mt-2">Gambar saat ini</p>

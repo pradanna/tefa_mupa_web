@@ -61,7 +61,7 @@
                                 <td class="text-muted">{{ $catalog->title ?? '-' }}</td>
                                 <td>
                                     @if($catalog->image)
-                                        <img src="{{ asset('storage/' . $catalog->image) }}" alt="Image" width="60">
+                                        <img src="{{ asset('images/catalog/' . $catalog->image) }}" alt="Image" width="60">
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif

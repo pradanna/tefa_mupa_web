@@ -55,7 +55,7 @@
                                 <td class="text-muted">{{ $promotion->expired ? \Carbon\Carbon::parse($promotion->expired)->format('d/m/Y') : '-' }}</td>
                                 <td class="text-muted">
                                     @if($promotion->image)
-                                        <img src="{{ asset('storage/images/promotions/' . $promotion->image) }}" 
+                                        <img src="{{ asset('images/promotions/' . $promotion->image) }}" 
                                              alt="{{ $promotion->name }}" 
                                              style="max-width: 100px; max-height: 60px; object-fit: cover;">
                                     @else

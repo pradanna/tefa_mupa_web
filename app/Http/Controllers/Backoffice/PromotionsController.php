@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Commons\Controller\BaseController;
 use App\Repositories\PromotionsRepository;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class PromotionsController extends BaseController
 {
@@ -64,8 +63,12 @@ class PromotionsController extends BaseController
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();
             $imageName = now()->format('YmdHis') . '.' . $extension;
-            $image->storeAs('images/promotions', $imageName, 'public');
-            $pathUrl = asset('storage/images/promotions');
+            $destinationPath = public_path('images/promotions');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $image->move($destinationPath, $imageName);
+            $pathUrl = asset('images/promotions');
 
             // Prepare data untuk schema (exclude file dari request)
             $requestData = $request->except('image');
@@ -83,14 +86,20 @@ class PromotionsController extends BaseController
             return redirect()->route('promotions.index')->with('success', 'Promotion created successfully');
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Jika validasi gagal, hapus file yang sudah di-upload
-            if (isset($imageName) && Storage::disk('public')->exists('images/promotions/' . $imageName)) {
-                Storage::disk('public')->delete('images/promotions/' . $imageName);
+            if (isset($imageName)) {
+                $filePath = public_path('images/promotions/' . $imageName);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
             }
             return redirect()->back()->withErrors($e->errors())->withInput($request->except('image'));
         } catch (\Throwable $th) {
             // Jika error lain, hapus file yang sudah di-upload
-            if (isset($imageName) && Storage::disk('public')->exists('images/promotions/' . $imageName)) {
-                Storage::disk('public')->delete('images/promotions/' . $imageName);
+            if (isset($imageName)) {
+                $filePath = public_path('images/promotions/' . $imageName);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
             }
             Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
             return redirect()
@@ -153,11 +162,15 @@ class PromotionsController extends BaseController
             if ($request->hasFile('image')) {
                 $extension = $request->file('image')->getClientOriginalExtension();
                 $newImageName = now()->format('YmdHis') . '.' . $extension;
-                $request->file('image')->storeAs('images/promotions', $newImageName, 'public');
+                $destinationPath = public_path('images/promotions');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+                $request->file('image')->move($destinationPath, $newImageName);
                 $data['image'] = $newImageName; // Override dengan nama file baru (string)
-                $data['path'] = asset('storage/images/promotions');
+                $data['path'] = asset('images/promotions');
             } else {
-                $data['path'] = asset('storage/images/promotions');
+                $data['path'] = asset('images/promotions');
             }
 
             // Validasi dan hydrate schema
@@ -169,9 +182,9 @@ class PromotionsController extends BaseController
             } catch (\Illuminate\Validation\ValidationException $e) {
                 // Jika validasi gagal, hapus file baru yang sudah di-upload
                 if ($newImageName) {
-                    $filePath = 'images/promotions/' . $newImageName;
-                    if (Storage::disk('public')->exists($filePath)) {
-                        Storage::disk('public')->delete($filePath);
+                    $filePath = public_path('images/promotions/' . $newImageName);
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
                     }
                 }
                 \Illuminate\Support\Facades\DB::rollBack();
@@ -181,9 +194,9 @@ class PromotionsController extends BaseController
 
             // Setelah validasi sukses, baru hapus gambar lama kalau ada upload gambar baru
             if ($newImageName && $promotion->image) {
-                $oldFilePath = 'images/promotions/' . $promotion->image;
-                if (Storage::disk('public')->exists($oldFilePath)) {
-                    Storage::disk('public')->delete($oldFilePath);
+                $oldFilePath = public_path('images/promotions/' . $promotion->image);
+                if (file_exists($oldFilePath)) {
+                    unlink($oldFilePath);
                 }
             }
 
@@ -203,8 +216,11 @@ class PromotionsController extends BaseController
         } catch (\Throwable $th) {
             \Illuminate\Support\Facades\DB::rollBack();
             // Hapus file baru jika ada error
-            if (isset($newImageName) && Storage::disk('public')->exists('images/promotions/' . $newImageName)) {
-                Storage::disk('public')->delete('images/promotions/' . $newImageName);
+            if (isset($newImageName)) {
+                $filePath = public_path('images/promotions/' . $newImageName);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
             }
             return redirect()->back()->with('error', 'Failed to update promotion: ' . $th->getMessage());
         }
@@ -223,9 +239,9 @@ class PromotionsController extends BaseController
 
             // Hapus file gambar jika ada
             if (!empty($promotion->image)) {
-                $filePath = 'images/promotions/' . $promotion->image;
-                if (Storage::disk('public')->exists($filePath)) {
-                    Storage::disk('public')->delete($filePath);
+                $filePath = public_path('images/promotions/' . $promotion->image);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
                 }
             }
 
