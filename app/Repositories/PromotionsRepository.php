@@ -8,7 +8,6 @@ use App\Models\Promotion;
 use App\Schemas\PromotionsSchema;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
 class PromotionsRepository extends AppRepository
@@ -56,10 +55,17 @@ class PromotionsRepository extends AppRepository
                     $extension = $file->getClientOriginalExtension();
                     $dateNow = now()->format('YmdHis');
                     $newFileName = $dateNow . '.' . $extension;
-                    $file->storeAs('images/promotions', $newFileName, 'public');
+                    $destinationPath = public_path('images/promotions');
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 0755, true);
+                    }
+                    $file->move($destinationPath, $newFileName);
                     // Remove old image if present
-                    if ($promotion->image && Storage::disk('public')->exists('images/promotions/' . $promotion->image)) {
-                        Storage::disk('public')->delete('images/promotions/' . $promotion->image);
+                    if ($promotion->image) {
+                        $oldFilePath = public_path('images/promotions/' . $promotion->image);
+                        if (file_exists($oldFilePath)) {
+                            unlink($oldFilePath);
+                        }
                     }
                     $formattedData['image'] = $newFileName;
                 } else {
@@ -67,7 +73,7 @@ class PromotionsRepository extends AppRepository
                 }
 
                 // Optionally set image path if needed by the table or schema
-                $formattedData['path'] = asset('storage/images/promotions');
+                $formattedData['path'] = asset('images/promotions');
 
                 $schema = new PromotionsSchema();
                 $schema->hydrateSchemaBody($formattedData);
@@ -75,8 +81,11 @@ class PromotionsRepository extends AppRepository
                 try {
                     $schema->validate();
                 } catch (ValidationException $e) {
-                    if ($request->hasFile('image') && isset($newFileName) && Storage::disk('public')->exists('images/promotions/' . $newFileName)) {
-                        Storage::disk('public')->delete('images/promotions/' . $newFileName);
+                    if ($request->hasFile('image') && isset($newFileName)) {
+                        $filePath = public_path('images/promotions/' . $newFileName);
+                        if (file_exists($filePath)) {
+                            unlink($filePath);
+                        }
                     }
                     throw $e;
                 }
@@ -104,8 +113,11 @@ class PromotionsRepository extends AppRepository
     {
         $promotion = $this->model->findOrFail($id);
         // Delete the promotion image from storage
-        if ($promotion->image && Storage::disk('public')->exists('images/promotions/' . $promotion->image)) {
-            Storage::disk('public')->delete('images/promotions/' . $promotion->image);
+        if ($promotion->image) {
+            $filePath = public_path('images/promotions/' . $promotion->image);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
         }
         return $promotion->delete();
     }

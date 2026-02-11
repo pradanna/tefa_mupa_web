@@ -49,7 +49,7 @@
                                 <td class="text-muted">{{ $partner->name ?? '-' }}</td>
                                 <td class="text-muted">
                                     @if($partner->image)
-                                        <img src="{{ asset('storage/images/partners/' . $partner->image) }}" 
+                                        <img src="{{ asset('images/partners/' . $partner->image) }}" 
                                              alt="{{ $partner->name }}" 
                                              style="max-width: 100px; max-height: 100px; object-fit: cover;">
                                     @else

@@ -8,7 +8,6 @@ use App\Models\OrganizationStructure;
 use App\Schemas\OrganizationSchemas;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
 class OrganizationRepository extends AppRepository
@@ -64,16 +63,23 @@ class OrganizationRepository extends AppRepository
                     $extension = $file->getClientOriginalExtension();
                     $dateNow = now()->format('YmdHis');
                     $newFileName = $dateNow . '.' . $extension;
-                    $file->storeAs('images/organization', $newFileName, 'public');
-                    if ($organization->image && Storage::disk('public')->exists('images/organization/' . $organization->image)) {
-                        Storage::disk('public')->delete('images/organization/' . $organization->image);
+                    $destinationPath = public_path('images/organization');
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 0755, true);
+                    }
+                    $file->move($destinationPath, $newFileName);
+                    if ($organization->image) {
+                        $oldFilePath = public_path('images/organization/' . $organization->image);
+                        if (file_exists($oldFilePath)) {
+                            unlink($oldFilePath);
+                        }
                     }
                     $formattedData['image'] = $newFileName;
                 } else {
                     $formattedData['image'] = $organization->image;
                 }
 
-                $formattedData['path'] = asset('storage/images/organization');
+                $formattedData['path'] = asset('images/organization');
 
                 $schema = new OrganizationSchemas();
                 $schema->hydrateSchemaBody($formattedData);
@@ -81,8 +87,11 @@ class OrganizationRepository extends AppRepository
                 try {
                     $schema->validate();
                 } catch (ValidationException $e) {
-                    if ($request->hasFile('image') && isset($newFileName) && Storage::disk('public')->exists('images/organization/' . $newFileName)) {
-                        Storage::disk('public')->delete('images/organization/' . $newFileName);
+                    if ($request->hasFile('image') && isset($newFileName)) {
+                        $filePath = public_path('images/organization/' . $newFileName);
+                        if (file_exists($filePath)) {
+                            unlink($filePath);
+                        }
                     }
                     throw $e;
                 }
@@ -113,8 +122,11 @@ class OrganizationRepository extends AppRepository
     {
         $organization = $this->model->findOrFail($id);
         // Delete the organization image from storage
-        if ($organization->image && Storage::disk('public')->exists('images/organization/' . $organization->image)) {
-            Storage::disk('public')->delete('images/organization/' . $organization->image);
+        if ($organization->image) {
+            $filePath = public_path('images/organization/' . $organization->image);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
         }
         return $organization->delete();
     }

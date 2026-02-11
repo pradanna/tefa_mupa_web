@@ -69,8 +69,12 @@ class CatalogController extends BaseController
                 $extension = $file->getClientOriginalExtension();
                 $name      = Datetime::getNowYmdHis();
                 $fileName  = $name .'.'. $extension;
-                $file->storeAs('images/catalog',$fileName,'public');
-                $path      = asset('storage/images/catalog');
+                $destinationPath = public_path('images/catalog');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+                $file->move($destinationPath, $fileName);
+                $path      = asset('images/catalog');
                 $payload['path'] = $path;
                 $payload['image'] = $fileName;
             }
@@ -148,14 +152,18 @@ class CatalogController extends BaseController
             $oldFilePath = null;
             if ($request->hasFile('file')) {
                 // Simpan info gambar lama untuk dihapus setelah validasi sukses
-                $oldFilePath = $catalog->image ? 'images/catalog/' . $catalog->image : null;
+                $oldFilePath = $catalog->image ? public_path('images/catalog/' . $catalog->image) : null;
                 $file = $request->file('file');
                 $extension = $file->getClientOriginalExtension();
                 $name = Datetime::getNowYmdHis();
                 $newImageName = $name . '.' . $extension;
-                $file->storeAs('images/catalog', $newImageName, 'public');
+                $destinationPath = public_path('images/catalog');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+                $file->move($destinationPath, $newImageName);
                 $payload['image'] = $newImageName;
-                $payload['path'] = asset('storage/images/catalog');
+                $payload['path'] = asset('images/catalog');
             }
 
             $schema = new CatalogSchema();
@@ -166,9 +174,9 @@ class CatalogController extends BaseController
             } catch (\Illuminate\Validation\ValidationException $e) {
                 // Jika upload gambar baru dan validasi gagal, hapus gambar yang tadi di-upload
                 if ($newImageName) {
-                    $filePath = 'images/catalog/' . $newImageName;
-                    if (\Illuminate\Support\Facades\Storage::disk('public')->exists($filePath)) {
-                        \Illuminate\Support\Facades\Storage::disk('public')->delete($filePath);
+                    $filePath = public_path('images/catalog/' . $newImageName);
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
                     }
                 }
                 return redirect()->back()->withErrors($e->errors())->withInput();
@@ -177,8 +185,8 @@ class CatalogController extends BaseController
             $schema->hydrate();
 
             // Hapus gambar lama jika upload gambar baru DAN gambar lama memang ada
-            if ($newImageName && $oldFilePath && \Illuminate\Support\Facades\Storage::disk('public')->exists($oldFilePath)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldFilePath);
+            if ($newImageName && $oldFilePath && file_exists($oldFilePath)) {
+                unlink($oldFilePath);
             }
 
             $updateData = [
@@ -220,9 +228,9 @@ class CatalogController extends BaseController
 
             // Hapus file gambar jika ada
             if ($catalog->image) {
-                $filePath = 'images/catalog/' . $catalog->image;
-                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($filePath)) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($filePath);
+                $filePath = public_path('images/catalog/' . $catalog->image);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
                 }
             }
 

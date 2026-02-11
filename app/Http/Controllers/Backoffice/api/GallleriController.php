@@ -25,8 +25,12 @@ class GallleriController extends BaseController
                 $extension = $file->getClientOriginalExtension();
                 $name  = now()->format('YmdHis');
                 $fileName = $name .'.'. $extension;
-                $file->storeAs('images/galleri', $fileName, 'public');
-                $path = asset('storage/images/galleri');
+                $destinationPath = public_path('images/galleri');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+                $file->move($destinationPath, $fileName);
+                $path = asset('images/galleri');
                 $payload = [
                     'image' => $fileName,
                     'path'  => $path,

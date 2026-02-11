@@ -31,7 +31,7 @@ class HomeController extends Controller
 
         // Ambil data mitra dari database via PatnersRepository
         $partnerRecords = $this->patnersRepository->getAll();
-        $pathUrl = asset('storage/images/partners');
+        $pathUrl = asset('images/partners');
         $partners = $partnerRecords->map(function ($partner) use ($pathUrl) {
             return [
                 'name' => $partner->name,
