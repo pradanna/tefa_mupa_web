@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class VisionMission extends Model
 {
-    //
     protected $table = 'vision_missions';
-    protected $fillable = ['type','contenct'];
+    protected $fillable = ['type','content'];
 }

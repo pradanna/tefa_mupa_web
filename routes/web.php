@@ -52,5 +52,6 @@ Route::prefix('backoffice')->group(function () {
         Route::resource('promotions', App\Http\Controllers\Backoffice\PromotionsController::class);
         Route::resource('licenses', App\Http\Controllers\Backoffice\LicenseController::class);
         Route::resource('partners', App\Http\Controllers\Backoffice\PatnerController::class);
+        Route::resource('vision-missions', App\Http\Controllers\Backoffice\VissionMissionController::class);
     });
 });
