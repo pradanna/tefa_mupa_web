@@ -4,22 +4,35 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body border-bottom py-3">
-                <div class="d-flex">
-                    <div class="text-muted">
-                        Show
-                        <div class="mx-2 d-inline-block">
-                            <input type="text" class="form-control form-control-sm" value="{{ $promotions->perPage() }}" size="3"
-                                aria-label="Promotions count">
+                <form method="GET" action="{{ url()->current() }}">
+                    <div class="d-flex">
+                        <div class="text-muted">
+                            Show
+                            <div class="mx-2 d-inline-block">
+                                <select name="limit" class="form-control form-control-sm" aria-label="Promotions count">
+                                    @foreach ([5, 10, 25, 50] as $value)
+                                        <option value="{{ $value }}" {{ (int) request('limit', $promotions->perPage()) === $value ? 'selected' : '' }}>
+                                            {{ $value }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            entries
                         </div>
-                        entries
-                    </div>
-                    <div class="ms-auto text-muted">
-                        Search:
-                        <div class="ms-2 d-inline-block">
-                            <input type="text" class="form-control form-control-sm" aria-label="Search promotions">
+                        <div class="ms-auto text-muted">
+                            Search:
+                            <div class="ms-2 d-inline-block">
+                                <input
+                                    type="text"
+                                    name="search"
+                                    value="{{ request('search') }}"
+                                    class="form-control form-control-sm"
+                                    aria-label="Search promotions">
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <input type="hidden" name="search_column" value="name">
+                </form>
             </div>
             <div class="table-responsive">
                 <table class="table card-table table-vcenter text-nowrap datatable">

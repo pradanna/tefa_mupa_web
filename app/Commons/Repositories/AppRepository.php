@@ -47,13 +47,33 @@ class AppRepository{
     /**
      * get collection of items in paginate format.
      *
+     * Support parameter:
+     * - limit: jumlah data per halaman
+     * - search: kata kunci pencarian
+     * - search_column: nama kolom yang akan di-filter (wajib jika search digunakan)
+     *
      * @return Collection of items.
      */
     public function paginate(Request $request)
     {
         DB::beginTransaction();
         try {
-            $data = $this->model->orderBy('created_at','DESC')->paginate($request->input('limit', 5));
+            $query = $this->model->newQuery()->orderBy('created_at', 'DESC');
+
+            // Filter pencarian jika diberikan
+            $search = $request->input('search');
+            $searchColumn = $request->input('search_column');
+            if (!empty($search) && !empty($searchColumn)) {
+                $query->where($searchColumn, 'LIKE', '%' . $search . '%');
+            }
+
+            $limit = (int) $request->input('limit', 5);
+            if ($limit <= 0) {
+                $limit = 5;
+            }
+
+            $data = $query->paginate($limit)->appends($request->all());
+
             Cache::flush();
             DB::commit();
             return $data;
