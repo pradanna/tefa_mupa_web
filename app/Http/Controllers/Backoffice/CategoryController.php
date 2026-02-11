@@ -96,10 +96,15 @@ class CategoryController extends BaseController
     {
         try {
             $find_category = $this->categoryRepository->show($id);
-            if(!$find_category || $find_category instanceof \Throwable){
-                return redirect()->back()->with('error','Category not found');
+            if (!$find_category || $find_category instanceof \Throwable) {
+                return redirect()->back()->with('error', 'Category not found');
             }
+
+            $this->categoryRepository->delete($id);
+
+            return redirect()->route('categories.index')->with('success', 'Category deleted successfully');
         } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
         }
     }
 }
