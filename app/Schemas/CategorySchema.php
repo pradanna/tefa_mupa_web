@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Schemas;
+
 use App\Commons\Schema\BaseSchema;
 use Illuminate\Validation\Rule;
 
@@ -15,7 +16,7 @@ class CategorySchema extends BaseSchema
     protected function rules(): array
     {
         return [
-            'type' => 'required|string|in:catalog,content',
+            'type' => 'required|string|in:catalog,content,sub_catalog',
             'name' => 'required|string|max:255',
             'slug' => [
                 'required',

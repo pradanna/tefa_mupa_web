@@ -11,7 +11,8 @@
                             <div class="mx-2 d-inline-block">
                                 <select name="limit" class="form-control form-control-sm" aria-label="Slider count">
                                     @foreach ([5, 10, 25, 50] as $value)
-                                        <option value="{{ $value }}" {{ (int) request('limit', $sliders->perPage()) === $value ? 'selected' : '' }}>
+                                        <option value="{{ $value }}"
+                                            {{ (int) request('limit', $sliders->perPage()) === $value ? 'selected' : '' }}>
                                             {{ $value }}
                                         </option>
                                     @endforeach
@@ -22,12 +23,8 @@
                         <div class="ms-auto text-muted">
                             Search:
                             <div class="ms-2 d-inline-block">
-                                <input
-                                    type="text"
-                                    name="search"
-                                    value="{{ request('search') }}"
-                                    class="form-control form-control-sm"
-                                    aria-label="Search slider">
+                                <input type="text" name="search" value="{{ request('search') }}"
+                                    class="form-control form-control-sm" aria-label="Search slider">
                             </div>
                         </div>
                     </div>
@@ -67,30 +64,32 @@
                                 <td class="text-muted">{{ $slider->subtitle ?? '-' }}</td>
                                 <td class="text-muted">
                                     @if ($slider->file)
-                                        <img src="{{ $slider->path.'/'.$slider->file }}"
+                                        <img src="{{ $slider->path . '/' . $slider->file }}"
                                             alt="{{ $slider->title ?? 'Slider Image' }}"
                                             style="max-width: 120px; max-height: 80px; object-fit:cover; display:block; border-radius: 5px; border: 1px solid #eee;">
                                     @endif
                                 </td>
-                                <td class="text-end">
+                                <td class="text-muted">
                                     <span class="dropdown">
-                                        <button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport"
-                                            data-bs-toggle="dropdown">Actions</button>
+                                        <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
+                                            data-bs-boundary="viewport"
+                                            data-bs-popper-config='{"strategy": "fixed"}'>Actions</button>
                                         <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item" href="{{ route('sliders.edit', $slider) }}">Edit</a>
-                                            <form action="{{ route('sliders.destroy', $slider->id) }}" method="POST" style="display:inline;">
+                                            <a class="dropdown-item"
+                                                href="{{ route('sliders.edit', $slider) }}">Edit</a>
+                                            <form action="{{ route('sliders.destroy', $slider->id) }}" method="POST"
+                                                style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this slider?')">Delete</button>
+                                                <button type="submit" class="dropdown-item"
+                                                    onclick="return confirm('Are you sure you want to delete this slider?')">Delete</button>
                                             </form>
                                         </div>
                                     </span>
                                 </td>
                             </tr>
                         @empty
-                        <x-backoffice.table.empty
-                        colspan="5"
-                        />
+                            <x-backoffice.table.empty colspan="5" />
                         @endforelse
                     </tbody>
                 </table>

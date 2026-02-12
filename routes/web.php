@@ -6,7 +6,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GalleryController;
-use DeepCopy\f013\A;
 use Illuminate\Support\Facades\Route;
 
 // Halaman Utama
@@ -30,6 +29,12 @@ Route::get('/galeri/{slug}', [GalleryController::class, 'show'])->name('gallery.
 // Halaman Kontak
 Route::get('/kontak', [ContactController::class, 'index'])->name('contact.index');
 
+// API Promo (Public)
+Route::get('/api/promos', [App\Http\Controllers\PromoController::class, 'index'])->name('api.promos');
+
+// API License (Public)
+Route::get('/api/licenses', [App\Http\Controllers\LicenseController::class, 'index'])->name('api.licenses');
+
 // backoffice
 Route::prefix('backoffice')->group(function () {
     Route::post('authentication', [App\Http\Controllers\Backoffice\Auth\AutenticationController::class, 'login'])->name('auth');
@@ -40,13 +45,20 @@ Route::prefix('backoffice')->group(function () {
 
     Route::middleware('auth')->group(function () {
         Route::get('dashboard', function () {
-            return view('backoffice.pages.dashboard.index');
+            $stats = [
+                'categories' => \App\Models\Category::count(),
+                'catalogs' => \App\Models\Catalog::count(),
+                'news' => \App\Models\News::count(),
+            ];
+            $runningPromotions = \App\Models\Promotion::where('expired', '>=', now())->orderBy('expired', 'asc')->take(5)->get();
+            $latestNews = \App\Models\News::with('category')->latest('date')->take(5)->get();
+            return view('backoffice.pages.dashboard.index', compact('stats', 'runningPromotions', 'latestNews'));
         })->name('dashboard');
         Route::resource('sliders', App\Http\Controllers\Backoffice\SliderController::class);
         Route::resource('categories', App\Http\Controllers\Backoffice\CategoryController::class);
-        Route::resource('articles', App\Http\Controllers\Backoffice\NewsController::class);
-        Route::resource('album', App\Http\Controllers\Backoffice\GalleriController::class);
-        Route::resource('history',App\Http\Controllers\Backoffice\HistoryController::class);
+        Route::resource('berita', App\Http\Controllers\Backoffice\NewsController::class)->names('articles');
+        Route::resource('galleries', App\Http\Controllers\Backoffice\GalleriController::class)->names('album');
+        Route::resource('history', App\Http\Controllers\Backoffice\HistoryController::class);
         Route::resource('catalog', App\Http\Controllers\Backoffice\CatalogController::class);
         Route::resource('organizations', App\Http\Controllers\Backoffice\OrganizationController::class);
         Route::resource('promotions', App\Http\Controllers\Backoffice\PromotionsController::class);

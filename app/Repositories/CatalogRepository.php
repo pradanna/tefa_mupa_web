@@ -17,6 +17,14 @@ class CatalogRepository extends AppRepository
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function query()
+    {
+        return $this->model->query();
+    }
+
+    /**
      * Ambil semua data catalog (beserta relasi kategori jika dibutuhkan di homepage).
      */
     public function getCategoryCataloge()
@@ -26,5 +34,4 @@ class CatalogRepository extends AppRepository
             ->with('hasCategory:id,name,type,slug,icon,description')
             ->get();
     }
-
 }

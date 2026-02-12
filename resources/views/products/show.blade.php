@@ -25,14 +25,14 @@
                 <div class="col-lg-6" data-aos="fade-right">
                     <div class="sticky-top" style="top: 100px; z-index: 1;">
                         <div class="ratio ratio-1x1 rounded-4 overflow-hidden shadow-sm bg-light border">
-                            <img src="{{ asset($product['img']) }}" class="object-fit-cover"
+                            <img src="{{ asset($product['image']) }}" class="object-fit-cover"
                                 alt="{{ $product['nama'] }}">
 
                             {{-- Badge Tipe --}}
                             <div class="position-absolute top-0 start-0 m-4">
                                 <span
-                                    class="badge {{ $product['tipe'] == 'Produk' ? 'bg-success' : 'bg-primary' }} fs-6 px-3 py-2 shadow-sm">
-                                    {{ $product['tipe'] }}
+                                    class="badge {{ $product['kategori'] == 'Produk' ? 'bg-success' : 'bg-primary' }} fs-6 px-3 py-2 shadow-sm">
+                                    {{ $product['kategori'] }}
                                 </span>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
 
                     {{-- CTA BUTTONS --}}
                     <div class="d-grid gap-2 d-md-flex mb-5">
-                        <a href="https://wa.me/6283820655083?text=Halo%20Admin,%20saya%20mau%20pesan/tanya%20produk:%20{{ urlencode($product['nama']) }}"
+                        <a href="https://wa.me/{{ $product['whatsapp'] }}?text=Halo%20Admin,%20saya%20mau%20pesan/tanya%20produk:%20{{ urlencode($product['nama']) }}"
                             target="_blank"
                             class="btn btn-success btn-lg rounded-pill px-5 py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2">
                             <i class="bi bi-whatsapp fs-5"></i>
@@ -86,21 +86,21 @@
                                 {{-- Tab 1: Deskripsi --}}
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link active rounded-pill fw-bold small px-4" id="desc-tab"
-                                        data-bs-toggle="tab" data-bs-target="#desc" type="button"
+                                        data-bs-toggle="tab" data-bs-target="#desc" kategori="button"
                                         role="tab">Deskripsi</button>
                                 </li>
 
                                 {{-- Tab 2: Spesifikasi --}}
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link rounded-pill fw-bold small px-4" id="specs-tab"
-                                        data-bs-toggle="tab" data-bs-target="#specs" type="button"
+                                        data-bs-toggle="tab" data-bs-target="#specs" kategori="button"
                                         role="tab">Spesifikasi</button>
                                 </li>
 
                                 {{-- Tab 3: Cara Pembayaran (BARU) --}}
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link rounded-pill fw-bold small px-4" id="payment-tab"
-                                        data-bs-toggle="tab" data-bs-target="#payment" type="button"
+                                        data-bs-toggle="tab" data-bs-target="#payment" kategori="button"
                                         role="tab">Cara Pembayaran</button>
                                 </li>
 

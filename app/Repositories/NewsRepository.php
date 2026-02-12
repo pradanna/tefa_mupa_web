@@ -21,11 +21,20 @@ class NewsRepository extends AppRepository
         $this->schema = $schema;
     }
 
-    public function findAllWithRelation(Request $request){
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function query()
+    {
+        return $this->model->query();
+    }
+
+    public function findAllWithRelation(Request $request)
+    {
         $data = NULL;
         DB::beginTransaction();
         try {
-            $data = $this->model->with(['category','user'])->orderBy('created_at','DESC')->paginate($request->input('limit', 5));
+            $data = $this->model->with(['category', 'user'])->orderBy('created_at', 'DESC')->paginate($request->input('limit', 5));
             Cache::flush();
             DB::commit();
         } catch (\Throwable $th) {
@@ -36,15 +45,16 @@ class NewsRepository extends AppRepository
         return $data;
     }
 
-    public function updateStatus($id,$status){
+    public function updateStatus($id, $status)
+    {
         $result = NULL;
         DB::beginTransaction();
         try {
-           $dataToUpdate = $this->model->where('id', $id)->update([
-               'status' => $status
-           ]);
-           DB::commit();
-           $result = $dataToUpdate;
+            $dataToUpdate = $this->model->where('id', $id)->update([
+                'status' => $status
+            ]);
+            DB::commit();
+            $result = $dataToUpdate;
         } catch (\Throwable $th) {
             DB::rollBack();
             $result = $th;
@@ -90,32 +100,32 @@ class NewsRepository extends AppRepository
             ->get();
     }
 
-public function updateNews($id, $schema)
-{
-    $result = null;
-    DB::beginTransaction();
-    try {
-        $data = [
-            'title' => $schema->getTitle(),
-            'slug' => $schema->getSlug(),
-            'image' => $schema->getImage(),
-            'id_category' => $schema->getIdCategory(),
-            'path'  => $schema->getPath(),
-            'content' => $schema->getContent(),
-            'date' => $schema->getDate(),
-            'status' => $schema->getStatus(),
-            'id_user' => $schema->getIdUser(),
-        ];
+    public function updateNews($id, $schema)
+    {
+        $result = null;
+        DB::beginTransaction();
+        try {
+            $data = [
+                'title' => $schema->getTitle(),
+                'slug' => $schema->getSlug(),
+                'image' => $schema->getImage(),
+                'id_category' => $schema->getIdCategory(),
+                'path'  => $schema->getPath(),
+                'content' => $schema->getContent(),
+                'date' => $schema->getDate(),
+                'status' => $schema->getStatus(),
+                'id_user' => $schema->getIdUser(),
+            ];
 
-        $news = $this->model->findOrFail($id);
-        $news->update($data);
-        DB::commit();
-        $result = $news;
-    } catch (\Throwable $th) {
-        DB::rollBack();
-        $result = $th;
-        throw $th;
+            $news = $this->model->findOrFail($id);
+            $news->update($data);
+            DB::commit();
+            $result = $news;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $result = $th;
+            throw $th;
+        }
+        return $result;
     }
-    return $result;
-}
 }

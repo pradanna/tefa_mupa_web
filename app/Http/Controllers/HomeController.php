@@ -22,8 +22,7 @@ class HomeController extends Controller
         protected CatalogRepository $catalogRepository,
         protected NewsRepository $newsRepository,
         protected GalleriRepository $galleriRepository,
-    )
-    {
+    ) {
         // Tidak perlu memanggil parent::__construct() karena Controller dasar Laravel tidak punya konstruktor
     }
     public function index()
@@ -63,16 +62,19 @@ class HomeController extends Controller
         // Data Produk diambil dari CatalogRepository
         $catalogs = $this->catalogRepository->getCategoryCataloge();
         $produk = $catalogs->map(function ($catalog) {
+            $slug = $catalog->slug ?? $catalog->id;
             $imagePath = $catalog->path
                 ? $catalog->path . '/' . $catalog->image
                 : $catalog->image;
 
             return [
                 'nama' => $catalog->title,
-                'slug' => $catalog->slug ?? $catalog->id, // fallback id jika slug tidak ada
+                'path' => $catalog->path,
+                'slug' => $slug,
+                'link' => route('products.show', $slug),
                 'kategori' => optional($catalog->hasCategory)->name ?? 'Lainnya',
                 'category_id' => $catalog->id_category,
-                'img' => $imagePath,
+                'image' => $imagePath,
                 'deskripsi' => $catalog->desc,
             ];
         })->toArray();

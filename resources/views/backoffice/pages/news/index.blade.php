@@ -11,7 +11,8 @@
                             <div class="mx-2 d-inline-block">
                                 <select name="limit" class="form-control form-control-sm" aria-label="News count">
                                     @foreach ([5, 10, 25, 50] as $value)
-                                        <option value="{{ $value }}" {{ (int) request('limit', $news->perPage()) === $value ? 'selected' : '' }}>
+                                        <option value="{{ $value }}"
+                                            {{ (int) request('limit', $news->perPage()) === $value ? 'selected' : '' }}>
                                             {{ $value }}
                                         </option>
                                     @endforeach
@@ -22,12 +23,8 @@
                         <div class="ms-auto text-muted">
                             Search:
                             <div class="ms-2 d-inline-block">
-                                <input
-                                    type="text"
-                                    name="search"
-                                    value="{{ request('search') }}"
-                                    class="form-control form-control-sm"
-                                    aria-label="Search news">
+                                <input type="text" name="search" value="{{ request('search') }}"
+                                    class="form-control form-control-sm" aria-label="Search news">
                             </div>
                         </div>
                     </div>
@@ -63,17 +60,20 @@
                                 <td class="text-muted">{{ $n->title ?? '-' }}</td>
                                 <td class="text-muted">{{ $n->slug ?? '-' }}</td>
                                 <td class="text-muted">{{ $n->category->name ?? '-' }}</td>
-                                <td class="text-muted position-relative">
+                                <td class="text-muted">
                                     <span class="dropdown">
                                         <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
-                                            data-bs-boundary="viewport">Actions</button>
-                                        <div class="dropdown-menu dropdown-menu-start"
-                                            style="margin-top: 30px;">
-                                            <a class="dropdown-item" href="{{ route('articles.edit', $n->id) }}">Edit</a>
-                                            <form action="{{ route('articles.destroy', $n->id) }}" method="POST" style="display:inline;">
+                                            data-bs-boundary="viewport"
+                                            data-bs-popper-config='{"strategy": "fixed"}'>Actions</button>
+                                        <div class="dropdown-menu dropdown-menu-start">
+                                            <a class="dropdown-item"
+                                                href="{{ route('articles.edit', $n->id) }}">Edit</a>
+                                            <form action="{{ route('articles.destroy', $n->id) }}" method="POST"
+                                                style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this news?')">Delete</button>
+                                                <button type="submit" class="dropdown-item"
+                                                    onclick="return confirm('Are you sure you want to delete this news?')">Delete</button>
                                             </form>
                                         </div>
                                     </span>

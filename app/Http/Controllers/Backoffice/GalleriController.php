@@ -16,8 +16,7 @@ class GalleriController extends BaseController
 
     public function __construct(
         protected GalleriRepository $galeriRepository
-    )
-    {}
+    ) {}
     /**
      * Display a listing of the resource.
      */
@@ -25,7 +24,7 @@ class GalleriController extends BaseController
     {
         try {
             $gallerys = $this->galeriRepository->paginate(request());
-            return view('backoffice.pages.galleri.index',compact('gallerys'));
+            return view('backoffice.pages.galleri.index', compact('gallerys'));
         } catch (\Throwable $th) {
             Log::error($th);
             return redirect()->back()->withErrors(['message' => 'An error occurred. Please try again.']);
@@ -90,11 +89,10 @@ class GalleriController extends BaseController
                     \Illuminate\Support\Facades\Storage::disk('public')->delete($filePath);
                 }
             }
-            return redirect()->route('album.index')->with('success', 'image deleted successfully');
+            return redirect()->route('album.index')->with('success', 'Gambar berhasil dihapus');
         } catch (\Throwable $th) {
             \Illuminate\Support\Facades\Log::error($th);
             return redirect()->back()->with('error', 'Failed to delete image: ' . $th->getMessage());
         }
-
     }
 }

@@ -149,16 +149,14 @@
                     profesional untuk masyarakat</p>
             </div>
 
-            <div class="row g-4" x-data="{ activeTab: 'produk', activeCategory: 'all' }"
-                data-aos="fade-up" data-aos-delay="200">
+            <div class="row g-4" x-data="{ activeTab: 'produk', activeCategory: 'all' }" data-aos="fade-up" data-aos-delay="200">
 
 
                 {{-- Tombol Kategori (data dari $kategoti di HomeController) --}}
-                @if(!empty($kategoti) && count($kategoti) > 0)
+                @if (!empty($kategoti) && count($kategoti) > 0)
                     <div class="d-flex justify-content-center flex-wrap gap-2 mt-3">
                         {{-- Tombol Semua --}}
-                        <button type="button"
-                            class="btn rounded-pill px-3 py-1"
+                        <button type="button" class="btn rounded-pill px-3 py-1"
                             :class="activeCategory === 'all' ? 'bt-primary' : 'bt-outline-primary'"
                             @click="activeCategory = 'all'">
                             Semua
@@ -166,8 +164,7 @@
 
                         {{-- Tombol per Kategori (berdasarkan ID kategori catalog) --}}
                         @foreach ($kategoti as $kategori)
-                            <button type="button"
-                                class="btn rounded-pill px-3 py-1"
+                            <button type="button" class="btn rounded-pill px-3 py-1"
                                 :class="activeCategory === '{{ $kategori->id }}' ? 'bt-primary' : 'bt-outline-primary'"
                                 @click="activeCategory = '{{ $kategori->id }}'">
                                 {{ $kategori->name ?? '-' }}
@@ -212,16 +209,17 @@
 
 
             <div class="row g-4 justify-content-center align-items-center">
-                @if(!empty($partners) && is_iterable($partners))
+                @if (!empty($partners) && is_iterable($partners))
                     @foreach ($partners as $item)
-                        @if(isset($item['img']) && isset($item['name']))
+                        @if (isset($item['img']) && isset($item['name']))
                             <div class="col-4 col-sm-3 col-md-2" data-aos="zoom-in"
                                 data-aos-delay="{{ $loop->index * 50 }}">
 
                                 {{-- Wrapper untuk mengatur tinggi maksimal logo --}}
                                 <div class="partner-logo-wrapper text-center">
-                                    <img src="{{ asset($item['img']) }}" class="img-fluid partner-logo transition-all"
-                                        alt="{{ $item['name'] }}" title="{{ $item['name'] }}">
+                                    <img src="{{ asset($item['img']) }}"
+                                        class="img-fluid partner-logo transition-all" alt="{{ $item['name'] }}"
+                                        title="{{ $item['name'] }}">
                                 </div>
 
                             </div>
@@ -308,6 +306,5 @@
     </section>
 
     @push('morejs')
-        <script></script>
     @endpush
 </x-app-layout>

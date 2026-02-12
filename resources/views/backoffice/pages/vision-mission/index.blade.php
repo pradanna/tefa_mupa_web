@@ -1,10 +1,6 @@
 <x-backoffice.layout.main>
-    <x-backoffice.partials.breadcrumb
-        title="Visi & Misi"
-        pretitle="Visi & Misi"
-        createUrl="{{ route('vision-missions.create') }}"
-        createLabel="Tambah Visi/Misi"
-    />
+    <x-backoffice.partials.breadcrumb title="Visi & Misi" pretitle="Visi & Misi"
+        createUrl="{{ route('vision-missions.create') }}" createLabel="Tambah Visi/Misi" />
 
     <div class="col-12">
         <div class="card">
@@ -14,11 +10,12 @@
                         <div class="text-muted">
                             Show
                             <div class="mx-2 d-inline-block">
-                                <select name="limit" class="form-control form-control-sm" aria-label="Vision Mission count">
+                                <select name="limit" class="form-control form-control-sm"
+                                    aria-label="Vision Mission count">
                                     @php $collection = $visionMissions instanceof \Illuminate\Pagination\LengthAwarePaginator ? $visionMissions : null; @endphp
                                     @foreach ([5, 10, 25, 50] as $value)
                                         <option value="{{ $value }}"
-                                            @if($collection && (int) request('limit', $collection->perPage()) === $value) selected @endif>
+                                            @if ($collection && (int) request('limit', $collection->perPage()) === $value) selected @endif>
                                             {{ $value }}
                                         </option>
                                     @endforeach
@@ -29,12 +26,8 @@
                         <div class="ms-auto text-muted">
                             Search:
                             <div class="ms-2 d-inline-block">
-                                <input
-                                    type="text"
-                                    name="search"
-                                    value="{{ request('search') }}"
-                                    class="form-control form-control-sm"
-                                    aria-label="Search vision mission">
+                                <input type="text" name="search" value="{{ request('search') }}"
+                                    class="form-control form-control-sm" aria-label="Search vision mission">
                             </div>
                         </div>
                     </div>
@@ -64,14 +57,19 @@
                             <tr>
                                 <td><span class="text-muted">{{ $no++ }}</span></td>
                                 <td class="text-muted text-uppercase">{{ $vm->type ?? '-' }}</td>
-                                <td class="text-muted">{{ \Illuminate\Support\Str::limit($vm->content ?? '-', 80) }}</td>
-                                <td class="text-muted position-relative" style="z-index:9999;">
+                                <td class="text-muted">{{ \Illuminate\Support\Str::limit($vm->content ?? '-', 80) }}
+                                </td>
+                                <td class="text-muted">
                                     <span class="dropdown">
                                         <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
-                                            data-bs-boundary="viewport" style="z-index:9999; position: relative;">Actions</button>
-                                        <div class="dropdown-menu dropdown-menu-start" style="margin-top: 30px; z-index: 9999; position: absolute;">
-                                            <a class="dropdown-item" href="{{ route('vision-missions.edit', $vm->id) }}">Edit</a>
-                                            <form action="{{ route('vision-missions.destroy', $vm->id) }}" method="POST" style="display:inline;">
+                                            data-bs-boundary="viewport"
+                                            data-bs-popper-config='{"strategy": "fixed"}'>Actions</button>
+                                        <div class="dropdown-menu dropdown-menu-start"
+                                            style="margin-top: 30px; z-index: 9999; position: absolute;">
+                                            <a class="dropdown-item"
+                                                href="{{ route('vision-missions.edit', $vm->id) }}">Edit</a>
+                                            <form action="{{ route('vision-missions.destroy', $vm->id) }}"
+                                                method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="dropdown-item"
@@ -115,4 +113,3 @@
         </div>
     </div>
 </x-backoffice.layout.main>
-

@@ -12,10 +12,7 @@ class HistoryController extends BaseController
 
     public function __construct(
         protected HistoryRepository $historyRepository
-    )
-    {
-
-    }
+    ) {}
     /**
      * Display a listing of the resource.
      */
@@ -23,10 +20,10 @@ class HistoryController extends BaseController
     {
         try {
             $history = $this->historyRepository->findFirst();
-           return view('backoffice.pages.history.index',compact('history'));
+            return view('backoffice.pages.history.index', compact('history'));
         } catch (\Throwable $th) {
             \Illuminate\Support\Facades\Log::error($th);
-            return redirect()->back()->withErrors('error','Error'.$th);
+            return redirect()->back()->withErrors('error', 'Error' . $th);
         }
     }
 
@@ -35,7 +32,8 @@ class HistoryController extends BaseController
      */
     public function create()
     {
-        //
+        // The create form is integrated into the index page.
+        return redirect()->route('history.index');
     }
 
     /**
@@ -43,7 +41,58 @@ class HistoryController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        // Check if history already exists, since it's a singleton
+        $existingHistory = $this->historyRepository->findFirst();
+        if ($existingHistory) {
+            return redirect()->route('history.index')->with('error', 'Data sejarah sudah ada. Silakan edit data yang ada.');
+        }
+
+        $imageName = null;
+        try {
+            // 1. Validate file presence
+            if (!$request->hasFile('file')) {
+                return redirect()->back()->with('error', 'Gambar wajib diunggah.')->withInput();
+            }
+
+            // 2. Process file upload
+            $image = $request->file('file');
+            $extension = $image->getClientOriginalExtension();
+            $imageName = now()->format('YmdHis') . '.' . $extension;
+            $destinationPath = public_path('images/history');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $image->move($destinationPath, $imageName);
+            $pathUrl = asset('images/history');
+
+            // 3. Prepare full payload for validation
+            $payload = $request->all();
+            $payload['image'] = $imageName;
+            $payload['path'] = $pathUrl;
+
+            // 4. Validate and hydrate schema
+            $schema = new \App\Schemas\HistorySchema();
+            $schema->hydrateSchemaBody($payload);
+            $schema->validate();
+            $schema->hydrate();
+
+            // 5. Save to database
+            $this->historyRepository->createHistory($schema);
+
+            return redirect()->route('history.index')->with('success', 'Data sejarah berhasil dibuat.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // If validation fails, delete the uploaded file
+            if ($imageName && file_exists(public_path('images/history/' . $imageName))) {
+                unlink(public_path('images/history/' . $imageName));
+            }
+            return redirect()->back()->withErrors($e->errors())->withInput($request->except('file'));
+        } catch (\Throwable $th) {
+            if ($imageName && file_exists(public_path('images/history/' . $imageName))) {
+                unlink(public_path('images/history/' . $imageName));
+            }
+            \Illuminate\Support\Facades\Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
+            return redirect()->back()->withInput($request->except('file'))->with('error', 'Terjadi kesalahan sistem saat membuat data sejarah.');
+        }
     }
 
     /**

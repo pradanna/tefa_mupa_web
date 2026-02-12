@@ -2,7 +2,7 @@
     <x-backoffice.partials.breadcrumb title="Lisensi" pretitle="Tambah Lisensi" />
     <div class="col-12">
         <div class="card">
-            <form action="{{ route('licenses.store') }}" method="POST" class="card">
+            <form action="{{ route('licenses.store') }}" method="POST" class="card" enctype="multipart/form-data">
                 @csrf
                 <div class="card-header">
                     <h4 class="card-title">Form Tambah Lisensi</h4>
@@ -36,6 +36,15 @@
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">File Lisensi (Gambar/PDF)</label>
+                                        <input type="file" class="form-control" name="file"
+                                            accept="image/png, image/jpeg, application/pdf" required>
+                                        <small class="form-hint">Format yang didukung: JPG, PNG, PDF.</small>
+                                        @error('file')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -51,4 +60,3 @@
         </div>
     </div>
 </x-backoffice.layout.main>
-

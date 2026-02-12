@@ -11,7 +11,8 @@
                             <div class="mx-2 d-inline-block">
                                 <select name="limit" class="form-control form-control-sm" aria-label="Licenses count">
                                     @foreach ([5, 10, 25, 50] as $value)
-                                        <option value="{{ $value }}" {{ (int) request('limit', $licenses->perPage()) === $value ? 'selected' : '' }}>
+                                        <option value="{{ $value }}"
+                                            {{ (int) request('limit', $licenses->perPage()) === $value ? 'selected' : '' }}>
                                             {{ $value }}
                                         </option>
                                     @endforeach
@@ -22,12 +23,8 @@
                         <div class="ms-auto text-muted">
                             Search:
                             <div class="ms-2 d-inline-block">
-                                <input
-                                    type="text"
-                                    name="search"
-                                    value="{{ request('search') }}"
-                                    class="form-control form-control-sm"
-                                    aria-label="Search licenses">
+                                <input type="text" name="search" value="{{ request('search') }}"
+                                    class="form-control form-control-sm" aria-label="Search licenses">
                             </div>
                         </div>
                     </div>
@@ -46,6 +43,7 @@
                                     <path d="M6 15l6 -6l6 6" />
                                 </svg>
                             </th>
+                            <th>Gambar</th>
                             <th>Nama</th>
                             <th>Kode</th>
                             <th>Tipe</th>
@@ -60,20 +58,39 @@
                         @forelse ($licenses as $license)
                             <tr>
                                 <td><span class="text-muted">{{ $no++ }}</span></td>
+                                <td>
+                                    @if (!empty($license->file))
+                                        @php
+                                            $ext = pathinfo($license->file, PATHINFO_EXTENSION);
+                                        @endphp
+                                        @if (in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'gif', 'webp']))
+                                            <img src="{{ asset('images/licenses/' . $license->file) }}"
+                                                alt="{{ $license->name }}" class="rounded border"
+                                                style="width: 50px; height: 50px; object-fit: cover;">
+                                        @else
+                                            <span class="badge bg-secondary">{{ strtoupper($ext) }}</span>
+                                        @endif
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
                                 <td class="text-muted">{{ $license->name ?? '-' }}</td>
                                 <td class="text-muted">{{ $license->code ?? '-' }}</td>
                                 <td class="text-muted">{{ $license->type ?? '-' }}</td>
-                                <td class="text-muted position-relative">
+                                <td class="text-muted">
                                     <span class="dropdown">
                                         <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
-                                            data-bs-boundary="viewport">Actions</button>
-                                        <div class="dropdown-menu dropdown-menu-start"
-                                            style="margin-top: 30px;">
-                                            <a class="dropdown-item" href="{{ route('licenses.edit', $license->id) }}">Edit</a>
-                                            <form action="{{ route('licenses.destroy', $license->id) }}" method="POST" style="display:inline;">
+                                            data-bs-boundary="viewport"
+                                            data-bs-popper-config='{"strategy": "fixed"}'>Actions</button>
+                                        <div class="dropdown-menu dropdown-menu-start">
+                                            <a class="dropdown-item"
+                                                href="{{ route('licenses.edit', $license->id) }}">Edit</a>
+                                            <form action="{{ route('licenses.destroy', $license->id) }}" method="POST"
+                                                style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="dropdown-item" onclick="return confirm('Apakah Anda yakin ingin menghapus lisensi ini?')">Hapus</button>
+                                                <button type="submit" class="dropdown-item"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus lisensi ini?')">Hapus</button>
                                             </form>
                                         </div>
                                     </span>
@@ -108,4 +125,3 @@
         </div>
     </div>
 </x-backoffice.layout.main>
-

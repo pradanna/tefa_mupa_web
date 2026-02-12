@@ -1,10 +1,6 @@
 <x-backoffice.layout.main>
-    <x-backoffice.partials.breadcrumb
-        title="Katalog"
-        pretitle="Katalog Produk & Jasa"
-        createUrl="{{ route('catalog.create') }}"
-        createLabel="Tambah Produk/Jasa"
-    />
+    <x-backoffice.partials.breadcrumb title="Katalog" pretitle="Katalog Produk & Jasa"
+        createUrl="{{ route('catalog.create') }}" createLabel="Tambah Produk/Jasa" />
 
 
 
@@ -19,7 +15,8 @@
                             <div class="mx-2 d-inline-block">
                                 <select name="limit" class="form-control form-control-sm" aria-label="Catalog count">
                                     @foreach ([5, 10, 25, 50] as $value)
-                                        <option value="{{ $value }}" {{ (int) request('limit', $catalogs->perPage()) === $value ? 'selected' : '' }}>
+                                        <option value="{{ $value }}"
+                                            {{ (int) request('limit', $catalogs->perPage()) === $value ? 'selected' : '' }}>
                                             {{ $value }}
                                         </option>
                                     @endforeach
@@ -30,12 +27,8 @@
                         <div class="ms-auto text-muted">
                             Search:
                             <div class="ms-2 d-inline-block">
-                                <input
-                                    type="text"
-                                    name="search"
-                                    value="{{ request('search') }}"
-                                    class="form-control form-control-sm"
-                                    aria-label="Search catalog">
+                                <input type="text" name="search" value="{{ request('search') }}"
+                                    class="form-control form-control-sm" aria-label="Search catalog">
                             </div>
                         </div>
                     </div>
@@ -55,11 +48,13 @@
                                 </svg>
                             </th>
                             <th>Judul</th>
+                            <th>Slug</th>
                             <th>Gambar</th>
                             <th>Kategori</th>
-                            <th>Sub Kategori</th>
-                            <th>Path</th>
+                            {{-- <th>Sub Kategori</th> --}}
+                            {{-- <th>Path</th> --}}
                             <th>Deskripsi</th>
+                            <th>WhatsApp</th>
                             <th>User</th>
                             <th>Action</th>
                         </tr>
@@ -72,9 +67,11 @@
                             <tr>
                                 <td><span class="text-muted">{{ $no++ }}</span></td>
                                 <td class="text-muted">{{ $catalog->title ?? '-' }}</td>
+                                <td class="text-muted">{{ $catalog->slug ?? '-' }}</td>
                                 <td>
-                                    @if($catalog->image)
-                                        <img src="{{ asset('images/catalog/' . $catalog->image) }}" alt="Image" width="60">
+                                    @if ($catalog->image)
+                                        <img src="{{ asset('images/catalog/' . $catalog->image) }}" alt="Image"
+                                            width="60">
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif
@@ -82,22 +79,25 @@
                                 <td class="text-muted">
                                     {{ optional($catalog->hasCategory)->name ?? '-' }}
                                 </td>
-                                <td class="text-muted">
+                                {{-- <td class="text-muted">
                                     {{ optional($catalog->hasSubCategory)->name ?? '-' }}
-                                </td>
-                                <td class="text-muted">{{ $catalog->path ?? '-' }}</td>
+                                </td> --}}
+                                {{-- <td class="text-muted">{{ $catalog->path ?? '-' }}</td> --}}
                                 <td class="text-muted">{{ $catalog->desc ?? '-' }}</td>
+                                <td class="text-muted">{{ $catalog->whatsapp ?? '-' }}</td>
                                 <td class="text-muted">
                                     {{ optional($catalog->hasUser)->name ?? '-' }}
                                 </td>
-                                <td class="text-muted position-relative">
+                                <td class="text-muted">
                                     <span class="dropdown">
                                         <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
-                                            data-bs-boundary="viewport">Actions</button>
-                                        <div class="dropdown-menu dropdown-menu-start"
-                                            style="margin-top: 30px;">
-                                            <a class="dropdown-item" href="{{ route('catalog.edit', $catalog->id) }}">Edit</a>
-                                            <form action="{{ route('catalog.destroy', $catalog->id) }}" method="POST" style="display:inline;">
+                                            data-bs-boundary="viewport"
+                                            data-bs-popper-config='{"strategy": "fixed"}'>Actions</button>
+                                        <div class="dropdown-menu dropdown-menu-start">
+                                            <a class="dropdown-item"
+                                                href="{{ route('catalog.edit', $catalog->id) }}">Edit</a>
+                                            <form action="{{ route('catalog.destroy', $catalog->id) }}" method="POST"
+                                                style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="dropdown-item"
@@ -110,7 +110,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <x-backoffice.table.empty colspan="9" />
+                            <x-backoffice.table.empty colspan="11" />
                         @endforelse
                     </tbody>
                 </table>

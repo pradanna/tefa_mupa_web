@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Repositories;
+
 use App\Models\History;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -21,24 +22,20 @@ class HistoryRepository extends AppRepository
         $this->schema = $schema;
     }
 
-    public function findFirst(){
+    public function findFirst()
+    {
         $data = NULL;
-        DB::beginTransaction();
         try {
-           $data = History::first();
-           DB::commit();
-           return $data;
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            $data = $th;
-
+            $data = History::first();
             return $data;
+        } catch (\Throwable $th) {
+            // Re-throw the exception to be handled by the controller
+            throw $th;
         }
     }
 
     public function createHistory($schema)
     {
-        $data = NULL;
         DB::beginTransaction();
         try {
             $payload = [
@@ -47,13 +44,12 @@ class HistoryRepository extends AppRepository
                 'path'  => $schema->getPath(),
                 'image' => $schema->getImage()
             ];
-           $data = $this->model->create($payload);
-           DB::commit();
-           return $data;
+            $result = $this->model->create($payload);
+            DB::commit();
+            return $result;
         } catch (\Throwable $th) {
             DB::rollBack();
-            $data = $th;
-            return $data;
+            throw $th;
         }
     }
 

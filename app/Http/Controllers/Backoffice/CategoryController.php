@@ -11,13 +11,21 @@ class CategoryController extends BaseController
 {
     public function __construct(
         protected CategoryRepository $categoryRepository
-    )
-    {}
+    ) {}
 
     public function index()
     {
         try {
-            $categorys = $this->categoryRepository->paginate(request());
+            $request = request();
+            $type = $request->query('type', 'catalog');
+
+            $query = $this->categoryRepository->query()->where('type', $type)->orderBy('created_at', 'desc');
+
+            if ($request->filled('search')) {
+                $query->where('name', 'like', '%' . $request->input('search') . '%');
+            }
+
+            $categorys = $query->paginate($request->query('limit', 10));
             return $this->makeView('backoffice.pages.category.index', compact('categorys'));
         } catch (\Throwable $th) {
             Log::error($th);
@@ -27,7 +35,13 @@ class CategoryController extends BaseController
 
     public function create()
     {
-        return view('backoffice.pages.category.create');
+        $parentCategories = [];
+        // If creating a sub-category, fetch the parent categories (which are of type 'catalog')
+        if (request('type') === 'sub_catalog') {
+            $parentCategories = $this->categoryRepository->query()->where('type', 'catalog')->get();
+        }
+
+        return view('backoffice.pages.category.create', compact('parentCategories'));
     }
 
     public function store(Request $request)
@@ -44,25 +58,19 @@ class CategoryController extends BaseController
             $schema->validate();
             $schema->hydrate();
 
-            $this->categoryRepository->createNews($schema);
+            $this->categoryRepository->store($schema);
 
             return redirect()->route('categories.index')->with('success', 'Category created successfully');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
-        } catch (\Exception $e) {
-            throw $e;
         } catch (\Throwable $th) {
+            // Tangani semua error (termasuk jika method 'createNews' tidak ada) dengan redirect dan pesan error.
             Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
-            return redirect()
-                ->back()
-                ->withInput($request->except('file'))
-                ->with('error', 'Terjadi kesalahan sistem');
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $th->getMessage());
         }
     }
 
-    public function show(string $id)
-    {
-    }
+    public function show(string $id) {}
 
     public function edit(string $id)
     {
@@ -71,7 +79,14 @@ class CategoryController extends BaseController
             if (!$category || $category instanceof \Throwable) {
                 return redirect()->back()->with('error', 'Category Not Found');
             }
-            return view('backoffice.pages.category.edit',compact('category'));
+
+            $parentCategories = [];
+            // If editing a sub-category, fetch the parent categories (which are of type 'catalog')
+            if ($category->type === 'sub_catalog') {
+                $parentCategories = $this->categoryRepository->query()->where('type', 'catalog')->get();
+            }
+
+            return view('backoffice.pages.category.edit', compact('category', 'parentCategories'));
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Failed to retrieve category: ' . $th->getMessage());
         }
@@ -81,12 +96,12 @@ class CategoryController extends BaseController
     {
         try {
             $find_category = $this->categoryRepository->show($id);
-            if(!$find_category || $find_category instanceof \Throwable){
-                return redirect()->back()->with('error','Category not found');
+            if (!$find_category || $find_category instanceof \Throwable) {
+                return redirect()->back()->with('error', 'Category not found');
             }
 
             $category = $this->categoryRepository->update($id, $request);
-            return redirect()->route('categories.index')->with('success','Category update success');
+            return redirect()->route('categories.index')->with('success', 'Category update success');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Category Update failed: ' . $th->getMessage());
         }
