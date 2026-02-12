@@ -44,6 +44,7 @@ class LicenseRepository extends AppRepository
                 'name' => $schema->getName(),
                 'code' => $schema->getCode(),
                 'type' => $schema->getType(),
+                'file' => $schema->getFile(),
             ];
             $this->model->create($data);
             DB::commit();
@@ -64,6 +65,7 @@ class LicenseRepository extends AppRepository
                 'name' => $schema->getName(),
                 'code' => $schema->getCode(),
                 'type' => $schema->getType(),
+                'file' => $schema->getFile(),
             ];
 
             $license = $this->model->findOrFail($id);

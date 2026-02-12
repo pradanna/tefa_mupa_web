@@ -29,7 +29,7 @@
                         <span
                             class="badge b-primary bg-opacity-10 text-white px-3 rounded-pill">{{ $article['kategori'] }}</span>
                         <span><i class="bi bi-calendar3 me-1"></i>
-                            {{ \Carbon\Carbon::parse($article['tanggal'])->isoFormat('D MMMM Y') }}</span>
+                            {{ $article['tanggal'] }}</span>
                     </div>
 
                     {{-- Judul Besar --}}
@@ -42,29 +42,7 @@
 
                     {{-- Isi Artikel (Typography Article) --}}
                     <div class="article-content text-secondary lh-lg">
-                        <p class="lead fw-medium text-dark">
-                            {{-- Paragraf Pembuka (Excerpt) --}}
-                            {{ $article['excerpt'] ?? 'Lorem ipsum dolor sit amet consectetur adipisicing elit.' }}
-                        </p>
-
-                        {{-- Dummy Content Panjang --}}
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dicta minus molestiae vel
-                            beatae natus eveniet ratione temporibus aperiam harum alias officiis assumenda officia
-                            quibusdam deleniti eos cupiditate diam voluptatem.</p>
-
-                        <h5>Sub Judul Artikel</h5>
-                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-                            laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-                            architecto beatae vitae dicta sunt explicabo.</p>
-
-                        <ul>
-                            <li>Poin pembahasan satu</li>
-                            <li>Poin pembahasan dua</li>
-                            <li>Poin pembahasan tiga</li>
-                        </ul>
-
-                        <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-                            consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                        {!! $article['content'] !!}
                     </div>
 
                     {{-- Share Buttons (Optional) --}}

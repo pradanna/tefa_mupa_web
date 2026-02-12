@@ -3,34 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\HistoryRepository;
+use App\Repositories\TeamRepository;
+use App\Repositories\MissionRepository;
 
 class ProfileController extends Controller
 {
+    public function __construct(
+        protected HistoryRepository $historyRepository,
+        protected TeamRepository $teamRepository,
+        protected MissionRepository $missionRepository
+    ) {}
+
     public function index()
     {
-        $team = [
-            [
-                'nama' => 'Bapak Kepala Sekolah',
-                'jabatan' => 'Penanggung Jawab',
-                'foto' => 'images/team/kepsek.jpg', // Ganti dengan foto asli
-            ],
-            [
-                'nama' => 'Nama Ketua TEFA',
-                'jabatan' => 'Direktur TEFA',
-                'foto' => 'images/team/ketua.jpg', // Ganti dengan foto asli
-            ],
-            [
-                'nama' => 'Nama Kabeng',
-                'jabatan' => 'Manajer Operasional',
-                'foto' => 'images/team/kabeng.jpg', // Ganti dengan foto asli
-            ],
-            [
-                'nama' => 'Nama Bendahara',
-                'jabatan' => 'Keuangan',
-                'foto' => 'images/team/bendahara.jpg', // Ganti dengan foto asli
-            ],
-        ];
+        $history = $this->historyRepository->findFirst();
+        $teams = $this->teamRepository->getAll();
+        $missions = optional($this->missionRepository->getMission()->first())->content ?? '';
+        $vision = optional($this->missionRepository->getVision()->first())->content ?? '';
 
-        return view('profile', compact('team'));
+        return view('profile', compact('history', 'teams', 'missions', 'vision'));
     }
 }

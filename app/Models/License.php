@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class License extends Model
 {
     //
-    protected $table ='licenses';
-    protected $fillable = ['name','code','type'];
+    protected $table = 'licenses';
+    protected $fillable = ['name', 'code', 'type', 'file'];
 }

@@ -1,0 +1,137 @@
+/* --- Modern Sidebar Styles --- */
+.sidebar-nav .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.65rem 1rem;
+    border-radius: 6px;
+    color: #4a5568; /* gray-700 */
+    font-weight: 500;
+    transition:
+        background-color 0.2s ease-in-out,
+        color 0.2s ease-in-out;
+    margin-bottom: 2px;
+}
+
+.sidebar-nav .nav-link:hover {
+    background-color: #f1f5f9; /* slate-100 */
+    color: #1e293b; /* slate-800 */
+}
+
+.sidebar-nav .nav-link.active {
+    background-color: #3b82f6; /* blue-500 */
+    color: white;
+    font-weight: 600;
+}
+
+/* Style for Lucide icons within the nav links */
+.sidebar-nav .nav-link svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+}
+
+.sidebar-nav .nav-item-header {
+    padding: 1.5rem 1rem 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b; /* slate-500 */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Remove default margin-top from the first header */
+.sidebar-nav .nav-item-header:first-of-type {
+    margin-top: 0;
+    padding-top: 0.75rem;
+}
+
+/* --- Dark Mode Styles --- */
+[data-bs-theme="dark"] .sidebar-main {
+    background-color: #182433 !important; /* Tabler dark sidebar bg */
+    border-color: #2d3748 !important; /* Tabler dark border */
+}
+
+[data-bs-theme="dark"] .sidebar-nav .nav-link {
+    color: #a8b2c0; /* Lighter gray for text */
+}
+
+[data-bs-theme="dark"] .sidebar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .sidebar-nav .nav-link.active {
+    background-color: #206bc4; /* Tabler primary color */
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .sidebar-nav .nav-item-header {
+    color: #626e80; /* Muted header color */
+}
+
+/* The sidebar-main class is added to the aside tag */
+[data-bs-theme="dark"] .sidebar-main .navbar-brand {
+    color: #ffffff !important;
+}
+
+/* --- Dashboard Styles --- */
+.stat-card-icon {
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+}
+
+.stat-card-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.stat-card-icon.bg-primary-lt {
+    background-color: #e7f5ff;
+    color: #206bc4;
+}
+
+.stat-card-icon.bg-green-lt {
+    background-color: #e7f7f1;
+    color: #2fb344;
+}
+
+.stat-card-icon.bg-orange-lt {
+    background-color: #fef5e7;
+    color: #d6680e;
+}
+
+/* Dark Mode for Stat Cards */
+[data-bs-theme="dark"] .stat-card-icon.bg-primary-lt {
+    background-color: rgba(32, 107, 196, 0.2);
+    color: #5aa1e7;
+}
+
+[data-bs-theme="dark"] .stat-card-icon.bg-green-lt {
+    background-color: rgba(47, 179, 68, 0.2);
+    color: #5dd46f;
+}
+
+[data-bs-theme="dark"] .stat-card-icon.bg-orange-lt {
+    background-color: rgba(214, 104, 14, 0.2);
+    color: #e59650;
+}
+
+/* Latest News List */
+.list-group-item-news {
+    border-left: 3px solid transparent;
+    transition: border-color 0.2s ease;
+}
+.list-group-item-news:hover {
+    border-left-color: #206bc4; /* Tabler primary color */
+}
+
+.ts-dropdown,
+.ts-dropdown.form-control,
+.ts-dropdown.form-select {
+    background-color: white;
+}

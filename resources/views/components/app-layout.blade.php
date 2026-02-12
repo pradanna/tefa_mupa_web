@@ -5,8 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Official Web Profile TEFA SMK Muhammadiyah Pakem">
+    <meta name="keywords"
+        content="TEFA, SMK Muhammadiyah Pakem, Teaching Factory, Jasa, Produk, Pendidikan Vokasi, Sleman, Yogyakarta">
+    <meta name="author" content="TEFA SMK Muhammadiyah Pakem">
+    <meta name="robots" content="index, follow">
 
     <title>{{ $title ?? config('app.name') }}</title>
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- Open Graph / Facebook --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="{{ $title ?? config('app.name') }}">
+    <meta property="og:description"
+        content="Official Web Profile TEFA SMK Muhammadiyah Pakem. Pusat keunggulan inovasi teknologi dan layanan jasa profesional.">
+    <meta property="og:image" content="{{ asset('images/local/logo-tefa.png') }}">
+
+    {{-- Twitter --}}
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="{{ $title ?? config('app.name') }}">
+    <meta property="twitter:description"
+        content="Official Web Profile TEFA SMK Muhammadiyah Pakem. Pusat keunggulan inovasi teknologi dan layanan jasa profesional.">
+    <meta property="twitter:image" content="{{ asset('images/local/logo-tefa.png') }}">
 
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
@@ -36,7 +57,7 @@
 
     <x-navbar />
 
-    <main class="flex-grow-1">
+    <main class="grow">
         {{ $slot }}
     </main>
 
@@ -65,7 +86,8 @@
         <div class="sidebar-divider"></div>
 
         {{-- Item 3: Promo (Bisa diarahkan ke Berita atau Filter Produk) --}}
-        <a href="{{ route('news.index') }}" class="sidebar-item">
+        <a href="#" class="sidebar-item" data-bs-toggle="modal" data-bs-target="#promoModal"
+            onclick="fetchPromos(); return false;">
             <i class="bi bi-tags fs-4 mb-1 text-danger"></i>
             <span>Promo</span>
         </a>
@@ -81,6 +103,25 @@
     </div>
 
     <x-footer />
+
+    {{-- Modal Promo --}}
+    <div class="modal fade" id="promoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 rounded-4 overflow-hidden">
+                <div class="modal-header bg-danger text-white border-0">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-tags-fill me-2"></i>Promo Spesial</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-light p-4" id="promoContent">
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-danger" role="status"></div>
+                        <p class="mt-2 text-muted">Memuat promo...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -99,6 +140,83 @@
         var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
+    </script>
+
+    <script>
+        function fetchPromos() {
+            const contentDiv = document.getElementById('promoContent');
+            // Reset content loading
+            contentDiv.innerHTML = `
+                <div class="text-center py-5">
+                    <div class="spinner-border text-danger" role="status"></div>
+                    <p class="mt-2 text-muted">Memuat promo...</p>
+                </div>
+            `;
+
+            fetch('{{ route('api.promos') }}')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length === 0) {
+                        contentDiv.innerHTML = `
+                            <div class="text-center py-5">
+                                <i class="bi bi-emoji-frown fs-1 text-muted"></i>
+                                <h5 class="mt-3 text-muted">Yah, belum ada promo saat ini.</h5>
+                                <p class="text-muted">Nantikan promo menarik lainnya segera!</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    let html = '<div class="row g-4">';
+                    data.forEach(promo => {
+                        html += `
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                                    <div class="position-relative">
+                                        <img src="${promo.image}" class="card-img-top object-fit-cover" style="height: 200px;" alt="${promo.name}">
+                                        <div class="position-absolute top-0 end-0 m-3">
+                                            <span class="badge bg-warning text-dark shadow-sm">
+                                                <i class="bi bi-clock me-1"></i> Berakhir: ${promo.expired_formatted}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title fw-bold">${promo.name}</h5>
+                                        <p class="card-text text-muted small">${promo.desc}</p>
+
+                                        <div class="mt-3">
+                                            <div class="d-grid">
+                                                <button class="btn btn-outline-danger fw-bold btn-reveal-code"
+                                                    onclick="this.classList.add('d-none'); this.nextElementSibling.classList.remove('d-none');">
+                                                    Lihat Kode Promo
+                                                </button>
+                                                <div class="input-group d-none animate__animated animate__fadeIn">
+                                                    <span class="input-group-text bg-danger text-white border-danger"><i class="bi bi-ticket-perforated"></i></span>
+                                                    <input type="text" class="form-control text-center fw-bold text-danger bg-white" value="${promo.code}" readonly>
+                                                    <button class="btn btn-outline-secondary" type="button" onclick="navigator.clipboard.writeText('${promo.code}'); alert('Kode disalin!')">
+                                                        <i class="bi bi-clipboard"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                    contentDiv.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    contentDiv.innerHTML = `
+                        <div class="text-center py-5 text-danger">
+                            <i class="bi bi-exclamation-circle fs-1"></i>
+                            <p class="mt-2">Gagal memuat data promo.</p>
+                        </div>
+                    `;
+                });
+        }
     </script>
 
     @stack('morejs')

@@ -25,18 +25,18 @@
                         <div class="card border-0 shadow-sm rounded-4 overflow-hidden position-relative group-card">
 
                             {{-- Gambar (Tidak ada ratio fixed, biarkan auto) --}}
-                            <img src="{{ asset($item['src']) }}" class="w-100 h-auto d-block transition-img"
-                                alt="{{ $item['title'] }}">
+                            <img src="{{ asset($item->path . '/' . $item->image) }}"
+                                class="w-100 h-auto d-block transition-img" alt="{{ $item->title }}">
 
                             {{-- Overlay Hover (Efek Pemanis) --}}
                             <div
                                 class="position-absolute bottom-0 start-0 w-100 p-4 bg-gradient-to-top opacity-0 hover-show transition-all">
-                                <span class="badge bg-primary mb-2">{{ $item['category'] }}</span>
-                                <h6 class="text-white fw-bold mb-0">{{ $item['title'] }}</h6>
+                                <span class="badge bg-primary mb-2">{{ $item->category }}</span>
+                                <h6 class="text-white fw-bold mb-0">{{ $item->title }}</h6>
                             </div>
 
                             {{-- Link Wrapper (Jika mau diklik zoom/lightbox) --}}
-                            <a href="{{ asset($item['src']) }}" class="stretched-link glightbox"></a>
+                            <a href="{{ asset($item->path . '/' . $item->image) }}" class="stretched-link glightbox"></a>
                         </div>
                     </div>
                 @endforeach

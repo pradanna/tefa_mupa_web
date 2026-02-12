@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Schemas;
+
 use App\Commons\Schema\BaseSchema;
 
 class CatalogSchema extends BaseSchema
 {
     private $title;
+    private $slug;
     private $id_sub_category;
     private $id_category;
     private $image;
@@ -13,17 +15,20 @@ class CatalogSchema extends BaseSchema
     private $desc;
     private $id_user;
     private $specification;
+    private $whatsapp;
 
     protected function rules(): array
     {
         return [
             'title' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255',
             'id_sub_category' => 'required|integer',
             'id_category' => 'required|integer',
             'image' => 'required|string|max:255',
             'path' => 'required|string|max:255',
             'desc' => 'required|string',
             'specification' => 'nullable|string',
+            'whatsapp' => 'nullable|string|max:20',
             'id_user' => 'required|integer',
         ];
     }
@@ -31,12 +36,14 @@ class CatalogSchema extends BaseSchema
     protected function hydrateBody(): static
     {
         $this->setTitle($this->body['title'] ?? null)
+            ->setSlug($this->body['slug'] ?? null)
             ->setIdSubCategory($this->body['id_sub_category'] ?? null)
             ->setIdCategory($this->body['id_category'] ?? null)
             ->setImage($this->body['image'] ?? null)
             ->setPath($this->body['path'] ?? null)
             ->setDesc($this->body['desc'] ?? null)
             ->setSpecification($this->body['specification'] ?? null)
+            ->setWhatsapp($this->body['whatsapp'] ?? null)
             ->setIdUser($this->body['id_user'] ?? null);
         return $this;
     }
@@ -49,6 +56,17 @@ class CatalogSchema extends BaseSchema
     public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
         return $this;
     }
 
@@ -126,6 +144,17 @@ class CatalogSchema extends BaseSchema
     public function setSpecification($specification)
     {
         $this->specification = $specification;
+        return $this;
+    }
+
+    public function getWhatsapp()
+    {
+        return $this->whatsapp;
+    }
+
+    public function setWhatsapp($whatsapp)
+    {
+        $this->whatsapp = $whatsapp;
         return $this;
     }
 }

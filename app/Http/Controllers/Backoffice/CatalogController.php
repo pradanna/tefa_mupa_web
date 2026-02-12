@@ -16,8 +16,8 @@ class CatalogController extends BaseController
 {
     public function __construct(
         protected CategoryRepository $categoryRepository,
-        protected CatalogRepository $catalogRepository)
-    {}
+        protected CatalogRepository $catalogRepository
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -26,10 +26,10 @@ class CatalogController extends BaseController
     {
         try {
             $catalogs = $this->catalogRepository->paginate(request());
-            return view('backoffice.pages.catalog.index',compact('catalogs'));
+            return view('backoffice.pages.catalog.index', compact('catalogs'));
         } catch (\Throwable $th) {
             Log::error($th);
-            return redirect()->back()->with('error',$th);
+            return redirect()->back()->with('error', $th);
         }
     }
 
@@ -41,10 +41,10 @@ class CatalogController extends BaseController
         try {
             $categoryProducts = $this->categoryRepository->getCategoryCataloge();
             $subCategorys     = $this->categoryRepository->getSubCategoryCataloge();
-            return view('backoffice.pages.catalog.create',compact('categoryProducts','subCategorys'));
+            return view('backoffice.pages.catalog.create', compact('categoryProducts', 'subCategorys'));
         } catch (\Throwable $th) {
             Log::error($th);
-            return redirect()->back()->with('error',$th);
+            return redirect()->back()->with('error', $th);
         }
     }
 
@@ -56,19 +56,21 @@ class CatalogController extends BaseController
         try {
             $payload = [
                 'title' => $request->input('title'),
-                'slug' => Str::slug($request->input('title')),
+                'slug' => $request->filled('slug') ? Str::slug($request->input('slug')) : Str::slug($request->input('title')),
                 'id_category' => $request->input('id_category'),
                 'id_sub_category' => $request->input('id_sub_category'),
                 // gunakan field "desc" agar sesuai dengan schema & kolom tabel
                 'desc' => $request->input('desc'),
+                'specification' => $request->input('specification'),
+                'whatsapp' => $request->input('whatsapp'),
                 'id_user' => Auth::user()->id,
             ];
 
-            if($request->hasFile('file')){
+            if ($request->hasFile('file')) {
                 $file      = $request->file('file');
                 $extension = $file->getClientOriginalExtension();
                 $name      = Datetime::getNowYmdHis();
-                $fileName  = $name .'.'. $extension;
+                $fileName  = $name . '.' . $extension;
                 $destinationPath = public_path('images/catalog');
                 if (!file_exists($destinationPath)) {
                     mkdir($destinationPath, 0755, true);
@@ -118,7 +120,7 @@ class CatalogController extends BaseController
             $categoryProducts = $this->categoryRepository->getCategoryCataloge();
             $subCategorys     = $this->categoryRepository->getSubCategoryCataloge();
 
-            return view('backoffice.pages.catalog.edit',compact('catalog','categoryProducts','subCategorys'));
+            return view('backoffice.pages.catalog.edit', compact('catalog', 'categoryProducts', 'subCategorys'));
         } catch (\Throwable $th) {
             Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
             return redirect()
@@ -140,9 +142,12 @@ class CatalogController extends BaseController
 
             $payload = [
                 'title' => $request->input('title', $catalog->title),
+                'slug' => $request->filled('slug') ? Str::slug($request->input('slug')) : Str::slug($request->input('title', $catalog->title)),
                 'id_category' => $request->input('id_category', $catalog->id_category),
                 'id_sub_category' => $request->input('id_sub_category', $catalog->id_sub_category),
                 'desc' => $request->input('desc', $catalog->desc),
+                'specification' => $request->input('specification', $catalog->specification),
+                'whatsapp' => $request->input('whatsapp', $catalog->whatsapp),
                 'image' => $catalog->image,
                 'path' => $catalog->path,
                 'id_user' => Auth::user()->id,
@@ -191,9 +196,12 @@ class CatalogController extends BaseController
 
             $updateData = [
                 'title' => $schema->getTitle(),
+                'slug' => $schema->getSlug(),
                 'id_category' => $schema->getIdCategory(),
                 'id_sub_category' => $schema->getIdSubCategory(),
                 'desc' => $schema->getDesc(),
+                'specification' => $schema->getSpecification(),
+                'whatsapp' => $schema->getWhatsapp(),
                 'image' => $schema->getImage(),
                 'path' => $schema->getPath(),
                 'id_user' => $schema->getIdUser(),
@@ -202,7 +210,6 @@ class CatalogController extends BaseController
             $this->catalogRepository->update($id, $updateData);
 
             return redirect()->route('catalog.index')->with('message', 'success update catalog');
-
         } catch (\Exception $e) {
             throw $e;
         } catch (\Throwable $th) {

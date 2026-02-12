@@ -11,7 +11,8 @@
                             <div class="mx-2 d-inline-block">
                                 <select name="limit" class="form-control form-control-sm" aria-label="Partners count">
                                     @foreach ([5, 10, 25, 50] as $value)
-                                        <option value="{{ $value }}" {{ (int) request('limit', $partners->perPage()) === $value ? 'selected' : '' }}>
+                                        <option value="{{ $value }}"
+                                            {{ (int) request('limit', $partners->perPage()) === $value ? 'selected' : '' }}>
                                             {{ $value }}
                                         </option>
                                     @endforeach
@@ -22,12 +23,8 @@
                         <div class="ms-auto text-muted">
                             Search:
                             <div class="ms-2 d-inline-block">
-                                <input
-                                    type="text"
-                                    name="search"
-                                    value="{{ request('search') }}"
-                                    class="form-control form-control-sm"
-                                    aria-label="Search partners">
+                                <input type="text" name="search" value="{{ request('search') }}"
+                                    class="form-control form-control-sm" aria-label="Search partners">
                             </div>
                         </div>
                     </div>
@@ -61,25 +58,28 @@
                                 <td><span class="text-muted">{{ $no++ }}</span></td>
                                 <td class="text-muted">{{ $partner->name ?? '-' }}</td>
                                 <td class="text-muted">
-                                    @if($partner->image)
-                                        <img src="{{ asset('images/partners/' . $partner->image) }}" 
-                                             alt="{{ $partner->name }}" 
-                                             style="max-width: 100px; max-height: 100px; object-fit: cover;">
+                                    @if ($partner->image)
+                                        <img src="{{ asset('images/partners/' . $partner->image) }}"
+                                            alt="{{ $partner->name }}"
+                                            style="max-width: 100px; max-height: 100px; object-fit: cover;">
                                     @else
                                         -
                                     @endif
                                 </td>
-                                <td class="text-muted position-relative">
+                                <td class="text-muted">
                                     <span class="dropdown">
                                         <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
-                                            data-bs-boundary="viewport">Actions</button>
-                                        <div class="dropdown-menu dropdown-menu-start"
-                                            style="margin-top: 30px;">
-                                            <a class="dropdown-item" href="{{ route('partners.edit', $partner->id) }}">Edit</a>
-                                            <form action="{{ route('partners.destroy', $partner->id) }}" method="POST" style="display:inline;">
+                                            data-bs-boundary="viewport"
+                                            data-bs-popper-config='{"strategy": "fixed"}'>Actions</button>
+                                        <div class="dropdown-menu dropdown-menu-start" style="margin-top: 30px;">
+                                            <a class="dropdown-item"
+                                                href="{{ route('partners.edit', $partner->id) }}">Edit</a>
+                                            <form action="{{ route('partners.destroy', $partner->id) }}" method="POST"
+                                                style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="dropdown-item" onclick="return confirm('Apakah Anda yakin ingin menghapus partner ini?')">Hapus</button>
+                                                <button type="submit" class="dropdown-item"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus partner ini?')">Hapus</button>
                                             </form>
                                         </div>
                                     </span>
@@ -114,4 +114,3 @@
         </div>
     </div>
 </x-backoffice.layout.main>
-

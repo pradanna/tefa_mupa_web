@@ -3,114 +3,83 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-
+use App\Repositories\NewsRepository;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Collection;
 
 class ArticleController extends Controller
 {
+    public function __construct(protected NewsRepository $newsRepository) {}
+
     public function index(Request $request)
     {
-        // 1. DATA DUMMY (Nanti diganti database)
-        $data = [
-            ['judul' => 'Kunjungan Industri 2025', 'slug' => 'kunjungan-industri-panasonic', 'tanggal' => '2025-12-24', 'excerpt' => 'Siswa melakukan kunjungan ke pabrik elektronik terkemuka...', 'img' => 'images/articles/kunjungan-industri.png'],
-            ['judul' => 'Juara 1 Lomba Robotik', 'slug' => 'juara-robotik', 'tanggal' => '2025-12-20', 'excerpt' => 'Tim robotik sekolah berhasil menyabet emas...', 'img' => 'images/articles/robotik.jpg'],
-            ['judul' => 'Workshop IoT Gratis',  'slug' => 'workshop-iot', 'tanggal' => '2025-11-15', 'excerpt' => 'Membuka wawasan masyarakat tentang teknologi...', 'img' => 'images/articles/wshop.png'],
+        // 1. Query Builder
+        $query = $this->newsRepository->query()->with('category');
 
-            ['judul' => 'Kunjungan Industri 2025', 'slug' => 'kunjungan-industri-panasonic', 'tanggal' => '2025-12-24', 'excerpt' => 'Siswa melakukan kunjungan ke pabrik elektronik terkemuka...', 'img' => 'images/articles/kunjungan-industri.png'],
-            ['judul' => 'Juara 1 Lomba Robotik', 'slug' => 'juara-robotik', 'tanggal' => '2025-12-20', 'excerpt' => 'Tim robotik sekolah berhasil menyabet emas...', 'img' => 'images/articles/robotik.jpg'],
-            ['judul' => 'Workshop IoT Gratis',  'slug' => 'workshop-iot', 'tanggal' => '2025-11-15', 'excerpt' => 'Membuka wawasan masyarakat tentang teknologi...', 'img' => 'images/articles/wshop.png'],
-
-            ['judul' => 'Kunjungan Industri 2025', 'slug' => 'kunjungan-industri-panasonic', 'tanggal' => '2025-12-24', 'excerpt' => 'Siswa melakukan kunjungan ke pabrik elektronik terkemuka...', 'img' => 'images/articles/kunjungan-industri.png'],
-            ['judul' => 'Juara 1 Lomba Robotik', 'slug' => 'juara-robotik', 'tanggal' => '2025-12-20', 'excerpt' => 'Tim robotik sekolah berhasil menyabet emas...', 'img' => 'images/articles/robotik.jpg'],
-            ['judul' => 'Workshop IoT Gratis',  'slug' => 'workshop-iot', 'tanggal' => '2025-11-15', 'excerpt' => 'Membuka wawasan masyarakat tentang teknologi...', 'img' => 'images/articles/wshop.png'],
-            ['judul' => 'Kunjungan Industri 2025', 'slug' => 'kunjungan-industri-panasonic', 'tanggal' => '2025-12-24', 'excerpt' => 'Siswa melakukan kunjungan ke pabrik elektronik terkemuka...', 'img' => 'images/articles/kunjungan-industri.png'],
-            ['judul' => 'Juara 1 Lomba Robotik', 'slug' => 'juara-robotik', 'tanggal' => '2025-12-20', 'excerpt' => 'Tim robotik sekolah berhasil menyabet emas...', 'img' => 'images/articles/robotik.jpg'],
-            ['judul' => 'Workshop IoT Gratis',  'slug' => 'workshop-iot', 'tanggal' => '2025-11-15', 'excerpt' => 'Membuka wawasan masyarakat tentang teknologi...', 'img' => 'images/articles/wshop.png'],
-
-            ['judul' => 'Kunjungan Industri 2025', 'slug' => 'kunjungan-industri-panasonic', 'tanggal' => '2025-12-24', 'excerpt' => 'Siswa melakukan kunjungan ke pabrik elektronik terkemuka...', 'img' => 'images/articles/kunjungan-industri.png'],
-            ['judul' => 'Juara 1 Lomba Robotik', 'slug' => 'juara-robotik', 'tanggal' => '2025-12-20', 'excerpt' => 'Tim robotik sekolah berhasil menyabet emas...', 'img' => 'images/articles/robotik.jpg'],
-            ['judul' => 'Workshop IoT Gratis',  'slug' => 'workshop-iot', 'tanggal' => '2025-11-15', 'excerpt' => 'Membuka wawasan masyarakat tentang teknologi...', 'img' => 'images/articles/wshop.png'],
-
-            ['judul' => 'Kunjungan Industri 2025', 'slug' => 'kunjungan-industri-panasonic', 'tanggal' => '2025-12-24', 'excerpt' => 'Siswa melakukan kunjungan ke pabrik elektronik terkemuka...', 'img' => 'images/articles/kunjungan-industri.png'],
-            ['judul' => 'Juara 1 Lomba Robotik', 'slug' => 'juara-robotik', 'tanggal' => '2025-12-20', 'excerpt' => 'Tim robotik sekolah berhasil menyabet emas...', 'img' => 'images/articles/robotik.jpg'],
-            ['judul' => 'Workshop IoT Gratis',  'slug' => 'workshop-iot', 'tanggal' => '2025-11-15', 'excerpt' => 'Membuka wawasan masyarakat tentang teknologi...', 'img' => 'images/articles/wshop.png'],
-
-            ['judul' => 'Kunjungan Industri 2025', 'slug' => 'kunjungan-industri-panasonic', 'tanggal' => '2025-12-24', 'excerpt' => 'Siswa melakukan kunjungan ke pabrik elektronik terkemuka...', 'img' => 'images/articles/kunjungan-industri.png'],
-            ['judul' => 'Juara 1 Lomba Robotik', 'slug' => 'juara-robotik', 'tanggal' => '2025-12-20', 'excerpt' => 'Tim robotik sekolah berhasil menyabet emas...', 'img' => 'images/articles/robotik.jpg'],
-            ['judul' => 'Workshop IoT Gratis',  'slug' => 'workshop-iot', 'tanggal' => '2025-11-15', 'excerpt' => 'Membuka wawasan masyarakat tentang teknologi...', 'img' => 'images/articles/wshop.png'],
-
-            ['judul' => 'Kunjungan Industri 2025', 'slug' => 'kunjungan-industri-panasonic', 'tanggal' => '2025-12-24', 'excerpt' => 'Siswa melakukan kunjungan ke pabrik elektronik terkemuka...', 'img' => 'images/articles/kunjungan-industri.png'],
-            ['judul' => 'Juara 1 Lomba Robotik', 'slug' => 'juara-robotik', 'tanggal' => '2025-12-20', 'excerpt' => 'Tim robotik sekolah berhasil menyabet emas...', 'img' => 'images/articles/robotik.jpg'],
-            ['judul' => 'Workshop IoT Gratis',  'slug' => 'workshop-iot', 'tanggal' => '2025-11-15', 'excerpt' => 'Membuka wawasan masyarakat tentang teknologi...', 'img' => 'images/articles/wshop.png'],
-
-            ['judul' => 'Kunjungan Industri 2025', 'slug' => 'kunjungan-industri-panasonic', 'tanggal' => '2025-12-24', 'excerpt' => 'Siswa melakukan kunjungan ke pabrik elektronik terkemuka...', 'img' => 'images/articles/kunjungan-industri.png'],
-            ['judul' => 'Juara 1 Lomba Robotik', 'slug' => 'juara-robotik', 'tanggal' => '2025-12-20', 'excerpt' => 'Tim robotik sekolah berhasil menyabet emas...', 'img' => 'images/articles/robotik.jpg'],
-            ['judul' => 'Workshop IoT Gratis',  'slug' => 'workshop-iot', 'tanggal' => '2025-11-15', 'excerpt' => 'Membuka wawasan masyarakat tentang teknologi...', 'img' => 'images/articles/wshop.png'],
-
-
-
-        ];
-
-        $articles = collect($data);
-
-        // Filter by Judul (Search)
+        // 2. Filter Search
         if ($request->has('search') && $request->search != null) {
-            $articles = $articles->filter(function ($item) use ($request) {
-                return false !== stripos($item['judul'], $request->search);
-            });
+            $query->where('title', 'like', '%' . $request->search . '%');
         }
 
-        // Filter by Tanggal
+        // 3. Filter Date
         if ($request->has('date') && $request->date != null) {
-            $articles = $articles->where('tanggal', $request->date);
+            $query->whereDate('date', $request->date);
         }
 
-        // Jika nanti pakai Database, cukup: Article::paginate(6);
-        $perPage = 6;
-        $page = Paginator::resolveCurrentPage() ?: 1;
-        $items = $articles->forPage($page, $perPage);
+        // 4. Order & Pagination
+        $paginatedArticles = $query->where('status', 'publis')
+            ->orderBy('date', 'desc')
+            ->paginate(6)
+            ->appends($request->all());
 
-        $paginatedArticles = new LengthAwarePaginator(
-            $items,
-            $articles->count(),
-            $perPage,
-            $page,
-            ['path' => Paginator::resolveCurrentPath()]
-        );
-
-        // Append query string agar saat ganti halaman, filternya tidak hilang
-        $paginatedArticles->appends($request->all());
+        // 5. Transform data for view
+        $paginatedArticles->getCollection()->transform(function ($item) {
+            return [
+                'judul' => $item->title,
+                'slug' => $item->slug,
+                'tanggal' => $item->date,
+                'excerpt' => $item->content,
+                'img' => $item->path . '/' . $item->image,
+            ];
+        });
 
         return view('news.index', ['articles' => $paginatedArticles]);
     }
 
     public function show($slug)
     {
-        $allData = collect([
-            [
-                'judul' => 'Kunjungan Industri ke PT Panasonic',
-                'slug' => 'kunjungan-industri-panasonic',
-                'tanggal' => '2025-12-24',
-                'kategori' => 'Kegiatan',
-                'img' => 'images/articles/kunjungan-industri.png',
-                'content' => 'Lorem ipsum dolor sit amet...'
-            ],
-            ['judul' => 'Juara 1 Lomba Robotik', 'slug' => 'juara-robotik', 'tanggal' => '2025-12-20', 'kategori' => 'Prestasi', 'excerpt' => 'Tim robotik sekolah berhasil menyabet emas...', 'img' => 'images/articles/robotik.jpg'],
-            ['judul' => 'Workshop IoT Gratis',  'slug' => 'workshop-iot', 'tanggal' => '2025-11-15', 'kategori' => 'Kegiatan', 'excerpt' => 'Membuka wawasan masyarakat tentang teknologi...', 'img' => 'images/articles/wshop.png'],
+        // 1. Fetch Article
+        $newsModel = $this->newsRepository->query()->where('slug', $slug)->with('category')->first();
 
-        ]);
-
-        $article = $allData->firstWhere('slug', $slug);
-
-        // Jika tidak ketemu, tampilkan 404
-        if (!$article) {
+        if (!$newsModel || $newsModel->status != 'publis') {
             abort(404);
         }
 
-        $related = $allData->where('slug', '!=', $slug)->take(4);
+        // 2. Map Data
+        $article = [
+            'judul' => $newsModel->title,
+            'slug' => $newsModel->slug,
+            'tanggal' => \Carbon\Carbon::parse($newsModel->date)->locale('id')->isoFormat('D MMMM Y'),
+            'kategori' => optional($newsModel->category)->name ?? 'Umum',
+            'img' => $newsModel->path . '/' . $newsModel->image,
+            'content' => $newsModel->content,
+        ];
+
+        // 3. Fetch Related
+        $related = $this->newsRepository->query()
+            ->where('slug', '!=', $slug)
+            ->where('status', 'publis')
+            ->orderBy('date', 'desc')
+            ->take(4)
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'judul' => $item->title,
+                    'slug' => $item->slug,
+                    'tanggal' => $item->date,
+                    'img' => $item->path . '/' . $item->image,
+                    'excerpt' => $item->content,
+                ];
+            });
 
         return view('news.show', compact('article', 'related'));
     }

@@ -1,6 +1,6 @@
 <x-backoffice.layout.main>
-    <x-backoffice.partials.breadcrumb title="Organisasi" pretitle="Organisasi" createUrl="{{ route('organizations.create') }}"
-        createLabel="Tambah Organisasi" />
+    <x-backoffice.partials.breadcrumb title="Organisasi" pretitle="Organisasi"
+        createUrl="{{ route('organizations.create') }}" createLabel="Tambah Organisasi" />
     <div class="col-12">
         <div class="card">
             <div class="card-body border-bottom py-3">
@@ -9,9 +9,11 @@
                         <div class="text-muted">
                             Show
                             <div class="mx-2 d-inline-block">
-                                <select name="limit" class="form-control form-control-sm" aria-label="Organization count">
+                                <select name="limit" class="form-control form-control-sm"
+                                    aria-label="Organization count">
                                     @foreach ([5, 10, 25, 50] as $value)
-                                        <option value="{{ $value }}" {{ (int) request('limit', $organizations->perPage()) === $value ? 'selected' : '' }}>
+                                        <option value="{{ $value }}"
+                                            {{ (int) request('limit', $organizations->perPage()) === $value ? 'selected' : '' }}>
                                             {{ $value }}
                                         </option>
                                     @endforeach
@@ -22,12 +24,8 @@
                         <div class="ms-auto text-muted">
                             Search:
                             <div class="ms-2 d-inline-block">
-                                <input
-                                    type="text"
-                                    name="search"
-                                    value="{{ request('search') }}"
-                                    class="form-control form-control-sm"
-                                    aria-label="Search organization">
+                                <input type="text" name="search" value="{{ request('search') }}"
+                                    class="form-control form-control-sm" aria-label="Search organization">
                             </div>
                         </div>
                     </div>
@@ -65,17 +63,20 @@
                                 <td class="text-muted">{{ $org->position ?? '-' }}</td>
                                 <td class="text-muted">{{ $org->email ?? '-' }}</td>
                                 <td class="text-muted">{{ $org->order ?? '-' }}</td>
-                                <td class="text-muted position-relative">
+                                <td class="text-muted">
                                     <span class="dropdown">
                                         <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
-                                            data-bs-boundary="viewport">Actions</button>
-                                        <div class="dropdown-menu dropdown-menu-start"
-                                            style="margin-top: 30px;">
-                                            <a class="dropdown-item" href="{{ route('organizations.edit', $org->id) }}">Edit</a>
-                                            <form action="{{ route('organizations.destroy', $org->id) }}" method="POST" style="display:inline;">
+                                            data-bs-boundary="viewport"
+                                            data-bs-popper-config='{"strategy": "fixed"}'>Actions</button>
+                                        <div class="dropdown-menu dropdown-menu-start" style="margin-top: 30px;">
+                                            <a class="dropdown-item"
+                                                href="{{ route('organizations.edit', $org->id) }}">Edit</a>
+                                            <form action="{{ route('organizations.destroy', $org->id) }}"
+                                                method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this organization?')">Delete</button>
+                                                <button type="submit" class="dropdown-item"
+                                                    onclick="return confirm('Are you sure you want to delete this organization?')">Delete</button>
                                             </form>
                                         </div>
                                     </span>
@@ -110,4 +111,3 @@
         </div>
     </div>
 </x-backoffice.layout.main>
-

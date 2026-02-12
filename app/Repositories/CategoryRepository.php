@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Repositories;
+
 use App\Models\Category;
 use App\Commons\Repositories\AppRepository;
 use App\Commons\Schema\BaseSchema;
@@ -15,6 +16,14 @@ class CategoryRepository extends AppRepository
     public function __construct(Category $model)
     {
         parent::__construct($model);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function query()
+    {
+        return $this->model->query();
     }
 
     public function createNews($schema): CategorySchema
@@ -40,40 +49,20 @@ class CategoryRepository extends AppRepository
 
     public function getCategoryNews()
     {
-        DB::beginTransaction();
-        try {
-            $data = $this->model->where('type', 'content')->get();
-            DB::commit();
-            return $data;
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            throw $th;
-        }
+        // Transactions are not needed for read operations (SELECT).
+        return $this->model->where('type', 'content')->get();
     }
 
     public function getCategoryCataloge()
     {
-        DB::beginTransaction();
-        try {
-            $data = $this->model->where('type', 'catalog')->get();
-            DB::commit();
-            return $data;
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            throw $th;
-        }
+        // Transactions are not needed for read operations (SELECT).
+        return $this->model->where('type', 'catalog')->get();
     }
 
-    public function getSubCategoryCataloge(){
-        DB::beginTransaction();
-        try {
-            $data = $this->model->where('type', 'sub_catalog')->get();
-            DB::commit();
-            return $data;
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            throw $th;
-        }
+    public function getSubCategoryCataloge()
+    {
+        // Transactions are not needed for read operations (SELECT).
+        return $this->model->where('type', 'sub_catalog')->get();
     }
 
     public function update($id, $data)
@@ -110,5 +99,4 @@ class CategoryRepository extends AppRepository
             throw $e;
         }
     }
-
 }

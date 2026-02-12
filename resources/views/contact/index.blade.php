@@ -24,7 +24,7 @@
 
                     {{-- Item: Alamat --}}
                     <div class="d-flex gap-3 mb-4">
-                        <div class="icon-box bg-light txt-primary rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center"
+                        <div class="icon-box bg-light txt-primary rounded-circle shrink-0 d-flex align-items-center justify-content-center"
                             style="width: 50px; height: 50px;">
                             <i class="bi bi-geo-alt fs-4"></i>
                         </div>
@@ -40,7 +40,7 @@
 
                     {{-- Item: Email & Telepon --}}
                     <div class="d-flex gap-3 mb-4">
-                        <div class="icon-box bg-light txt-primary rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center"
+                        <div class="icon-box bg-light txt-primary rounded-circle shrink-0 d-flex align-items-center justify-content-center"
                             style="width: 50px; height: 50px;">
                             <i class="bi bi-envelope fs-4"></i>
                         </div>
@@ -53,7 +53,7 @@
 
                     {{-- Item: Jam Operasional --}}
                     <div class="d-flex gap-3 mb-5">
-                        <div class="icon-box bg-light txt-primary rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center"
+                        <div class="icon-box bg-light txt-primary rounded-circle shrink-0 d-flex align-items-center justify-content-center"
                             style="width: 50px; height: 50px;">
                             <i class="bi bi-clock fs-4"></i>
                         </div>
@@ -67,13 +67,19 @@
                     {{-- Social Media --}}
                     <h6 class="fw-bold mb-3">Ikuti Kami</h6>
                     <div class="d-flex gap-2">
-                        <a href="#" class="btn btn-outline-primary rounded-circle"
-                            style="width: 40px; height: 40px;"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="btn btn-outline-danger rounded-circle"
+                        <a href="https://www.facebook.com/smkmuhammadiyahpakem" target="_blank"
+                            class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px;"><i
+                                class="bi bi-facebook"></i></a>
+                        <a href="https://www.instagram.com/smkmuhpakem" target="_blank"
+                            class="btn btn-outline-danger
+                            rounded-circle"
                             style="width: 40px; height: 40px;"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="btn btn-outline-dark rounded-circle"
-                            style="width: 40px; height: 40px;"><i class="bi bi-tiktok"></i></a>
-                        <a href="#" class="btn btn-outline-danger rounded-circle"
+                        <a href="https://www.tiktok.com/@smkmuhpakem" target="_blank"
+                            class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
+                                class="bi bi-tiktok"></i></a>
+                        <a href="https://www.youtube.com/@SMKMuhammadiyahPakem" target="_blank"
+                            class="btn
+                            btn-outline-danger rounded-circle"
                             style="width: 40px; height: 40px;"><i class="bi bi-youtube"></i></a>
                     </div>
                 </div>
@@ -88,16 +94,16 @@
                         {{-- Form ini menggunakan AlpineJS untuk kirim ke WA --}}
                         <form x-data="contactForm()" @submit.prevent="sendMessage">
                             <div class="row g-3">
-                                <div class="col-md-6">
+                                <div class="col-12">
                                     <label class="form-label fw-bold small">Nama Lengkap</label>
                                     <input type="text" x-model="name" class="form-control" placeholder="Nama Anda"
                                         required>
                                 </div>
-                                <div class="col-md-6">
+                                {{-- <div class="col-md-6">
                                     <label class="form-label fw-bold small">No. WhatsApp</label>
                                     <input type="tel" x-model="phone" class="form-control" placeholder="08..."
                                         required>
-                                </div>
+                                </div> --}}
                                 <div class="col-12">
                                     <label class="form-label fw-bold small">Kategori</label>
                                     <select x-model="category" class="form-select">
@@ -139,12 +145,11 @@
     </section>
 
     {{-- Script Khusus Halaman Ini --}}
-    @push('scripts')
+    @push('morejs')
         <script>
             function contactForm() {
                 return {
                     name: '',
-                    phone: '',
                     category: 'Umum',
                     message: '',
                     sendMessage() {
@@ -152,14 +157,13 @@
                         const adminPhone = '6285865611145';
 
                         // Format Pesan
-                        const text = `Halo Admin TEFA Mupa,%0A%0A` +
-                            `Nama: ${this.name}%0A` +
-                            `No. HP: ${this.phone}%0A` +
-                            `Kategori: ${this.category}%0A%0A` +
-                            `Pesan:%0A${this.message}`;
+                        const text = `Halo Admin TEFA Mupa,\n\n` +
+                            `Nama: ${this.name}\n` +
+                            `Kategori: ${this.category}\n\n` +
+                            `Pesan:\n${this.message}`;
 
                         // Buka WhatsApp
-                        window.open(`https://wa.me/${adminPhone}?text=${text}`, '_blank');
+                        window.open(`https://wa.me/${adminPhone}?text=${encodeURIComponent(text)}`, '_blank');
                     }
                 }
             }

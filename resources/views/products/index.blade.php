@@ -25,15 +25,16 @@
                         Semua
                     </a>
 
-                    <a href="{{ route('products.index', ['kategori' => 'Produk']) }}"
-                        class="btn btn-tab rounded-pill px-4 py-2 fw-bold {{ request('kategori') == 'Produk' ? 'active' : '' }}">
-                        <i class="bi bi-box-seam me-1"></i> Produk
-                    </a>
+                    @foreach ($categories as $category)
+                        <a href="{{ route('products.index', ['kategori' => $category->slug]) }}"
+                            class="btn btn-tab rounded-pill px-4 py-2 fw-bold {{ request('kategori') == $category->slug ? 'active' : '' }} d-inline-flex align-items-center gap-2">
+                            @if (!empty($category->icon))
+                                <i data-lucide="{{ $category->icon }}" style="height: 25px; width: 25px"></i>
+                            @endif
 
-                    <a href="{{ route('products.index', ['kategori' => 'Jasa']) }}"
-                        class="btn btn-tab rounded-pill px-4 py-2 fw-bold {{ request('kategori') == 'Jasa' ? 'active' : '' }}">
-                        <i class="bi bi-wrench me-1"></i> Jasa
-                    </a>
+                            {{ $category->name }}
+                        </a>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -45,7 +46,7 @@
 
             @if ($products->isEmpty())
                 <div class="text-center py-5">
-                    <img src="{{ asset('images/empty-cart.svg') }}" width="150" class="mb-3 opacity-50"
+                    <img src="{{ asset('images/local/logo-tefa.png') }}" width="150" class="mb-3 opacity-50"
                         alt="Kosong">
                     <h4 class="text-muted">Item belum tersedia</h4>
                 </div>
@@ -67,4 +68,11 @@
         </div>
     </section>
 
+    @push('morejs')
+        {{-- Load Library Lucide Icons --}}
+        <script src="https://unpkg.com/lucide@latest"></script>
+        <script>
+            lucide.createIcons();
+        </script>
+    @endpush
 </x-app-layout>
