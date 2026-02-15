@@ -3,8 +3,9 @@
     {{-- HERO SECTION: PROFIL --}}
     <section class="b-primary py-5 position-relative overflow-hidden">
         {{-- Background Pattern (Optional) --}}
-        <div class="position-absolute top-0 start-0 w-100 h-100"
-            style="background-image: url('{{ asset('images/pattern-grid.png') }}'); opacity: 0.1;">
+        @php $patternGridUrl = asset('images/pattern-grid.png'); @endphp
+        <div class="position-absolute top-0 start-0 w-100 h-100" 
+            style="background-image: url('{{ $patternGridUrl }}'); opacity: 0.1;">
         </div>
 
         <div class="container position-relative py-5 text-center text-white">
@@ -22,8 +23,13 @@
                 <div class="col-lg-6" data-aos="fade-right">
                     <div class="position-relative">
                         <div class="ratio ratio-4x3 rounded-4 overflow-hidden shadow-lg">
-                            <img src="{{ asset($history->path . '/' . $history->image) }}" class="object-fit-cover"
-                                alt="Sejarah">
+                            @if ($history && $history->image)
+                                <img src="{{ asset($history->path . '/' . $history->image) }}" class="object-fit-cover"
+                                    alt="Sejarah">
+                            @else
+                                <img src="{{ asset('images/local/gedung.jpg') }}" class="object-fit-cover"
+                                    alt="Sejarah">
+                            @endif
                         </div>
                         {{-- Badge Tahun Berdiri --}}
                         <div
@@ -40,7 +46,7 @@
                     <h2 class="fw-bold display-6 mb-4">Dedikasi untuk Pendidikan Vokasi Berkemajuan</h2>
                     {{-- SEJARAH --}}
                     <div class="text-muted mb-4">
-                        {!! $history->body !!}
+                        {!! $history && $history->body ? $history->body : 'Dedikasi untuk Pendidikan Vokasi Berkemajuan' !!}
                     </div>
                 </div>
             </div>

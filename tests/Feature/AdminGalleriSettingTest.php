@@ -189,7 +189,7 @@ class AdminGalleriSettingTest extends TestCase
         ]);
 
         $response->assertRedirect(route('album.index'));
-        $response->assertSessionHas('success', 'image deleted successfully');
+        $response->assertSessionHas('success', 'Gambar berhasil dihapus');
         $this->assertDatabaseMissing('gallers', ['id' => $galleri->id]);
     }
 

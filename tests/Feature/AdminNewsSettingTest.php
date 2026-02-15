@@ -199,7 +199,7 @@ class AdminNewsSettingTest extends TestCase
         ]);
 
         $response->assertRedirect(route('articles.index'));
-        $response->assertSessionHas('success', 'News created successfully');
+        $response->assertSessionHas('success', 'Berita berhasil dibuat');
 
         $this->assertDatabaseHas('news', [
             'title' => 'Berita Baru',
@@ -227,7 +227,7 @@ class AdminNewsSettingTest extends TestCase
         ]);
 
         $response->assertRedirect();
-        $response->assertSessionHas('error', 'Image is required');
+        $response->assertSessionHas('error', 'Gambar berita wajib diunggah.');
         $this->assertDatabaseMissing('news', ['slug' => 'berita-tanpa-gambar']);
     }
 
@@ -281,7 +281,7 @@ class AdminNewsSettingTest extends TestCase
         ]);
 
         $response->assertRedirect(route('articles.index'));
-        $response->assertSessionHas('success', 'News updated successfully');
+        $response->assertSessionHas('success', 'Berita berhasil diperbarui');
 
         $news->refresh();
         $this->assertSame('Berita Diubah', $news->title);
@@ -312,7 +312,7 @@ class AdminNewsSettingTest extends TestCase
         ]);
 
         $response->assertRedirect(route('articles.index'));
-        $response->assertSessionHas('success', 'News updated successfully');
+        $response->assertSessionHas('success', 'Berita berhasil diperbarui');
         $this->assertFalse(File::exists($oldFilePath), 'File gambar lama berita harus terhapus dari disk setelah update dengan gambar baru');
 
         $news->refresh();
@@ -379,7 +379,7 @@ class AdminNewsSettingTest extends TestCase
         ]);
 
         $response->assertRedirect(route('articles.index'));
-        $response->assertSessionHas('success', 'News deleted successfully');
+        $response->assertSessionHas('success', 'Berita berhasil dihapus');
         $this->assertDatabaseMissing('news', ['id' => $news->id]);
         $this->assertFalse(File::exists($filePath), 'File gambar berita harus terhapus dari disk setelah data dihapus');
     }
