@@ -44,6 +44,9 @@ Route::prefix('backoffice')->group(function () {
     })->name('login-backoffice');
 
     Route::middleware('auth')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('dashboard');
+        });
         Route::get('dashboard', function () {
             $stats = [
                 'categories' => \App\Models\Category::count(),
