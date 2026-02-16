@@ -58,8 +58,7 @@ class VissionMissionController extends BaseController
                 ->withErrors($e->errors())
                 ->withInput();
         } catch (\Throwable $th) {
-            dd($th)
-;            Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
+            Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
             return redirect()
                 ->back()
                 ->withInput()
