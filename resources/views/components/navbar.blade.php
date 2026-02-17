@@ -33,6 +33,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('products.index') }}">Produk & Jasa</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('news.index') }}">Berita</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('gallery.index') }}">Gallery</a></li>
+                {{-- <li class="nav-item"><a class="nav-link" href="{{ route('api.licenses') }}">Sertifikasi & Lisensi</a></li> --}}
                 <li class="nav-item"><a class="nav-link" href="{{ route('contact.index') }}">Contact Us</a></li>
 
                 {{-- @guest
@@ -49,7 +50,7 @@
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
                     </li>
-                @endauth
+                @endauth --}}
 
             </ul>
         </div>
