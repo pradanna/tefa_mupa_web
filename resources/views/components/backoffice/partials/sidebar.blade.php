@@ -81,6 +81,12 @@
             'title' => 'Partner',
             'pattern' => 'backoffice/partners*',
         ],
+        [
+            'route' => 'contacts.index',
+            'icon' => 'phone',
+            'title' => 'Kontak',
+            'pattern' => 'backoffice/contacts*',
+        ],
     ];
 @endphp
 

@@ -96,5 +96,12 @@
     "link": "/backoffice/partners",
     "icon": "tabler-handshake",
     "parent": null
+  },
+  {
+    "id": 14,
+    "title": "Kontak",
+    "link": "/backoffice/contacts",
+    "icon": "tabler-phone",
+    "parent": null
   }
 ]
