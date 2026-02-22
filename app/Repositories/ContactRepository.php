@@ -15,18 +15,13 @@ class ContactRepository extends AppRepository
         parent::__construct($model);
     }
 
-    public function paginateWithFilter(Request $request)
+    // Karena hanya boleh ada 1 row pada tabel contacts, maka paginate/filter cukup ambil data pertama (single row).
+    public function getContact()
     {
-        $query = $this->model->query()->orderBy('created_at', 'desc');
-
-        if ($status = $request->input('status')) {
-            $query->where('status', $status);
-        }
-
-        return $query->paginate($request->input('limit', 10));
+        return $this->model->first();
     }
 
-    public function createFromSchema(ContactSchema $schema)
+    public function createOrUpdateFromSchema(ContactSchema $schema)
     {
         DB::beginTransaction();
         try {
@@ -44,7 +39,21 @@ class ContactRepository extends AppRepository
                 'id_user'        => $schema->getIdUser(),
             ];
 
-            $result = $this->model->create($data);
+            // Tidak bisa nambah lebih dari 1: jika sudah ada contact, update saja.
+            $contact = $this->model->first();
+
+            if ($contact) {
+                $contact->update($data);
+                $result = $contact->refresh();
+            } else {
+                $result = $this->model->create($data);
+            }
+
+            // Pastikan benar-benar hanya ada 1 baris (tidak terjadi race condition atau duplikasi karena migration manual, dsb)
+            $otherContacts = $this->model->where('id', '!=', $result->id)->get();
+            if ($otherContacts->count() > 0) {
+                $this->model->whereIn('id', $otherContacts->pluck('id')->toArray())->delete();
+            }
 
             DB::commit();
             return $result;
@@ -53,36 +62,4 @@ class ContactRepository extends AppRepository
             throw $th;
         }
     }
-
-    public function updateFromSchema(int|string $id, ContactSchema $schema)
-    {
-        DB::beginTransaction();
-        try {
-            $contact = $this->model->findOrFail($id);
-
-            $data = [
-                'address'        => $schema->getAddress(),
-                'email'          => $schema->getEmail(),
-                'phone'          => $schema->getPhone(),
-                'weekday_hours'  => $schema->getWeekdayHours(),
-                'saturday_hours' => $schema->getSaturdayHours(),
-                'facebook_url'   => $schema->getFacebookUrl(),
-                'instagram_url'  => $schema->getInstagramUrl(),
-                'tiktok_url'     => $schema->getTiktokUrl(),
-                'youtube_url'    => $schema->getYoutubeUrl(),
-                'status'         => $schema->getStatus(),
-                'id_user'        => $schema->getIdUser(),
-            ];
-
-            $contact->update($data);
-
-            DB::commit();
-            return $contact;
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            throw $th;
-        }
-    }
 }
-
-
