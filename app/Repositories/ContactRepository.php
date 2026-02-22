@@ -15,10 +15,10 @@ class ContactRepository extends AppRepository
         parent::__construct($model);
     }
 
-    // Karena hanya boleh ada 1 row pada tabel contacts, maka paginate/filter cukup ambil data pertama (single row).
+    // Karena hanya boleh ada 1 row pada tabel contacts, kembalikan collection (0 atau 1 item) agar view bisa @forelse.
     public function getContact()
     {
-        return $this->model->first();
+        return $this->model->get();
     }
 
     public function createOrUpdateFromSchema(ContactSchema $schema)

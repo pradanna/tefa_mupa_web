@@ -21,7 +21,7 @@ class ContactController extends BaseController
     public function index()
     {
         try {
-            $contacts = $this->contactRepository->paginateWithFilter(request());
+            $contacts = $this->contactRepository->getContact();
             return $this->makeView('backoffice.pages.contacts.index', compact('contacts'));
         } catch (\Throwable $th) {
             Log::error($th);
@@ -55,7 +55,7 @@ class ContactController extends BaseController
             $schema->validate();
             $schema->hydrate();
 
-            $this->contactRepository->createFromSchema($schema);
+            $this->contactRepository->createOrUpdateFromSchema($schema);
 
             return redirect()
                 ->route('contacts.index')
@@ -115,7 +115,7 @@ class ContactController extends BaseController
             $schema->validate();
             $schema->hydrate();
 
-            $this->contactRepository->updateFromSchema((int) $id, $schema);
+            $this->contactRepository->createOrUpdateFromSchema($schema);
 
             return redirect()
                 ->route('contacts.index')
