@@ -34,8 +34,12 @@
                                     <div class="mb-3">
                                         <label class="form-label">Current Image</label>
                                         <br>
-                                        <img src="{{ $history->path . '/' . $history->image }}" alt="History Image"
-                                            style="max-width: 200px;">
+                                        @if (!empty($history->path))
+                                            <img src="{{ $history->path . '/' . $history->image }}" alt="History Image"
+                                                style="max-width: 200px;">
+                                        @else
+                                            <span class="text-danger">Image path is missing.</span>
+                                        @endif
                                     </div>
                                 @endif
                                 <div class="col-md-12">
