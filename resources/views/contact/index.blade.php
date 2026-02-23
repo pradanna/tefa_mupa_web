@@ -30,10 +30,12 @@
                         <div>
                             <h6 class="fw-bold mb-1">Alamat Sekolah</h6>
                             <p class="text-muted small mb-0">
-                                <!-- Jl. Pakem - Turi, Dsn. Sempu, Pakembinangun,<br>
-                                Kec. Pakem, Kabupaten Sleman,<br>
-                                Daerah Istimewa Yogyakarta 55582 -->
-                                {{ $contact->address }}
+                                @if ($contact->address)
+                                    {!! nl2br(e($contact->address)) !!}
+                                @else
+                                    Jl. Pakem - Turi, Dsn. Sempu, Pakembinangun,<br>Kec. Pakem, Kabupaten
+                                    Sleman,<br>Daerah Istimewa Yogyakarta 55582
+                                @endif
                             </p>
                         </div>
                     </div>
