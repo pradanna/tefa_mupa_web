@@ -1,5 +1,5 @@
 <x-app-layout>
-
+    
     {{-- 1. HERO HEADER --}}
     <section class="b-primary py-5 position-relative overflow-hidden">
         <div class="position-absolute top-0 start-0 w-100 h-100"
@@ -24,8 +24,7 @@
 
                     {{-- Item: Alamat --}}
                     <div class="d-flex gap-3 mb-4">
-                        <div class="icon-box bg-light txt-primary rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center"
-                            style="width: 50px; height: 50px;">
+                        <div class="icon-box bg-light txt-primary rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
                             <i class="bi bi-geo-alt fs-4"></i>
                         </div>
                         <div>
@@ -41,8 +40,7 @@
 
                     {{-- Item: Email & Telepon --}}
                     <div class="d-flex gap-3 mb-4">
-                        <div class="icon-box bg-light txt-primary rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center"
-                            style="width: 50px; height: 50px;">
+                        <div class="icon-box bg-light txt-primary rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
                             <i class="bi bi-envelope fs-4"></i>
                         </div>
                         <div>
@@ -60,8 +58,7 @@
 
                     {{-- Item: Jam Operasional --}}
                     <div class="d-flex gap-3 mb-5">
-                        <div class="icon-box bg-light txt-primary rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center"
-                            style="width: 50px; height: 50px;">
+                        <div class="icon-box bg-light txt-primary rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
                             <i class="bi bi-clock fs-4"></i>
                         </div>
                         <div>
@@ -77,30 +74,34 @@
 
                     {{-- Social Media --}}
                     @if ($contact->facebook_url || $contact->instagram_url || $contact->tiktok_url || $contact->youtube_url)
-                        <h6 class="fw-bold mb-3">Ikuti Kami</h6>
+                    <h6 class="fw-bold mb-3">Ikuti Kami</h6>
                     @endif
                     <div class="d-flex gap-2">
                         @if ($contact->facebook_url)
                             <a href="{{ $contact->facebook_url }}" target="_blank"
-                                class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px;"><i
-                                    class="bi bi-facebook"></i></a>
+                            class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px;"><i
+                                class="bi bi-facebook"></i></a>
                         @endif
                         @if ($contact->instagram_url)
                             <a href="{{ $contact->instagram_url }}" target="_blank"
-                                class="btn btn-outline-danger
+                            class="btn btn-outline-danger
                             rounded-circle"
-                                style="width: 40px; height: 40px;"><i class="bi bi-instagram"></i></a>
+                            style="width: 40px; height: 40px;"><i class="bi bi-instagram"></i></a>
                         @endif
                         @if ($contact->tiktok_url)
                             <a href="{{ $contact->tiktok_url }}" target="_blank"
-                                class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
-                                    class="bi bi-tiktok"></i></a>
+                            class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
+                                class="bi bi-tiktok"></i></a>
                         @endif
-
                         @if ($contact->youtube_url)
                             <a href="{{ $contact->youtube_url }}" target="_blank"
-                                class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
-                                    class="bi bi-youtube"></i></a>
+                            class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
+                                class="bi bi-tiktok"></i></a>
+                        @endif
+                        @if ($contact->youtube_url)
+                            <a href="{{ $contact->youtube_url }}" target="_blank"
+                            class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
+                                class="bi bi-youtube"></i></a>
                         @endif
                     </div>
                 </div>
