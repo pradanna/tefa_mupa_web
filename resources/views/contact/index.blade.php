@@ -31,7 +31,7 @@
                         <div>
                             <h6 class="fw-bold mb-1">Alamat Sekolah</h6>
                             <p class="text-muted small mb-0">
-                                @if (isset($contact->address) && $contact->address)
+                                @if (isset($contact) && $contact->address)
                                     {!! nl2br(e($contact->address)) !!}
                                 @else
                                     Jl. Pakem - Turi, Dsn. Sempu, Pakembinangun,<br>Kec. Pakem, Kabupaten
@@ -76,7 +76,8 @@
                     </div>
 
                     {{-- Social Media --}}
-                    @if ($contact->facebook_url || $contact->instagram_url || $contact->tiktok_url || $contact->youtube_url)
+                    @if (isset($contact) &&
+                            ($contact->facebook_url || $contact->instagram_url || $contact->tiktok_url || $contact->youtube_url))
                         <h6 class="fw-bold mb-3">Ikuti Kami</h6>
                     @endif
                     <div class="d-flex gap-2">
