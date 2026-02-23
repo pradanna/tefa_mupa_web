@@ -22,8 +22,13 @@
                 <div class="col-lg-6" data-aos="fade-right">
                     <div class="position-relative">
                         <div class="ratio ratio-4x3 rounded-4 overflow-hidden shadow-lg">
-                            <img src="{{ asset($history->path . '/' . $history->image) }}" class="object-fit-cover"
-                                alt="Sejarah">
+                            @php
+                                $historyImage = asset('images/local/gedung.jpg');
+                                if (isset($history) && $history && !empty($history->image) && !empty($history->path)) {
+                                    $historyImage = $history->path . '/' . $history->image;
+                                }
+                            @endphp
+                            <img src="{{ $historyImage }}" class="object-fit-cover" alt="Sejarah">
                         </div>
                         {{-- Badge Tahun Berdiri --}}
                         <div
@@ -40,7 +45,7 @@
                     <h2 class="fw-bold display-6 mb-4">Dedikasi untuk Pendidikan Vokasi Berkemajuan</h2>
                     {{-- SEJARAH --}}
                     <div class="text-muted mb-4">
-                        {!! $history->body !!}
+                        {!! $history->body ?? 'Belum ada data sejarah.' !!}
                     </div>
                 </div>
             </div>

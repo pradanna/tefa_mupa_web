@@ -23,7 +23,7 @@ class HistoryController extends BaseController
             return view('backoffice.pages.history.index', compact('history'));
         } catch (\Throwable $th) {
             \Illuminate\Support\Facades\Log::error($th);
-            return redirect()->back()->withErrors('error', 'Error' . $th);
+            return redirect()->back()->with('error', 'Error: ' . $th->getMessage());
         }
     }
 
