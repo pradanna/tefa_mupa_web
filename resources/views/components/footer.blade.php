@@ -13,15 +13,31 @@
                     profesional berbasis standar industri.
                 </p>
                 <div class="d-flex gap-3 mt-3">
-                    {{-- Social Media Icons --}}
-                    <a href="https://www.instagram.com/smkmuhpakem" target="_blank" class="text-white social-icon"><i
-                            class="bi bi-instagram fs-5"></i></a>
-                    <a href="https://www.facebook.com/smkmuhammadiyahpakem " target="_blank"
-                        class="text-white social-icon"><i class="bi bi-facebook fs-5"></i></a>
-                    <a href="https://www.youtube.com/@SMKMuhammadiyahPakem" target="_blank"
-                        class="text-white social-icon"><i class="bi bi-youtube fs-5"></i></a>
-                    <a href="https://wa.me/6285865611145" target="_blank" class="text-white social-icon"><i
-                            class="bi bi-whatsapp fs-5"></i></a>
+                    {{-- Social Media Icons (dari DB jika ada, fallback ke default) --}}
+                    @php
+                        $instagramUrl = $contact?->instagram_url;
+                        $facebookUrl = $contact?->facebook_url;
+                        $youtubeUrl = $contact?->youtube_url;
+                        $waNumber = $contact ? preg_replace('/\D/', '', $contact->phone ?? '') : '';
+                        if ($waNumber !== '' && substr($waNumber, 0, 1) === '0') {
+                            $waNumber = '62' . substr($waNumber, 1);
+                        } elseif ($waNumber !== '' && substr($waNumber, 0, 2) !== '62') {
+                            $waNumber = '62' . $waNumber;
+                        }
+                        $waUrl = $waNumber !== '' ? 'https://wa.me/' . $waNumber : null;
+                    @endphp
+                    @if ($instagramUrl)
+                        <a href="{{ $instagramUrl }}" target="_blank" class="text-white social-icon"><i class="bi bi-instagram fs-5"></i></a>
+                    @endif
+                    @if ($facebookUrl)
+                        <a href="{{ $facebookUrl }}" target="_blank" class="text-white social-icon"><i class="bi bi-facebook fs-5"></i></a>
+                    @endif
+                    @if ($youtubeUrl)
+                        <a href="{{ $youtubeUrl }}" target="_blank" class="text-white social-icon"><i class="bi bi-youtube fs-5"></i></a>
+                    @endif
+                    @if ($waUrl)
+                        <a href="{{ $waUrl }}" target="_blank" class="text-white social-icon"><i class="bi bi-whatsapp fs-5"></i></a>
+                    @endif
                 </div>
             </div>
 
@@ -66,34 +82,29 @@
                 </ul>
             </div>
 
-            {{-- KOLOM 3: KONTAK --}}
+            {{-- KOLOM 3: KONTAK (dari DB, fallback default) --}}
             <div class="col-lg-4 col-md-12">
                 <h6 class="text-white fw-bold mb-3">Hubungi Kami</h6>
                 <ul class="list-unstyled text-white-50 small d-flex flex-column gap-3">
                     <li class="d-flex gap-2">
                         <i class="bi bi-geo-alt-fill txt-primary mt-1"></i>
-                        <a href="https://maps.app.goo.gl/mMuCE3xkViSun2qh6" class="footer-link ">Jl. Pakem - Turi,
-                            Pakembinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta
-                            55582</a>
+                        <a href="https://maps.app.goo.gl/mMuCE3xkViSun2qh6" class="footer-link">
+                            {{ $contact?->address ?? 'Jl. Pakem - Turi, Pakembinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55582' }}
+                        </a>
                     </li>
-                    {{-- <li class="d-flex gap-2">
-                        <i class="bi bi-telephone-fill txt-primary"></i>
-                        <span>(0274) 895xxx (Kantor)</span>
-                    </li> --}}
                     <li class="d-flex gap-2">
-                        {{-- Gunakan target="_blank" agar membuka tab baru --}}
-                        <a href="https://wa.me/6285865611145" target="_blank" class="footer-link ">
+                        <a href="{{ $waUrl }}" target="_blank" class="footer-link">
                             <i class="bi bi-whatsapp txt-primary"></i>
-                            <span class="ms-1">0858-6561-1145</span>
+                            <span class="ms-1">{{ $contact?->phone ?? '0858-6561-1145' }}</span>
                         </a>
                     </li>
                     <li class="d-flex gap-2">
                         <i class="bi bi-envelope-fill txt-primary"></i>
-                        <a href="mailto:stm_muhpakem@yahoo.co.id" class="footer-link ">stm_muhpakem@yahoo.co.id</a>
+                        <a href="mailto:{{ $contact?->email ?? 'stm_muhpakem@yahoo.co.id' }}" class="footer-link">{{ $contact?->email ?? 'stm_muhpakem@yahoo.co.id' }}</a>
                     </li>
                     <li class="d-flex gap-2">
                         <i class="bi bi-globe txt-primary"></i>
-                        <a href="https://smkmuhpakem.sch.id/" class="footer-link ">smkmuhpakem.sch.id</a>
+                        <a href="https://smkmuhpakem.sch.id/" class="footer-link">smkmuhpakem.sch.id</a>
                     </li>
                 </ul>
             </div>

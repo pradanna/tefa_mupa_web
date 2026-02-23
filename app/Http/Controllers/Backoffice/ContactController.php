@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Backoffice;
 
 use App\Commons\Controller\BaseController;
+use App\Providers\AppServiceProvider;
 use App\Repositories\ContactRepository;
 use App\Schemas\ContactSchema;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class ContactController extends BaseController
@@ -56,6 +58,7 @@ class ContactController extends BaseController
             $schema->hydrate();
 
             $this->contactRepository->createOrUpdateFromSchema($schema);
+            Cache::forget(AppServiceProvider::FOOTER_CONTACT_CACHE_KEY);
 
             return redirect()
                 ->route('contacts.index')
@@ -116,6 +119,7 @@ class ContactController extends BaseController
             $schema->hydrate();
 
             $this->contactRepository->createOrUpdateFromSchema($schema);
+            Cache::forget(AppServiceProvider::FOOTER_CONTACT_CACHE_KEY);
 
             return redirect()
                 ->route('contacts.index')
@@ -146,6 +150,7 @@ class ContactController extends BaseController
             }
 
             $this->contactRepository->delete($id);
+            Cache::forget(AppServiceProvider::FOOTER_CONTACT_CACHE_KEY);
 
             return redirect()
                 ->route('contacts.index')

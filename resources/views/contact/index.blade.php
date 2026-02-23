@@ -81,22 +81,32 @@
                         <h6 class="fw-bold mb-3">Ikuti Kami</h6>
                     @endif
                     <div class="d-flex gap-2">
-                        <a href="{{ $contact->facebook_url ?? '#' }}" target="_blank"
-                            class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px;">
-                            <i class="bi bi-facebook"></i>
-                        </a>
-                        <a href="{{ $contact->instagram_url ?? '#' }}" target="_blank"
-                            class="btn btn-outline-danger rounded-circle" style="width: 40px; height: 40px;">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-                        <a href="{{ $contact->tiktok_url ?? '#' }}" target="_blank"
-                            class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;">
-                            <i class="bi bi-tiktok"></i>
-                        </a>
-                        <a href="{{ $contact->youtube_url ?? '#' }}" target="_blank"
-                            class="btn btn-outline-danger rounded-circle" style="width: 40px; height: 40px;">
-                            <i class="bi bi-youtube"></i>
-                        </a>
+                        @if ($contact->facebook_url)
+                            <a href="{{ $contact->facebook_url }}" target="_blank"
+                            class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px;"><i
+                                class="bi bi-facebook"></i></a>
+                        @endif
+                        @if ($contact->instagram_url)
+                            <a href="{{ $contact->instagram_url }}" target="_blank"
+                            class="btn btn-outline-danger
+                            rounded-circle"
+                            style="width: 40px; height: 40px;"><i class="bi bi-instagram"></i></a>
+                        @endif
+                        @if ($contact->tiktok_url)
+                            <a href="{{ $contact->tiktok_url }}" target="_blank"
+                            class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
+                                class="bi bi-tiktok"></i></a>
+                        @endif
+                        @if ($contact->youtube_url)
+                            <a href="{{ $contact->youtube_url }}" target="_blank"
+                            class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
+                                class="bi bi-tiktok"></i></a>
+                        @endif
+                        @if ($contact->youtube_url)
+                            <a href="{{ $contact->youtube_url }}" target="_blank"
+                            class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
+                                class="bi bi-youtube"></i></a>
+                        @endif
                     </div>
                 </div>
 
