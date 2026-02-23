@@ -1,5 +1,5 @@
 <x-app-layout>
-    
+
     {{-- 1. HERO HEADER --}}
     <section class="b-primary py-5 position-relative overflow-hidden">
         <div class="position-absolute top-0 start-0 w-100 h-100"
@@ -24,13 +24,14 @@
 
                     {{-- Item: Alamat --}}
                     <div class="d-flex gap-3 mb-4">
-                        <div class="icon-box bg-light txt-primary rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <div class="icon-box bg-light txt-primary rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center"
+                            style="width: 50px; height: 50px;">
                             <i class="bi bi-geo-alt fs-4"></i>
                         </div>
                         <div>
                             <h6 class="fw-bold mb-1">Alamat Sekolah</h6>
                             <p class="text-muted small mb-0">
-                                @if ($contact->address)
+                                @if (isset($contact->address) && $contact->address)
                                     {!! nl2br(e($contact->address)) !!}
                                 @else
                                     Jl. Pakem - Turi, Dsn. Sempu, Pakembinangun,<br>Kec. Pakem, Kabupaten
@@ -42,69 +43,59 @@
 
                     {{-- Item: Email & Telepon --}}
                     <div class="d-flex gap-3 mb-4">
-                        <div class="icon-box bg-light txt-primary rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <div class="icon-box bg-light txt-primary rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center"
+                            style="width: 50px; height: 50px;">
                             <i class="bi bi-envelope fs-4"></i>
                         </div>
                         <div>
                             <h6 class="fw-bold mb-1">Email & Telepon</h6>
                             <p class="text-muted small mb-0">
-                                <!-- stm_muhpakem@yahoo.co.id -->
-                                {{ $contact->email }}
+                                {{ $contact->email ?? 'stm_muhpakem@yahoo.co.id' }}
                             </p>
                             <p class="text-muted small mb-0">
-                                <!-- 0858-6561-1145 -->
-                                {{ $contact->phone }}
+                                {{ $contact->phone ?? '0858-6561-1145' }}
                             </p>
                         </div>
                     </div>
 
                     {{-- Item: Jam Operasional --}}
                     <div class="d-flex gap-3 mb-5">
-                        <div class="icon-box bg-light txt-primary rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <div class="icon-box bg-light txt-primary rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center"
+                            style="width: 50px; height: 50px;">
                             <i class="bi bi-clock fs-4"></i>
                         </div>
                         <div>
                             <h6 class="fw-bold mb-1">Jam Operasional</h6>
                             <p class="text-muted small mb-0">
-                                Senin - Jumat: {{ $contact->weekday_hours }}
+                                Senin - Jumat: {{ $contact->weekday_hours ?? '-' }}
                             </p>
                             <p class="text-muted small mb-0">
-                                Sabtu - Minggu: {{ $contact->saturday_hours }}
+                                Sabtu - Minggu: {{ $contact->saturday_hours ?? '-' }}
                             </p>
                         </div>
                     </div>
 
                     {{-- Social Media --}}
                     @if ($contact->facebook_url || $contact->instagram_url || $contact->tiktok_url || $contact->youtube_url)
-                    <h6 class="fw-bold mb-3">Ikuti Kami</h6>
+                        <h6 class="fw-bold mb-3">Ikuti Kami</h6>
                     @endif
                     <div class="d-flex gap-2">
-                        @if ($contact->facebook_url)
-                            <a href="{{ $contact->facebook_url }}" target="_blank"
-                            class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px;"><i
-                                class="bi bi-facebook"></i></a>
-                        @endif
-                        @if ($contact->instagram_url)
-                            <a href="{{ $contact->instagram_url }}" target="_blank"
-                            class="btn btn-outline-danger
-                            rounded-circle"
-                            style="width: 40px; height: 40px;"><i class="bi bi-instagram"></i></a>
-                        @endif
-                        @if ($contact->tiktok_url)
-                            <a href="{{ $contact->tiktok_url }}" target="_blank"
-                            class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
-                                class="bi bi-tiktok"></i></a>
-                        @endif
-                        @if ($contact->youtube_url)
-                            <a href="{{ $contact->youtube_url }}" target="_blank"
-                            class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
-                                class="bi bi-tiktok"></i></a>
-                        @endif
-                        @if ($contact->youtube_url)
-                            <a href="{{ $contact->youtube_url }}" target="_blank"
-                            class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
-                                class="bi bi-youtube"></i></a>
-                        @endif
+                        <a href="{{ $contact->facebook_url ?? '#' }}" target="_blank"
+                            class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px;">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="{{ $contact->instagram_url ?? '#' }}" target="_blank"
+                            class="btn btn-outline-danger rounded-circle" style="width: 40px; height: 40px;">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="{{ $contact->tiktok_url ?? '#' }}" target="_blank"
+                            class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;">
+                            <i class="bi bi-tiktok"></i>
+                        </a>
+                        <a href="{{ $contact->youtube_url ?? '#' }}" target="_blank"
+                            class="btn btn-outline-danger rounded-circle" style="width: 40px; height: 40px;">
+                            <i class="bi bi-youtube"></i>
+                        </a>
                     </div>
                 </div>
 
