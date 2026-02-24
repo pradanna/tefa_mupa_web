@@ -4,7 +4,7 @@
     <section class="b-primary py-5 position-relative overflow-hidden">
         {{-- Background Pattern (Optional) --}}
         @php $patternGridUrl = asset('images/pattern-grid.png'); @endphp
-        <div class="position-absolute top-0 start-0 w-100 h-100" 
+        <div class="position-absolute top-0 start-0 w-100 h-100"
             style="background-image: url('{{ $patternGridUrl }}'); opacity: 0.1;">
         </div>
 
@@ -109,6 +109,12 @@
             <div class="text-center mb-5" data-aos="fade-up">
                 <h6 class="text-secondary fw-bold text-uppercase">Tim Manajemen</h6>
                 <h2 class="fw-bold">Struktur Organisasi {{ config('app.short_name') }}</h2>
+                <div class="mt-3">
+                    <button type="button" class="btn btn-outline-primary rounded-pill px-4" data-bs-toggle="modal"
+                        data-bs-target="#modalSK">
+                        <i class="bi bi-file-earmark-pdf me-2"></i>Lihat SK Struktur Organisasi
+                    </button>
+                </div>
             </div>
 
             <div class="row g-4 justify-content-center">
@@ -144,5 +150,23 @@
 
         </div>
     </section>
+
+    {{-- MODAL SK STRUKTUR --}}
+    <div class="modal fade" id="modalSK" tabindex="-1" aria-labelledby="modalSKLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="modalSKLabel fw-bold">SK Struktur Organisasi TEFA</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="ratio ratio-16x9">
+                        <iframe src="{{ asset('pdf/SK-struktur-organisasi-tefa.pdf') }}" allow="autoplay"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </x-app-layout>

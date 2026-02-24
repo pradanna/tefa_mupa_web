@@ -35,6 +35,8 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('gallery.index') }}">Gallery</a></li>
                 {{-- <li class="nav-item"><a class="nav-link" href="{{ route('api.licenses') }}">Sertifikasi & Lisensi</a></li> --}}
                 <li class="nav-item"><a class="nav-link" href="{{ route('contact.index') }}">Contact Us</a></li>
+                <li class="nav-item "><a class="nav-link " style="cursor: pointer;" data-bs-toggle="modal"
+                        data-bs-target="#licenseModal" onclick="fetchLicenses();">Lisensi Sekolah</a></li>
 
                 {{-- @guest
                     <li class="nav-item">
