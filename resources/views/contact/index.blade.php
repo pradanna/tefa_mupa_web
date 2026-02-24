@@ -50,10 +50,10 @@
                         <div>
                             <h6 class="fw-bold mb-1">Email & Telepon</h6>
                             <p class="text-muted small mb-0">
-                                {{ $contact->email ?? 'stm_muhpakem@yahoo.co.id' }}
+                                {{ $contact?->email ?? 'stm_muhpakem@yahoo.co.id' }}
                             </p>
                             <p class="text-muted small mb-0">
-                                {{ $contact->phone ?? '0858-6561-1145' }}
+                                {{ $contact?->phone ?? '0858-6561-1145' }}
                             </p>
                         </div>
                     </div>
@@ -67,47 +67,40 @@
                         <div>
                             <h6 class="fw-bold mb-1">Jam Operasional</h6>
                             <p class="text-muted small mb-0">
-                                Senin - Jumat: {{ $contact->weekday_hours ?? '-' }}
+                                Senin - Jumat: {{ $contact?->weekday_hours ?? '-' }}
                             </p>
                             <p class="text-muted small mb-0">
-                                Sabtu - Minggu: {{ $contact->saturday_hours ?? '-' }}
+                                Sabtu - Minggu: {{ $contact?->saturday_hours ?? '-' }}
                             </p>
                         </div>
                     </div>
 
                     {{-- Social Media --}}
-                    @if (isset($contact) &&
-                            ($contact->facebook_url || $contact->instagram_url || $contact->tiktok_url || $contact->youtube_url))
+                    @if ($contact && ($contact->facebook_url || $contact->instagram_url || $contact->tiktok_url || $contact->youtube_url))
                         <h6 class="fw-bold mb-3">Ikuti Kami</h6>
+                        <div class="d-flex gap-2">
+                            @if ($contact->facebook_url)
+                                <a href="{{ $contact->facebook_url }}" target="_blank"
+                                class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px;"><i
+                                    class="bi bi-facebook"></i></a>
+                            @endif
+                            @if ($contact->instagram_url)
+                                <a href="{{ $contact->instagram_url }}" target="_blank"
+                                class="btn btn-outline-danger rounded-circle"
+                                style="width: 40px; height: 40px;"><i class="bi bi-instagram"></i></a>
+                            @endif
+                            @if ($contact->tiktok_url)
+                                <a href="{{ $contact->tiktok_url }}" target="_blank"
+                                class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
+                                    class="bi bi-tiktok"></i></a>
+                            @endif
+                            @if ($contact->youtube_url)
+                                <a href="{{ $contact->youtube_url }}" target="_blank"
+                                class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
+                                    class="bi bi-youtube"></i></a>
+                            @endif
+                        </div>
                     @endif
-                    <div class="d-flex gap-2">
-                        @if ($contact->facebook_url)
-                            <a href="{{ $contact->facebook_url }}" target="_blank"
-                            class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px;"><i
-                                class="bi bi-facebook"></i></a>
-                        @endif
-                        @if ($contact->instagram_url)
-                            <a href="{{ $contact->instagram_url }}" target="_blank"
-                            class="btn btn-outline-danger
-                            rounded-circle"
-                            style="width: 40px; height: 40px;"><i class="bi bi-instagram"></i></a>
-                        @endif
-                        @if ($contact->tiktok_url)
-                            <a href="{{ $contact->tiktok_url }}" target="_blank"
-                            class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
-                                class="bi bi-tiktok"></i></a>
-                        @endif
-                        @if ($contact->youtube_url)
-                            <a href="{{ $contact->youtube_url }}" target="_blank"
-                            class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
-                                class="bi bi-tiktok"></i></a>
-                        @endif
-                        @if ($contact->youtube_url)
-                            <a href="{{ $contact->youtube_url }}" target="_blank"
-                            class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px;"><i
-                                class="bi bi-youtube"></i></a>
-                        @endif
-                    </div>
                 </div>
 
                 {{-- KOLOM KANAN: FORM PESAN (Direct WA) --}}
