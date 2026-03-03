@@ -27,6 +27,8 @@
                         <li><a class="dropdown-item" href="{{ route('profile') }}#struktur-organisasi">Struktur
                                 Organisasi</a></li>
                         <li><a class="dropdown-item" href="{{ route('profile') }}#sejarah">Sejarah</a></li>
+                        <li><a class="dropdown-item" href="{{ route('profile') }}#lisensi-sekolah">Lisensi
+                                dan Sertifikasi</a></li>
                     </ul>
                 </li>
 
@@ -35,8 +37,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('gallery.index') }}">Gallery</a></li>
                 {{-- <li class="nav-item"><a class="nav-link" href="{{ route('api.licenses') }}">Sertifikasi & Lisensi</a></li> --}}
                 <li class="nav-item"><a class="nav-link" href="{{ route('contact.index') }}">Contact Us</a></li>
-                <li class="nav-item "><a class="nav-link " style="cursor: pointer;" data-bs-toggle="modal"
-                        data-bs-target="#licenseModal" onclick="fetchLicenses();">Lisensi Sekolah</a></li>
+
 
                 {{-- @guest
                     <li class="nav-item">

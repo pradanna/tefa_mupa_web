@@ -151,6 +151,27 @@
         </div>
     </section>
 
+
+    {{-- SECTION: LISENSI SEKOLAH --}}
+    <section class="py-5 bg-light" id="lisensi-sekolah">
+        <div class="container py-lg-4 text-center">
+            <div class="row justify-content-center">
+                <div class="col-lg-8" data-aos="fade-up">
+                    <h6 class="txt-primary fw-bold text-uppercase ls-wide">Legalitas & Standar</h6>
+                    <h2 class="fw-bold mb-4">Lisensi & Sertifikasi </h2>
+                    <p class="text-muted mb-4">
+                        Kami berkomitmen untuk menjaga kualitas layanan dan produk melalui berbagai sertifikasi dan
+                        lisensi resmi yang diakui oleh industri dan pemerintah.
+                    </p>
+                    <button type="button" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm"
+                        data-bs-toggle="modal" data-bs-target="#licenseModal" onclick="fetchLicenses();">
+                        <i class="bi bi-award-fill me-2"></i>Lihat Lisensi & Sertifikasi
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     {{-- MODAL SK STRUKTUR --}}
     <div class="modal fade" id="modalSK" tabindex="-1" aria-labelledby="modalSKLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
