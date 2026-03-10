@@ -23,7 +23,7 @@ class GallleriController extends BaseController
             if($request->hasFile('file')){
                 $file = $request->file('file');
                 $extension = $file->getClientOriginalExtension();
-                $name  = now()->format('YmdHis');
+                $name  = now()->format('YmdHis') . '_' . uniqid();
                 $fileName = $name .'.'. $extension;
                 $destinationPath = public_path('images/galleri');
                 if (!file_exists($destinationPath)) {
