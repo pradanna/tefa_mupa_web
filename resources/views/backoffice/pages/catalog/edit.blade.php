@@ -35,15 +35,20 @@
                                     <div class="mb-3">
                                         <label class="form-label">Gambar Produk/Jasa</label>
                                         @if ($catalog->image)
+                                            @php
+                                                // Bangun URL gambar yang aman dari kolom path & image
+                                                $basePath = $catalog->path ?: 'images/catalog';
+                                                $currentImageUrl = asset($basePath . '/' . $catalog->image);
+                                            @endphp
                                             <div class="mb-2">
-                                                <img src="{{ $catalog->path }}/{{ $catalog->image }}"
+                                                <img src="{{ $currentImageUrl }}"
                                                     alt="Current Image" class="img-thumbnail" style="max-width: 200px;">
                                                 <p class="text-muted small">Gambar saat ini</p>
                                             </div>
                                         @endif
                                         <input type="file" class="form-control" name="file" accept="image/*">
                                         <small class="text-muted">Kosongkan jika tidak ingin mengubah gambar</small>
-                                        @error('image')
+                                        @error('file')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>

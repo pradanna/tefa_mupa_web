@@ -43,11 +43,26 @@ class ProductController extends Controller
 
         // 5. Transformasi data untuk view, agar sesuai dengan format yang diharapkan
         $paginatedCatalogs->getCollection()->transform(function ($catalog) {
+            // Bangun URL gambar yang aman (handle null dan fallback)
+            $imageUrl = null;
+            if ($catalog->image) {
+                // Jika kolom path diisi (misal "storage/catalog"), gunakan sebagai base path relatif
+                if (!empty($catalog->path)) {
+                    $imageUrl = asset($catalog->path . '/' . $catalog->image);
+                } else {
+                    // Fallback ke lokasi lama jika ada image tapi path kosong
+                    $imageUrl = asset('images/catalog/' . $catalog->image);
+                }
+            } else {
+                // Fallback image jika belum ada gambar
+                $imageUrl = asset('images/local/logo-tefa.png');
+            }
+
             return [
                 'nama' => $catalog->title,
                 'slug' => $catalog->slug,
                 'kategori' => optional($catalog->hasCategory)->name ?? 'Lainnya',
-                'image' => $catalog->path . '/' . $catalog->image,
+                'image' => $imageUrl,
                 'deskripsi' => $catalog->desc,
                 'harga' => 'Hubungi Admin', // Kolom harga belum ada di DB
                 'type' => 'Produk/Jasa', // Kolom tipe belum ada di DB
@@ -79,11 +94,23 @@ class ProductController extends Controller
         }
 
         // 3. Mapping data ke format yang diharapkan oleh view
+        // Siapkan URL gambar yang aman (handle null dan fallback)
+        $imageUrl = null;
+        if ($productModel->image) {
+            if (!empty($productModel->path)) {
+                $imageUrl = asset($productModel->path . '/' . $productModel->image);
+            } else {
+                $imageUrl = asset('images/catalog/' . $productModel->image);
+            }
+        } else {
+            $imageUrl = asset('images/local/logo-tefa.png');
+        }
+
         $product = [
             'nama' => $productModel->title,
             'slug' => $productModel->slug,
             'kategori' => optional($productModel->hasCategory)->name ?? 'Lainnya',
-            'image' => $productModel->path . '/' . $productModel->image,
+            'image' => $imageUrl,
             'deskripsi' => $productModel->desc,
             'deskripsi_lengkap' => '<p>' . $productModel->desc . '</p><p>Hubungi tim TEFA kami untuk konsultasi lebih lanjut mengenai layanan atau produk ini.</p>',
             'spesifikasi' => $productModel->specification ? array_map('trim', explode(',', $productModel->specification)) : ['Kualitas Standar Industri', 'Dikerjakan oleh Teknisi Kompeten', 'Garansi Layanan', 'Konsultasi Gratis'],
@@ -95,11 +122,22 @@ class ProductController extends Controller
 
         // 4. Ambil Produk Lainnya (Related) - Kecuali produk yang sedang dibuka
         $related = $this->catalogRepository->query()->where('slug', '!=', $slug)->take(6)->get()->map(function ($item) {
+            $relatedImageUrl = null;
+            if ($item->image) {
+                if (!empty($item->path)) {
+                    $relatedImageUrl = asset($item->path . '/' . $item->image);
+                } else {
+                    $relatedImageUrl = asset('images/catalog/' . $item->image);
+                }
+            } else {
+                $relatedImageUrl = asset('images/local/logo-tefa.png');
+            }
+
             return [
                 'nama' => $item->title,
                 'slug' => $item->slug,
                 'kategori' => optional($item->hasCategory)->name ?? 'Lainnya',
-                'image' => $item->path . '/' . $item->image,
+                'image' => $relatedImageUrl,
                 'deskripsi' => $item->desc,
                 'harga' => 'Hubungi Admin',
             ];

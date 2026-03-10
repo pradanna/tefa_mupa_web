@@ -25,7 +25,7 @@
                 <div class="col-lg-6" data-aos="fade-right">
                     <div class="sticky-top" style="top: 100px; z-index: 1;">
                         <div class="ratio ratio-1x1 rounded-4 overflow-hidden shadow-sm bg-light border">
-                            <img src="{{ asset($product['image']) }}" class="object-fit-cover"
+                            <img src="{{ $product['image'] }}" class="object-fit-cover"
                                 alt="{{ $product['nama'] }}">
 
                             {{-- Badge Tipe --}}
