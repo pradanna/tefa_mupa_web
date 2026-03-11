@@ -111,10 +111,18 @@ class CatalogController extends BaseController
             throw $e;
         } catch (\Throwable $th) {
             Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
-            return redirect()
-                ->back()
-                ->withInput($request->except('file'))
-                ->with('error', 'Terjadi kesalahan sistem');
+            dd([
+                'error_message' => $th->getMessage(),
+                'payload' => $payload ?? null,
+                'request_all' => $request->all()
+            ]);
+
+            // return redirect()
+            //     ->back()
+            //     ->withInput($request->except('file'))
+            //     ->with('error', 'Terjadi kesalahan sistem');
+
+
         }
     }
 
