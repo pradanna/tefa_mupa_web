@@ -38,7 +38,10 @@
                                             @php
                                                 // Bangun URL gambar yang aman dari kolom path & image
                                                 $basePath = $catalog->path ?: 'images/catalog';
-                                                $currentImageUrl = asset($basePath . '/' . $catalog->image);
+                                                $currentImageUrl =
+                                                    str_starts_with($basePath, 'http://') || str_starts_with($basePath, 'https://')
+                                                        ? rtrim($basePath, '/') . '/' . $catalog->image
+                                                        : asset($basePath . '/' . $catalog->image);
                                             @endphp
                                             <div class="mb-2">
                                                 <img src="{{ $currentImageUrl }}"
