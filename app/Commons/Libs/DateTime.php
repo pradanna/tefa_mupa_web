@@ -2,7 +2,7 @@
 
 namespace App\Commons\Libs;
 
-class Datetime
+class DateTime
 {
     /**
      * Return current datetime in 'YmdHis' format.
