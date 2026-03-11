@@ -100,7 +100,13 @@ class CatalogController extends BaseController
 
             $data = $this->catalogRepository->store($payload);
 
-            return redirect()->route('catalog.index')->with('message', 'success create catalog');
+            dd([
+                'message' => 'Failed to store catalog data',
+                'payload' => $payload,
+                'schema' => $schema->$request->toArray()
+            ]);
+
+            // return redirect()->route('catalog.index')->with('message', 'success create catalog');
         } catch (\Exception $e) {
             throw $e;
         } catch (\Throwable $th) {
