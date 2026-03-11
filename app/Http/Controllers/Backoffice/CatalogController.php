@@ -100,29 +100,19 @@ class CatalogController extends BaseController
 
             $data = $this->catalogRepository->store($payload);
 
-            dd([
-                'message' => 'Failed to store catalog data',
-                'payload' => $payload,
-                'schema' => $schema->$request->toArray()
-            ]);
 
-            // return redirect()->route('catalog.index')->with('message', 'success create catalog');
+
+            return redirect()->route('catalog.index')->with('message', 'success create catalog');
         } catch (\Exception $e) {
             throw $e;
         } catch (\Throwable $th) {
             Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
-            dd([
-                'error_message' => $th->getMessage(),
-                'payload' => $payload ?? null,
-                'request_all' => $request->all()
-            ]);
-
-            // return redirect()
-            //     ->back()
-            //     ->withInput($request->except('file'))
-            //     ->with('error', 'Terjadi kesalahan sistem');
 
 
+            return redirect()
+                ->back()
+                ->withInput($request->except('file'))
+                ->with('error', 'Terjadi kesalahan sistem');
         }
     }
 
