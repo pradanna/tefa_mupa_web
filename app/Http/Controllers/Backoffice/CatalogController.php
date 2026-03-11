@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Commons\Libs\Datetime;
-use Illuminate\Support\Facades\Storage;
 use App\Schemas\CatalogSchema;
 
 class CatalogController extends BaseController
@@ -79,12 +78,20 @@ class CatalogController extends BaseController
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
 
-                // Simpan ke storage/app/public/catalog dan simpan path relatifnya
-                $storedPath = $file->store('catalog', 'public'); // contoh: catalog/namafile.jpg
+                $extension = $file->getClientOriginalExtension();
+                $name      = Datetime::getNowYmdHis();
+                $fileName  = $name . '.' . $extension;
 
-                // Simpan directory relatif dan nama file di database
-                $payload['path'] = 'storage/' . dirname($storedPath); // contoh: storage/catalog
-                $payload['image'] = basename($storedPath); // contoh: namafile.jpg
+                // Simpan langsung ke public/images/catalog
+                $destinationPath = public_path('images/catalog');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+                $file->move($destinationPath, $fileName);
+
+                // Simpan path relatif (bukan URL penuh) agar aman dipakai asset()
+                $payload['path'] = 'images/catalog';
+                $payload['image'] = $fileName;
             }
 
             $schema = new CatalogSchema();
@@ -168,22 +175,26 @@ class CatalogController extends BaseController
             ];
 
             $newImageName = null;
-            $oldStoragePath = null;
+            $oldPublicFilePath = null;
             if ($request->hasFile('file')) {
-                // Simpan info gambar lama (jika disimpan di storage publik dengan kolom path)
-                if ($catalog->image && $catalog->path && str_starts_with($catalog->path, 'storage/')) {
-                    // contoh path: storage/catalog dan image: namafile.jpg
-                    $oldStoragePath = str_replace('storage/', '', $catalog->path) . '/' . $catalog->image; // catalog/namafile.jpg
+                // Simpan info gambar lama untuk dihapus setelah validasi sukses
+                if ($catalog->image) {
+                    $oldPublicFilePath = public_path('images/catalog/' . $catalog->image);
                 }
 
                 $file = $request->file('file');
+                $extension = $file->getClientOriginalExtension();
+                $name = Datetime::getNowYmdHis();
+                $newImageName = $name . '.' . $extension;
 
-                // Simpan ke storage/app/public/catalog
-                $storedPath = $file->store('catalog', 'public'); // contoh: catalog/namafile-baru.jpg
-                $newImageName = basename($storedPath);
+                $destinationPath = public_path('images/catalog');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+                $file->move($destinationPath, $newImageName);
 
                 $payload['image'] = $newImageName;
-                $payload['path'] = 'storage/' . dirname($storedPath); // contoh: storage/catalog
+                $payload['path'] = 'images/catalog';
             }
 
             $schema = new CatalogSchema();
@@ -192,19 +203,21 @@ class CatalogController extends BaseController
             try {
                 $schema->validate();
             } catch (\Illuminate\Validation\ValidationException $e) {
-                // Jika upload gambar baru dan validasi gagal, hapus gambar yang tadi di-upload dari storage publik
+                // Jika upload gambar baru dan validasi gagal, hapus gambar yang tadi di-upload dari public
                 if ($newImageName) {
-                    $tempPath = 'catalog/' . $newImageName;
-                    Storage::disk('public')->delete($tempPath);
+                    $filePath = public_path('images/catalog/' . $newImageName);
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
                 }
                 return redirect()->back()->withErrors($e->errors())->withInput();
             }
 
             $schema->hydrate();
 
-            // Hapus gambar lama jika upload gambar baru DAN path lama diketahui di storage publik
-            if ($newImageName && $oldStoragePath) {
-                Storage::disk('public')->delete($oldStoragePath);
+            // Hapus gambar lama jika upload gambar baru DAN gambar lama memang ada
+            if ($newImageName && $oldPublicFilePath && file_exists($oldPublicFilePath)) {
+                unlink($oldPublicFilePath);
             }
 
             $updateData = [

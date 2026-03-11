@@ -48,7 +48,12 @@ class ProductController extends Controller
             if ($catalog->image) {
                 // Jika kolom path diisi (misal "storage/catalog"), gunakan sebagai base path relatif
                 if (!empty($catalog->path)) {
-                    $imageUrl = asset($catalog->path . '/' . $catalog->image);
+                    // Jika path tersimpan sebagai URL penuh, jangan dibungkus asset() lagi
+                    if (str_starts_with($catalog->path, 'http://') || str_starts_with($catalog->path, 'https://')) {
+                        $imageUrl = rtrim($catalog->path, '/') . '/' . $catalog->image;
+                    } else {
+                        $imageUrl = asset($catalog->path . '/' . $catalog->image);
+                    }
                 } else {
                     // Fallback ke lokasi lama jika ada image tapi path kosong
                     $imageUrl = asset('images/catalog/' . $catalog->image);
@@ -98,7 +103,11 @@ class ProductController extends Controller
         $imageUrl = null;
         if ($productModel->image) {
             if (!empty($productModel->path)) {
-                $imageUrl = asset($productModel->path . '/' . $productModel->image);
+                if (str_starts_with($productModel->path, 'http://') || str_starts_with($productModel->path, 'https://')) {
+                    $imageUrl = rtrim($productModel->path, '/') . '/' . $productModel->image;
+                } else {
+                    $imageUrl = asset($productModel->path . '/' . $productModel->image);
+                }
             } else {
                 $imageUrl = asset('images/catalog/' . $productModel->image);
             }
@@ -125,7 +134,11 @@ class ProductController extends Controller
             $relatedImageUrl = null;
             if ($item->image) {
                 if (!empty($item->path)) {
-                    $relatedImageUrl = asset($item->path . '/' . $item->image);
+                    if (str_starts_with($item->path, 'http://') || str_starts_with($item->path, 'https://')) {
+                        $relatedImageUrl = rtrim($item->path, '/') . '/' . $item->image;
+                    } else {
+                        $relatedImageUrl = asset($item->path . '/' . $item->image);
+                    }
                 } else {
                     $relatedImageUrl = asset('images/catalog/' . $item->image);
                 }
