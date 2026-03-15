@@ -18,7 +18,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Shared hosting: document root (public) bisa terpisah dari folder Laravel.
+        // Set PUBLIC_PATH di .env ke path absolut folder yang di-serve (mis. public_html)
+        // agar upload file disimpan di lokasi yang bisa diakses browser.
+        $publicPath = env('PUBLIC_PATH');
+        if ($publicPath !== null && $publicPath !== '') {
+            /** @var \Illuminate\Foundation\Application $app */
+            $app = $this->app;
+            $app->usePublicPath($publicPath);
+        }
     }
 
     /**

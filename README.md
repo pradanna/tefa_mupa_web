@@ -50,6 +50,24 @@ Thank you for considering contributing to the Laravel framework! The contributio
 
 In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
+## Deploy ke Shared Hosting (document root terpisah)
+
+Jika folder **public** Laravel tidak sama dengan document root server (mis. root = `public_html`), upload file dari web akan tersimpan di path Laravel sehingga tidak terbaca di browser.
+
+**Solusi:** set env `PUBLIC_PATH` ke path absolut folder yang benar‑benar di-serve (document root):
+
+1. Di server, edit `.env` dan isi:
+   ```env
+   PUBLIC_PATH=/home/username/public_html
+   ```
+   Ganti `/home/username/public_html` dengan path document root kamu (bisa cek di panel hosting).
+
+2. Pastikan isi folder `public/` Laravel (index.php, css, js, images, dll) ada di folder tersebut (copy atau symlink).
+
+3. Setelah itu, `public_path()` akan mengarah ke folder itu dan file upload (gambar galeri, katalog, dll) akan disimpan di lokasi yang bisa diakses browser.
+
+Di lingkungan local, **jangan** set `PUBLIC_PATH` (kosongkan atau hapus barisnya).
+
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
