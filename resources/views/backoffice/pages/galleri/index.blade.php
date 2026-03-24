@@ -28,6 +28,9 @@
                     </div>
                 @endforeach
             </div>
+            @if ($gallerys->hasPages())
+                {{ $gallerys->links('vendor.pagination.custom') }}
+            @endif
         </div>
     </div>
 </x-backoffice.layout.main>
