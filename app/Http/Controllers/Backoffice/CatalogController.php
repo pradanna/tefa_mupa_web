@@ -9,7 +9,7 @@ use App\Repositories\CategoryRepository;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use App\Commons\Libs\Datetime;
+use App\Commons\Libs\DateTime;
 use App\Schemas\CatalogSchema;
 
 class CatalogController extends BaseController
@@ -79,7 +79,7 @@ class CatalogController extends BaseController
                 $file = $request->file('file');
 
                 $extension = $file->getClientOriginalExtension();
-                $name      = Datetime::getNowYmdHis();
+                $name      = DateTime::getNowYmdHis();
                 $fileName  = $name . '.' . $extension;
 
                 // Simpan langsung ke public/images/catalog
@@ -100,11 +100,15 @@ class CatalogController extends BaseController
 
             $data = $this->catalogRepository->store($payload);
 
+
+
             return redirect()->route('catalog.index')->with('message', 'success create catalog');
         } catch (\Exception $e) {
             throw $e;
         } catch (\Throwable $th) {
             Log::error($th->getMessage(), ['trace' => $th->getTraceAsString()]);
+
+
             return redirect()
                 ->back()
                 ->withInput($request->except('file'))
@@ -184,7 +188,7 @@ class CatalogController extends BaseController
 
                 $file = $request->file('file');
                 $extension = $file->getClientOriginalExtension();
-                $name = Datetime::getNowYmdHis();
+                $name = DateTime::getNowYmdHis();
                 $newImageName = $name . '.' . $extension;
 
                 $destinationPath = public_path('images/catalog');

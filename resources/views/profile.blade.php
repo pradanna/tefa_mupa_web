@@ -63,8 +63,8 @@
                     <span class="badge bg-primary bg-opacity-10 txt-primary px-3 py-2 rounded-pill mb-3">VISI
                         KAMI</span>
                     <h2 class="fw-bold mb-4">
-                        @foreach (explode(',', $vision) as $item)
-                            <div class="d-block">{{ trim($item) }}</div>
+                        @foreach ($visions as $item)
+                            <div class="d-block">{{ $item }}</div>
                         @endforeach
                     </h2>
                 </div>
@@ -75,30 +75,14 @@
                 <div class="col-lg-8 text-center" data-aos="fade-up">
                     <span class="badge bg-primary bg-opacity-10 txt-primary px-3 py-2 rounded-pill mb-3">MISI
                         KAMI</span>
-                    <h2 class="fw-bold mb-4">
-                        @foreach (explode(',', $missions) as $item)
-                            <div class="d-block">{{ trim($item) }}</div>
+                    <ul class="text-start mb-0 mt-4 mx-auto ps-3 fs-3 fw-bold" style="max-width: fit-content;">
+                        @foreach ($missions as $item)
+                            <li class="mb-2">{{ $item }}</li>
                         @endforeach
-                    </h2>
+                    </ul>
                 </div>
             </div>
-
-            {{-- MISI (Grid Cards) --}}
-            {{-- <div class="row g-4 justify-content-center">
-                @foreach ($missions as $mission)
-                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="{{ ($loop->index + 1) * 100 }}">
-                        <div class="card h-100 border-0 shadow-sm p-4 hover-up">
-                            <div class="icon-box bg-white shadow-sm rounded-circle d-flex align-items-center justify-content-center mb-3 txt-primary"
-                                style="width: 60px; height: 60px;">
-                                <i class="{{ $mission->icon ?? 'bi bi-check-circle' }} fs-4"></i>
-                            </div>
-                            <h5 class="fw-bold">{{ $mission->title }}</h5>
-                            <p class="text-muted small">{{ $mission->desc }}</p>
-                        </div>
-                    </div>
-                @endforeach
-            </div> --}}
-
+            
         </div>
     </section>
 
