@@ -75,6 +75,7 @@
     </div>
     <!-- Libs JS -->
     <x-backoffice.partials.scripts />
+    @stack('scripts')
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>

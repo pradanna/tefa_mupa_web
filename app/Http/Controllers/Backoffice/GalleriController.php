@@ -20,10 +20,22 @@ class GalleriController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $gallerys = $this->galeriRepository->paginate(request());
+            if (! $request->has('limit')) {
+                $request->merge(['limit' => 12]);
+            }
+            $gallerys = $this->galeriRepository->paginate($request);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'html' => view('backoffice.pages.galleri.partials.gallery-cards', compact('gallerys'))->render(),
+                    'next_page_url' => $gallerys->nextPageUrl(),
+                    'has_more' => $gallerys->hasMorePages(),
+                ]);
+            }
+
             return view('backoffice.pages.galleri.index', compact('gallerys'));
         } catch (\Throwable $th) {
             Log::error($th);

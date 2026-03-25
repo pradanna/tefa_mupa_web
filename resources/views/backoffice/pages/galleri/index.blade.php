@@ -2,35 +2,93 @@
     <x-backoffice.partials.breadcrumb title="Galleri" pretitle="Galleri" createUrl="{{ route('album.create') }}" createLabel="Tambah Gambar" />
     <div class="page-body">
         <div class="container-xl">
-            <div class="row row-cards">
-                @foreach ( $gallerys as $gallery )
-                    <div class="col-sm-3 col-lg-2">
-                        <div class="card card-sm position-relative">
-                            <!-- Tombol hapus -->
-                            <form action="{{ route('album.destroy',$gallery) }}" method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-icon btn-danger btn-sm position-absolute" style="top: 8px; right: 8px; z-index: 2;" title="Hapus" onclick="return confirm('Anda yakin ingin menghapus gambar ini?')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                        <line x1="4" y1="7" x2="20" y2="7" />
-                                        <line x1="10" y1="11" x2="10" y2="17" />
-                                        <line x1="14" y1="11" x2="14" y2="17" />
-                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                        <path d="M9 7V4a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                    </svg>
-                                </button>
-                            </form>
-                            <a href="#" class="d-block">
-                                <img src="{{ asset($gallery->path . '/' . $gallery->image) }}" class="card-img-top" alt="Gallery Image">
-                            </a>
-                        </div>
-                    </div>
-                @endforeach
+            <div class="row row-cards" id="gallery-grid">
+                @include('backoffice.pages.galleri.partials.gallery-cards', ['gallerys' => $gallerys])
             </div>
-            @if ($gallerys->hasPages())
-                {{ $gallerys->links('vendor.pagination.custom') }}
+
+            @if ($gallerys->isEmpty())
+                <div class="text-center text-secondary py-5" id="gallery-empty">
+                    Belum ada gambar. Klik &quot;Tambah Gambar&quot; untuk mengunggah.
+                </div>
             @endif
+
+            @if ($gallerys->hasMorePages())
+                <div class="d-flex justify-content-center mt-4" id="gallery-load-more-wrap">
+                    <button type="button" class="btn btn-primary" id="gallery-load-more" data-next-url="{{ $gallerys->nextPageUrl() }}">
+                        <span class="spinner-border spinner-border-sm me-2 d-none" id="gallery-load-more-spinner" role="status" aria-hidden="true"></span>
+                        <span id="gallery-load-more-label">Muat lebih banyak</span>
+                    </button>
+                </div>
+            @endif
+
+            <div class="d-none justify-content-center mt-2 text-secondary small" id="gallery-end-hint">
+                Semua gambar telah ditampilkan
+            </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        (function () {
+            var btn = document.getElementById('gallery-load-more');
+            if (!btn) return;
+
+            var grid = document.getElementById('gallery-grid');
+            var spinner = document.getElementById('gallery-load-more-spinner');
+            var label = document.getElementById('gallery-load-more-label');
+            var wrap = document.getElementById('gallery-load-more-wrap');
+            var endHint = document.getElementById('gallery-end-hint');
+            var emptyEl = document.getElementById('gallery-empty');
+
+            function setLoading(loading) {
+                btn.disabled = loading;
+                spinner.classList.toggle('d-none', !loading);
+                label.textContent = loading ? 'Memuat…' : 'Muat lebih banyak';
+            }
+
+            btn.addEventListener('click', function () {
+                var url = btn.getAttribute('data-next-url');
+                if (!url) return;
+
+                setLoading(true);
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                })
+                    .then(function (r) {
+                        if (!r.ok) throw new Error('Gagal memuat data');
+                        return r.json();
+                    })
+                    .then(function (data) {
+                        if (emptyEl) emptyEl.classList.add('d-none');
+
+                        var temp = document.createElement('div');
+                        temp.innerHTML = data.html;
+                        while (temp.firstChild) {
+                            grid.appendChild(temp.firstChild);
+                        }
+
+                        if (data.has_more && data.next_page_url) {
+                            btn.setAttribute('data-next-url', data.next_page_url);
+                            setLoading(false);
+                        } else {
+                            btn.setAttribute('data-next-url', '');
+                            if (wrap) wrap.classList.add('d-none');
+                            if (endHint) {
+                                endHint.classList.remove('d-none');
+                                endHint.classList.add('d-flex');
+                            }
+                        }
+                    })
+                    .catch(function () {
+                        setLoading(false);
+                        label.textContent = 'Coba lagi';
+                    });
+            });
+        })();
+    </script>
+    @endpush
 </x-backoffice.layout.main>
